@@ -1,17 +1,20 @@
-# projek
+# FamScreen
+By mobileMayhem
 
-A new Flutter project.
+## Peraturan penting
+Commit jika mengerjakan progressan saja, dilarang keras asal commit buat nambah commit insights aja!!!
+Jika mengerjakan pastikan membuat branch baru 
+tutorial :
 
-## Getting Started
+### Cara download repo
+1. git clone https://github.com/regitacahyaa/mobile_mayhem.git (untuk download repo)
+2. Edit projek
 
-This project is a starting point for a Flutter application.
+### Cara push
+1. git add .
+2. git commit "pesan commit"
+3. git push origin (nama branchmu) // tanpa buka kurung tutup kurung
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# mobile_mayhem
+### Cara bikin branch
+1. git branch (nama brancg) // tanpa buka kurung tutup kurung
+3. git checkout (nama branch) // tanpa buka kurung tutup kurung, ini dipake buat pindah branch
