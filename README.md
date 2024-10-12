@@ -15,6 +15,6 @@ tutorial :
 2. git commit "pesan commit"
 3. git push origin (nama branchmu) // tanpa buka kurung tutup kurung
 
-### Cara bikin branch
+### Cara bikin dan pindah branch
 1. git branch (nama brancg) // tanpa buka kurung tutup kurung
 3. git checkout (nama branch) // tanpa buka kurung tutup kurung, ini dipake buat pindah branch
