@@ -4,6 +4,7 @@ By mobileMayhem
 ## Peraturan penting
 Commit jika mengerjakan progressan saja, dilarang keras asal commit buat nambah commit insights aja!!!
 Jika mengerjakan pastikan membuat branch baru 
+
 tutorial :
 
 ### Cara download repo
