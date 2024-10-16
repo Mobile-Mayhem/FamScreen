@@ -55,6 +55,13 @@ class _CameraPageState extends State<CameraPage> {
       setState(() {
         _capturedImage = image;
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Picture saved to ${image.path}'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     } catch (e) {
       print('Error taking picture: $e');
     }
@@ -90,6 +97,7 @@ class _CameraPageState extends State<CameraPage> {
                 child: CameraPreview(controller),
               ),
             ),
+          SizedBox(height: 100),
         ],
       ),
       floatingActionButton: FloatingActionButton(
