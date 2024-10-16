@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
+import 'package:projek/pages/CameraPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,6 +24,14 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _onBackToIntro(context),
               child: const Text('Back to Introduction'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const CameraPage()),
+                );
+              },
+              child: const Text('Open Camera'),
             ),
           ],
         ),
