@@ -53,15 +53,14 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       allowImplicitScrolling: true,
       autoScrollDuration: 3000,
       infiniteAutoScroll: true,
-      // globalHeader: Align(
-      //   alignment: Alignment.topRight,
-      //   child: SafeArea(
-      //     child: Padding(
-      //       padding: const EdgeInsets.only(top: 16, right: 16),
-      //       child: _buildImage('flutter.png', 100),
-      //     ),
-      //   ),
-      // ),
+      globalHeader: Align(
+        alignment: Alignment.topRight,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16, right: 16),
+          ),
+        ),
+      ),
       pages: [
         PageViewModel(
           title: "Selamat Datang di FamScreen!",
@@ -117,25 +116,6 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             safeArea: 80,
           ),
         ),
-        // PageViewModel(
-        //   title: "Title of last page - reversed",
-        //   bodyWidget: const Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Text("Click on ", style: bodyStyle),
-        //       Icon(Icons.edit),
-        //       Text(" to edit a post", style: bodyStyle),
-        //     ],
-        //   ),
-        //   decoration: pageDecoration.copyWith(
-        //     bodyFlex: 2,
-        //     imageFlex: 4,
-        //     bodyAlignment: Alignment.bottomCenter,
-        //     imageAlignment: Alignment.topCenter,
-        //   ),
-        //   image: _buildImage('img1.jpg'),
-        //   reverse: true,
-        // ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context), // You can override onSkip callback
