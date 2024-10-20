@@ -8,7 +8,7 @@ Jika mengerjakan pastikan membuat branch baru
 tutorial :
 
 ### Cara download repo
-1. git clone https://github.com/regitacahyaa/mobile_mayhem.git (untuk download repo)
+1. git clone https://github.com/Mobile-Mayhem/FamScreen (untuk download repo)
 2. Edit projek
 
 ### Cara push
