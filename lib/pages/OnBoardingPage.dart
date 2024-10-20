@@ -144,10 +144,17 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       nextFlex: 0,
       showBackButton: false,
       //rtl: true, // Display as right-to-left
-      back: const Icon(Icons.arrow_back),
-      skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+      back: const Icon(Icons.arrow_back, color: CustomColor.primary),
+      skip: const Text('Skip',
+          style: TextStyle(
+              fontWeight: FontWeight.w600, color: CustomColor.primary)),
+      next: const Icon(
+        Icons.arrow_forward,
+        color: CustomColor.primary,
+      ),
+      done: const Text('Done',
+          style: TextStyle(
+              fontWeight: FontWeight.w600, color: CustomColor.primary)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb
