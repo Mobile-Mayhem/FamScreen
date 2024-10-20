@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/OnBoardingPage.dart';
+import 'utils/theme.dart'; // Import your custom theme
 
 late List<CameraDescription> _cameras;
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Introduction screen',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      theme: customTheme,
       home: const OnBoardingPage(),
     );
   }

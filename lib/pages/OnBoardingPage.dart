@@ -64,56 +64,51 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       // ),
       pages: [
         PageViewModel(
-          title: "Fractional shares",
+          title: "Selamat Datang di FamScreen!",
           body:
-              "Instead of having to buy an entire share, invest any amount you want.",
+              "Temukan film yang aman dan sesuai usia dengan deteksi wajah otomatis.",
           image: _buildImage('img.jpg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Learn as you go",
+          title: "Deteksi Usia Real-Time",
           body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
+              "Kami mendeteksi usia Anda secara real-time untuk menyesuaikan konten yang ditampilkan.",
           image: _buildImage('img1.jpg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Kids and teens",
-          body:
-              "Kids and teens can track their stocks 24/7 and place trades that you approve.",
+          title: "Rekomendasi Film Personal",
+          body: "Nikmati film yang direkomendasikan khusus untuk usia Anda.",
           image: _buildImage('img2.jpg'),
           decoration: pageDecoration,
         ),
-        // PageViewModel(
-        //   title: "Full Screen Page",
-        //   body:
-        //       "Pages can be full screen as well.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc id euismod lectus, non tempor felis. Nam rutrum rhoncus est ac venenatis.",
-        //   image: _buildFullscreenImage(),
-        //   decoration: pageDecoration.copyWith(
-        //     contentMargin: const EdgeInsets.symmetric(horizontal: 16),
-        //     fullScreen: true,
-        //     bodyFlex: 2,
-        //     imageFlex: 3,
-        //     safeArea: 100,
-        //   ),
-        // ),
         PageViewModel(
-          title: "Another title page",
-          body: "Another beautiful body text for this example onboarding",
+          title: "Keamanan untuk Keluarga",
+          body:
+              "Cegah anak-anak dari konten dewasa dengan peringatan otomatis.",
           image: _buildImage('img3.jpg'),
-          footer: ElevatedButton(
-            onPressed: () {
-              introKey.currentState?.animateScroll(0);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: CustomColor.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: "Mulai Sekarang",
+          body: "Daftar dan nikmati rekomendasi film sesuai usia Anda!",
+          image: _buildImage('img4.jpg'),
+          footer: Center(
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColor.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 130.0, vertical: 10.0),
               ),
-            ),
-            child: const Text(
-              'FooButton',
-              style: TextStyle(color: Colors.white),
+              child: const Text(
+                'Daftar',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           decoration: pageDecoration.copyWith(
@@ -122,25 +117,25 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             safeArea: 80,
           ),
         ),
-        PageViewModel(
-          title: "Title of last page - reversed",
-          bodyWidget: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Click on ", style: bodyStyle),
-              Icon(Icons.edit),
-              Text(" to edit a post", style: bodyStyle),
-            ],
-          ),
-          decoration: pageDecoration.copyWith(
-            bodyFlex: 2,
-            imageFlex: 4,
-            bodyAlignment: Alignment.bottomCenter,
-            imageAlignment: Alignment.topCenter,
-          ),
-          image: _buildImage('img1.jpg'),
-          reverse: true,
-        ),
+        // PageViewModel(
+        //   title: "Title of last page - reversed",
+        //   bodyWidget: const Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       Text("Click on ", style: bodyStyle),
+        //       Icon(Icons.edit),
+        //       Text(" to edit a post", style: bodyStyle),
+        //     ],
+        //   ),
+        //   decoration: pageDecoration.copyWith(
+        //     bodyFlex: 2,
+        //     imageFlex: 4,
+        //     bodyAlignment: Alignment.bottomCenter,
+        //     imageAlignment: Alignment.topCenter,
+        //   ),
+        //   image: _buildImage('img1.jpg'),
+        //   reverse: true,
+        // ),
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context), // You can override onSkip callback
