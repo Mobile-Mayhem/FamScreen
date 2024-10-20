@@ -97,7 +97,7 @@ class _CameraPageState extends State<CameraPage> {
                 child: CameraPreview(controller),
               ),
             ),
-          SizedBox(height: 100),
+          const SizedBox(height: 100),
         ],
       ),
       floatingActionButton: FloatingActionButton(
