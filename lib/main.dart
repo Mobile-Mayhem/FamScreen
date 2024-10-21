@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Introduction screen',
+      title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
       home: const OnBoardingPage(),
