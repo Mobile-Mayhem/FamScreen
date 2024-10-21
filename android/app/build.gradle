@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mobile_mayhem"
+    namespace = "com.mobile_mayhem.famscreen"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
