@@ -113,7 +113,6 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       skipOrBackFlex: 0,
       nextFlex: 0,
       showBackButton: false,
-      //rtl: true, // Display as right-to-left
       back: const Icon(Icons.arrow_back, color: CustomColor.primary),
       skip: const Text('Skip',
           style: TextStyle(
