@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:projek/utils/Colors.dart';
+import 'package:sign_button/sign_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  void _showButtonPressDialog(BuildContext context, String provider) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$provider Button Pressed!'),
+        backgroundColor: Colors.black26,
+        duration: const Duration(milliseconds: 400),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +84,30 @@ class LoginPage extends StatelessWidget {
               height: 15,
             ),
             Text('Atau'),
-            Column(
+            SizedBox(
+              height: 25,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // SignInButton(
-                //   Buttons.Google,
-                // )
+                SignInButton.mini(
+                  buttonSize: ButtonSize.medium,
+                  buttonType: ButtonType.google,
+                  onPressed: () {
+                    _showButtonPressDialog(context, 'Google');
+                  },
+                ),
+                SignInButton.mini(
+                  buttonType: ButtonType.facebook,
+                  buttonSize: ButtonSize.medium,
+                  onPressed: () {
+                    _showButtonPressDialog(context, 'Google');
+                  },
+                ),
               ],
+            ),
+            SizedBox(
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
