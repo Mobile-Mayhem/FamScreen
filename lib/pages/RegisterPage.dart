@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projek/pages/CameraPage.dart';
 import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
@@ -96,7 +97,10 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                print('Loginn');
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const CameraPage()),
+                );
+                print('Daftar');
               },
               child: const Text('Daftar'),
               style: ElevatedButton.styleFrom(
