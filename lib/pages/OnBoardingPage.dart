@@ -4,8 +4,6 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:projek/pages/RegisterPage.dart';
 import 'package:projek/utils/Colors.dart';
 
-import 'HomePage.dart';
-
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
 
@@ -17,7 +15,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomePage()),
+      MaterialPageRoute(builder: (_) => const RegisterPage()),
     );
   }
 

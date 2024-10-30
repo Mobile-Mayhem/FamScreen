@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:projek/utils/Colors.dart';
+
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
 
@@ -25,7 +27,7 @@ class _CameraPageState extends State<CameraPage> {
       final cameras = await availableCameras();
       if (cameras.isNotEmpty) {
         controller = CameraController(
-          cameras[1],
+          cameras[0],
           ResolutionPreset.max,
         );
 
@@ -80,7 +82,7 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Camera Page')),
+      // appBar: AppBar(title: const Text('Camera Page')),
       body: Column(
         children: [
           if (_capturedImage != null)
@@ -97,14 +99,17 @@ class _CameraPageState extends State<CameraPage> {
                 child: CameraPreview(controller),
               ),
             ),
-          const SizedBox(height: 100),
+          // const SizedBox(height: 100),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           _takePicture();
         },
-        child: const Icon(Icons.camera),
+        icon: const Icon(Icons.camera, color: Colors.white),
+        label: const Text('Ambil Gambar',
+            style: TextStyle(color: CustomColor.white)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
