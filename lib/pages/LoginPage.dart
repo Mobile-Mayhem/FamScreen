@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
             ),
             TextField(
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email, color: CustomColor.primary),
+                prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -50,13 +50,14 @@ class LoginPage extends StatelessWidget {
                         color: CustomColor.primary, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Email',
+                labelStyle: TextStyle(color: CustomColor.gray),
                 border: const OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 15),
             TextField(
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.password, color: CustomColor.primary),
+                prefixIcon: Icon(Icons.lock_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -65,6 +66,7 @@ class LoginPage extends StatelessWidget {
                         color: CustomColor.primary, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Password',
+                labelStyle: TextStyle(color: CustomColor.gray),
                 border: const OutlineInputBorder(),
               ),
             ),

@@ -41,7 +41,9 @@ class RegisterPage extends StatelessWidget {
             ),
             TextField(
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person, color: CustomColor.primary),
+                contentPadding: EdgeInsets.symmetric(horizontal: 30.0),
+                prefixIcon:
+                    Icon(Icons.person_2_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -50,13 +52,14 @@ class RegisterPage extends StatelessWidget {
                         color: CustomColor.primary, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Nama Lengkap',
+                labelStyle: TextStyle(color: CustomColor.gray),
                 border: const OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 15),
             TextField(
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email, color: CustomColor.primary),
+                prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -65,13 +68,14 @@ class RegisterPage extends StatelessWidget {
                         color: CustomColor.primary, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Email',
+                labelStyle: TextStyle(color: CustomColor.gray),
                 border: const OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 15),
             TextField(
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.password, color: CustomColor.primary),
+                prefixIcon: Icon(Icons.lock_outline, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -80,6 +84,7 @@ class RegisterPage extends StatelessWidget {
                         color: CustomColor.primary, width: 2.0),
                     borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Password',
+                labelStyle: TextStyle(color: CustomColor.gray),
                 border: const OutlineInputBorder(),
               ),
             ),
