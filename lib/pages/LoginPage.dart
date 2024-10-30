@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projek/pages/RegisterPage.dart';
 import 'package:projek/utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
@@ -24,7 +25,7 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 40.0),
               child: Image.asset('assets/logo.png', height: 120),
             ),
             Padding(
@@ -115,6 +116,9 @@ class LoginPage extends StatelessWidget {
                 Text('Belum punya akun?'),
                 TextButton(
                   onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const RegisterPage()),
+                    );
                     print('Daftar');
                   },
                   child: const Text('Daftar',
