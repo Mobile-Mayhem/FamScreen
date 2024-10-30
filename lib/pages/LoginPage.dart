@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:projek/utils/Colors.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -28,40 +28,70 @@ class LoginPage extends StatelessWidget {
               child: Text('Masukkan email dan password anda'),
             ),
             TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email, color: CustomColor.primary),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: CustomColor.primary),
+                    borderRadius: BorderRadius.circular(10.0)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: CustomColor.primary, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Email',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16.0),
+            SizedBox(height: 15),
             TextField(
-              obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.password, color: CustomColor.primary),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: CustomColor.primary),
+                    borderRadius: BorderRadius.circular(10.0)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: CustomColor.primary, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0)),
                 labelText: 'Password',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () {
-                print('Login');
+                print('Loginn');
               },
               child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                minimumSize: const Size(double.infinity, 50),
+              ),
             ),
             SizedBox(
               height: 15,
             ),
             Text('Atau'),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SignInButton(Buttons.Google, text: 'Login Dengan Google',
-                    onPressed: () {
-                  print('Login Google');
-                }),
-                SignInButton(Buttons.Facebook, text: 'Login dengan Facebook',
-                    onPressed: () {
-                  print('Login Facebook');
-                }),
+                // SignInButton(
+                //   Buttons.Google,
+                // )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Belum punya akun?'),
+                TextButton(
+                  onPressed: () {
+                    print('Daftar');
+                  },
+                  child: const Text('Daftar',
+                      style: TextStyle(color: CustomColor.primary)),
+                )
               ],
             )
           ],

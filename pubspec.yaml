@@ -30,15 +30,14 @@ environment:
 dependencies:
   camera: ^0.11.0+2
   cupertino_icons: ^1.0.8
+  custom_signin_buttons: ^1.0.2
   flutter:
     sdk: flutter
-  flutter_signin_button: ^2.0.0
   introduction_screen: ^3.1.14
   path_provider: ^2.1.4
   video_player: ^2.9.2
 
 dev_dependencies:
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
