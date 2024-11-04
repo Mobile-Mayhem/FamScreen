@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:projek/pages/HomePage.dart';
 import 'pages/OnBoardingPage.dart';
 import 'utils/theme.dart'; // Import your custom theme
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
-      home: const OnBoardingPage(),
+      home: const HomePage(),
     );
   }
 }
