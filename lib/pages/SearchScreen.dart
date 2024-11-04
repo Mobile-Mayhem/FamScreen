@@ -13,12 +13,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget {
-  final List<String> previousSearches = [
+class SearchScreen extends StatefulWidget {
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  List<String> previousSearches = [
     'Venom 3',
     'Do You See What I See',
     'The Dark Knight'
   ];
+
+  void _removeSearchItem(int index) {
+    setState(() {
+      previousSearches.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +72,7 @@ class SearchScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: () {
-                        // Add functionality to remove items from the list if needed
+                        _removeSearchItem(index);
                       },
                     ),
                   );
