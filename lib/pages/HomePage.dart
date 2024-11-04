@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projek/pages/DetailPage.dart';
 import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
@@ -41,6 +42,14 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: const Text('Open Login Page'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DetailPage()),
+                );
+              },
+              child: const Text('Open Detail Page'),
             ),
           ],
         ),
