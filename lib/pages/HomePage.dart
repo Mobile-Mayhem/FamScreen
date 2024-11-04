@@ -3,6 +3,7 @@ import 'package:projek/pages/DetailPage.dart';
 import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
+import 'package:projek/pages/SearchScreen.dart'; // Import the SearchScreen page
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -50,6 +51,14 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: const Text('Open Detail Page'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SearchScreen()), // Remove `const`
+                );
+              },
+              child: const Text('Open Search Page'),
             ),
           ],
         ),
