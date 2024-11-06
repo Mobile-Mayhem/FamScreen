@@ -6,6 +6,7 @@ import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
 import 'package:projek/pages/SearchScreen.dart';
 import 'package:projek/pages/FavoritePage.dart'; 
+import 'package:projek/pages/HistoryPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -69,6 +70,14 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: const Text('Open Favorite Page'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => HistoryScreen()),
+                );
+              },
+              child: const Text('Open History Page'),
             ),
           ],
         ),
