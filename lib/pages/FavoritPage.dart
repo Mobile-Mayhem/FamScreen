@@ -67,9 +67,14 @@ class FavoriteScreen extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 children: [
-                  FavoriteItem(title: 'The Dark Knight', image: 'assets/images/venom.jpeg'),
-                  FavoriteItem(title: 'The Lord of ...', image: 'assets/images/venom.jpeg'),
-                  FavoriteItem(title: 'Inception', image: 'assets/images/venom.jpeg'),
+                  FavoriteItem(
+                      title: 'The Dark Knight',
+                      image: 'assets/dark_knight.jpg'),
+                  FavoriteItem(
+                      title: 'The Lord of ...',
+                      image: 'assets/lord_of_the_rings.jpg'),
+                  FavoriteItem(
+                      title: 'Inception', image: 'assets/inception.jpg'),
                 ],
               ),
             ),
