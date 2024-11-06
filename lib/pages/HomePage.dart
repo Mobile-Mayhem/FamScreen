@@ -19,18 +19,8 @@ class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
   final List<Map<String, String>> movies = [
-    {
-      'title': 'Spider Man',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
-    {
-      'title': 'Spider Man 2',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
+    {'title': 'Spider Man', 'duration': '1h 35m', 'rating': '8.1', 'image': 'assets/images/spiderman.jpg'},
+    {'title': 'Spider Man 2', 'duration': '1h 35m', 'rating': '8.1', 'image': 'assets/images/spiderman.jpg'},
   ];
 
   void _onBackToIntro(BuildContext context) {
@@ -51,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(15),
             side: BorderSide(
               color: isSelected ? Colors.transparent : Colors.grey[300]!,
-              width: 1.5,
+              width: 1.5, 
             ),
           ),
         ),
@@ -66,47 +56,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieCard(Map<String, String> movie) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AspectRatio(
-          aspectRatio: 2 / 3,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              movie['image']!,
-              fit: BoxFit.cover,
-            ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      AspectRatio(
+        aspectRatio: 2 / 3,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            movie['image']!,
+            fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                movie['title']!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+      ),
+      const SizedBox(height: 8),
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              movie['title']!,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            Row(
-              children: [
-                Icon(Icons.star, color: Colors.yellow[800], size: 16),
-                const SizedBox(width: 4),
-                Text(movie['rating']!),
-              ],
-            ),
-          ],
-        ),
-        Text(
-          movie['duration']!,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
-    );
-  }
+          ),
+          Row(
+            children: [
+              Icon(Icons.star, color: Colors.yellow[800], size: 16),
+              const SizedBox(width: 4),
+              Text(movie['rating']!),
+            ],
+          ),
+        ],
+      ),
+
+      Text(
+        movie['duration']!,
+        style: const TextStyle(color: Colors.grey),
+      ),
+    ],
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                   return _buildMovieCard(movies[index]);
                 },
               ),
-
+              
               const SizedBox(height: 70),
 
               // Button and Navigation Section
