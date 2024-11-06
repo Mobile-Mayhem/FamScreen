@@ -5,7 +5,7 @@ import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
 import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/pages/FavoritePage.dart'; 
+import 'package:projek/pages/FavoritePage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SearchScreen()), 
+                  MaterialPageRoute(builder: (_) => SearchScreen()),
                 );
               },
               child: const Text('Open Search Page'),
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => FavoriteScreen()), 
+                  MaterialPageRoute(builder: (_) => FavoriteScreen()),
                 );
               },
               child: const Text('Open Favorite Page'),
