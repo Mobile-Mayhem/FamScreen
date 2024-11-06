@@ -25,6 +25,8 @@ class _SearchScreenState extends State<SearchScreen> {
     'The Dark Knight'
   ];
 
+  int _currentIndex = 2; // Set 'search' as the default selected index
+
   void _removeSearchItem(int index) {
     setState(() {
       previousSearches.removeAt(index);
@@ -83,30 +85,36 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1,
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.amber,
+        unselectedItemColor: Colors.grey,
+        selectedFontSize: 0, // Hapus teks tambahan yang bisa memengaruhi tampilan
+        unselectedFontSize: 0,
         onTap: (index) {
-          // Handle navigation logic here
+          setState(() {
+            _currentIndex = index; // Ubah indeks saat ini
+          });
         },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.circle, color: Colors.yellow),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            icon: Icon(Icons.favorite),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: '',
           ),
         ],
       ),
