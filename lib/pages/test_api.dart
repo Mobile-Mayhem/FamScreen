@@ -17,10 +17,10 @@ class _TestApiState extends State<TestApi> {
   void initState() {
     super.initState();
 
-    loadCountries();
+    loadFilms();
   }
 
-  Future<void> loadCountries() async {
+  Future<void> loadFilms() async {
     final filmService = FilmService();
     films = await filmService.getFilms();
     setState(() {
@@ -47,14 +47,12 @@ class _TestApiState extends State<TestApi> {
                                     const SizedBox(height: 4),
                                     Row(
                                       children: [
+                                        Expanded(child: Text(films.judul)),
                                         Expanded(
-                                            child: Text(films.judul ??
-                                                'Tidak ada judul')),
-                                        Expanded(
-                                          child: Text(films.deskripsi != null &&
-                                                  films.tahunRilis!.isNotEmpty
-                                              ? films.rateImdb!
-                                              : 'No Rate'),
+                                          child: Text(
+                                              films.tahunRilis.isNotEmpty
+                                                  ? films.rateImdb
+                                                  : 'No Rate'),
                                         ),
                                       ],
                                     ),
