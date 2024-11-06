@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:projek/data/service/film_service.dart';
 import 'package:projek/pages/DetailPage.dart';
 import 'package:projek/pages/FavoritPage.dart';
 import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
 import 'package:projek/pages/SearchScreen.dart';
+import 'package:projek/pages/test_api.dart';
 import 'package:projek/utils/Colors.dart';
 import 'package:projek/components/navbar.dart'; //coba navbar
 
@@ -17,11 +19,59 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
+  // bool isLoaded = false;
 
-  final List<Map<String, String>> movies = [
-    {'title': 'Spider Man', 'duration': '1h 35m', 'rating': '8.1', 'image': 'assets/images/spiderman.jpg'},
-    {'title': 'Spider Man 2', 'duration': '1h 35m', 'rating': '8.1', 'image': 'assets/images/spiderman.jpg'},
-  ];
+  // Future<void> LoadFilms() async {
+  //   final filmService = FilmService();
+  //   final films = await filmService.getFilms();
+  //   setState(() {
+  //     isLoaded = true;
+  //   });
+  // }
+
+  bool isLoaded = false;
+  List<Map<String, dynamic>> movies = [];
+
+  Future<void> loadFilms() async {
+    final filmService = FilmService();
+    try {
+      final films = await filmService.getFilms();
+      print('Data berhasil di dapat');
+      setState(() {
+        movies = (films?.map((film) {
+              return {
+                'title': film.judul,
+                'duration': film.durasi,
+                'rating': film.rateImdb.toString(),
+                // 'image': film.,
+              };
+            }).toList() ??
+            []) as List<Map<String, dynamic>>;
+        isLoaded = true;
+      });
+    } catch (e) {
+      // Penanganan error jika pengambilan data gagal
+      print("Error fetching films: $e");
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  // final List<Map<String, String>> movies = [
+  //   {
+  //     'title': films['title'],
+  //     'duration': '1h 35m',
+  //     'rating': '8.1',
+  //     'image': 'assets/images/spiderman.jpg'
+  //   },
+  //   {
+  //     'title': 'Spider Man 2',
+  //     'duration': '1h 35m',
+  //     'rating': '8.1',
+  //     'image': 'assets/images/spiderman.jpg'
+  //   },
+  // ];
 
   void _onBackToIntro(BuildContext context) {
     Navigator.of(context).pushReplacement(
@@ -41,7 +91,7 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(15),
             side: BorderSide(
               color: isSelected ? Colors.transparent : Colors.grey[300]!,
-              width: 1.5, 
+              width: 1.5,
             ),
           ),
         ),
@@ -55,50 +105,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMovieCard(Map<String, String> movie) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      AspectRatio(
-        aspectRatio: 2 / 3,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.asset(
-            movie['image']!,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      const SizedBox(height: 8),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              movie['title']!,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+  Widget _buildMovieCard(Map<String, dynamic> movie) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 2 / 3,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              movie['image']!,
+              fit: BoxFit.cover,
             ),
           ),
-          Row(
-            children: [
-              Icon(Icons.star, color: Colors.yellow[800], size: 16),
-              const SizedBox(width: 4),
-              Text(movie['rating']!),
-            ],
-          ),
-        ],
-      ),
-
-      Text(
-        movie['duration']!,
-        style: const TextStyle(color: Colors.grey),
-      ),
-    ],
-  );
-}
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                movie['title']!,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Row(
+              children: [
+                Icon(Icons.star, color: Colors.yellow[800], size: 16),
+                const SizedBox(width: 4),
+                Text(movie['rating']!),
+              ],
+            ),
+          ],
+        ),
+        Text(
+          movie['duration']!,
+          style: const TextStyle(color: Colors.grey),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                   return _buildMovieCard(movies[index]);
                 },
               ),
-              
+
               const SizedBox(height: 70),
 
               // Button and Navigation Section
@@ -191,19 +239,27 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => SearchScreen()),
+                          MaterialPageRoute(builder: (_) => const TestApi()),
                         );
                       },
-                      child: const Text('Open Search Page'),
+                      child: const Text('Open Tes Api'),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => FavoriteScreen()),
-                        );
-                      },
-                      child: const Text('Open Favorite Page'),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(builder: (_) => SearchScreen()),
+                    //     );
+                    //   },
+                    //   child: const Text('Open Search Page'),
+                    // ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(builder: (_) => FavoriteScreen()),
+                    //     );
+                    //   },
+                    //   child: const Text('Open Favorite Page'),
+                    // ),
                   ],
                 ),
               ),
