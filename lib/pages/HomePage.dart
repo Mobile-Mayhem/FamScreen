@@ -3,6 +3,7 @@ import '../utils/Colors.dart';
 import 'CameraPage.dart';
 import 'LoginPage.dart';
 import 'DetailPage.dart';
+import 'MlTestPage.dart';
 import 'SearchScreen.dart';
 import 'OnBoardingPage.dart';
 import 'FavoritePage.dart';
@@ -169,6 +170,14 @@ class _HomePageState extends State<HomePage> {
                     const Text("This is the screen after Introduction"),
                     const SizedBox(height: 16.0),
                     ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const MlTestPage()),
+                        );
+                      },
+                      child: const Text('Open ML Test Page'),
+                    ),
+                    ElevatedButton(
                       onPressed: () => _onBackToIntro(context),
                       child: const Text('Back to Introduction'),
                     ),
@@ -204,14 +213,14 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: const Text('Open Search Page'),
                     ),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(builder: (_) => FavoritePage()),
-                    //     );
-                    //   },
-                    //   child: const Text('Open Favorite Page'),
-                    // ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Navigator.of(context).push(
+                        // MaterialPageRoute(builder: (_) => FavoritePage()),
+                        // );
+                      },
+                      child: const Text('Open Favorite Page'),
+                    ),
                   ],
                 ),
               ),
