@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/DetailPage.dart';
-import 'package:projek/pages/FavoritPage.dart';
-import 'package:projek/pages/LoginPage.dart';
-import 'package:projek/pages/OnBoardingPage.dart';
-import 'package:projek/pages/CameraPage.dart';
-import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/utils/Colors.dart';
-import 'package:projek/components/navbar.dart'; //coba navbar
+import '../utils/Colors.dart';
+import 'CameraPage.dart';
+import 'LoginPage.dart';
+import 'DetailPage.dart';
+import 'SearchScreen.dart';
+import 'OnBoardingPage.dart';
+import 'FavoritePage.dart';
+import '../components/navbar.dart'; //coba navbar
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -204,14 +204,14 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: const Text('Open Search Page'),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => FavoriteScreen()),
-                        );
-                      },
-                      child: const Text('Open Favorite Page'),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(builder: (_) => FavoritePage()),
+                    //     );
+                    //   },
+                    //   child: const Text('Open Favorite Page'),
+                    // ),
                   ],
                 ),
               ),

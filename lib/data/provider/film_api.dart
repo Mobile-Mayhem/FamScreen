@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:projek/data/models/film.dart';
+import '/data/models/film.dart';
 import 'package:http/http.dart' as http;
 
 class FilmApi {
