@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projek/data/models/film.dart';
-import 'package:projek/data/service/film_service.dart';
+import '/data/models/film.dart';
+import '/data/service/film_service.dart';
 
 class TestApi extends StatefulWidget {
   const TestApi({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:projek/pages/RegisterPage.dart';
-import 'package:projek/utils/Colors.dart';
+import '../pages/RegisterPage.dart';
+import '../utils/Colors.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
