@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projek/utils/Colors.dart';
-import 'package:projek/data/models/film.dart';
+import '../utils/Colors.dart';
+import '../data/models/film.dart';
 
 class CategoryButton extends StatelessWidget {
   final String text;
@@ -46,7 +46,8 @@ class CategoryRow extends StatelessWidget {
   final List<Film> allFilms;
   final String selectedCategory;
   final Function(String) onCategorySelected;
-  final Function(List<Film>) onFilteredFilms; // Callback untuk mengirim daftar film yang difilter
+  final Function(List<Film>)
+      onFilteredFilms; // Callback untuk mengirim daftar film yang difilter
 
   const CategoryRow({
     Key? key,
