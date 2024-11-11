@@ -45,5 +45,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Kamera dan akses galeri-->
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires camera access to take pictures and record videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires microphone access for video recording.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to your photo library to select photos.</string>
 </dict>
 </plist>

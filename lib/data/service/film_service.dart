@@ -1,5 +1,5 @@
-import 'package:projek/data/provider/film_api.dart';
-import 'package:projek/data/models/film.dart';
+import '/data/provider/film_api.dart';
+import '/data/models/film.dart';
 
 class FilmService {
   final _api = FilmApi();

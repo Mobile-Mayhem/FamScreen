@@ -10,7 +10,7 @@ class FavoritPage extends StatefulWidget {
 
 class _FavoritPageState extends State<FavoritPage> {
     int currentPageIndex = 1;
-    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

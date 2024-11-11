@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/DetailPage.dart';
-import 'package:projek/components/navbar.dart';
-import 'package:projek/components/filter_jenis.dart';
-import 'package:projek/data/models/film.dart';
-import 'package:projek/data/service/film_service.dart';
+import '../utils/Colors.dart';
+import 'CameraPage.dart';
+import 'LoginPage.dart';
+import 'DetailPage.dart';
+import 'MlTestPage.dart';
+import 'SearchScreen.dart';
+import 'OnBoardingPage.dart';
+import 'FavoritePage.dart';
+import '../components/navbar.dart'; //coba navbar
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
