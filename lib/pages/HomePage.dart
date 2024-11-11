@@ -6,7 +6,7 @@ import 'DetailPage.dart';
 import 'MlTestPage.dart';
 import 'SearchScreen.dart';
 import 'OnBoardingPage.dart';
-import 'FavoritePage.dart';
+// import 'FavoritePage.dart';
 import '../components/navbar.dart'; //coba navbar
 
 class HomePage extends StatefulWidget {
