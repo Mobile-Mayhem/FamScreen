@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:projek/utils/Colors.dart';
+import '../utils/Colors.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});

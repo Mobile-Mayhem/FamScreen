@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projek/pages/HomePage.dart';
-import 'utils/theme.dart'; // Import your custom theme
+import 'pages/HomePage.dart';
+import 'utils/theme.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: customTheme,
       home: const HomePage(),
+      // home: Text("Test"),
     );
   }
 }
