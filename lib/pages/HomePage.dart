@@ -5,7 +5,6 @@ import 'package:projek/pages/LoginPage.dart';
 import 'package:projek/pages/OnBoardingPage.dart';
 import 'package:projek/pages/CameraPage.dart';
 import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/pages/FavoritePage.dart'; 
 import 'package:projek/pages/HistoryPage.dart';
 
 class HomePage extends StatelessWidget {
