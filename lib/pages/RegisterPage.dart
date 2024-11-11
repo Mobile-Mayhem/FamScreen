@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/CameraPage.dart';
-import 'package:projek/pages/LoginPage.dart';
-import 'package:projek/utils/Colors.dart';
+import 'CameraPage.dart';
+import 'LoginPage.dart';
+import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
 class RegisterPage extends StatelessWidget {
