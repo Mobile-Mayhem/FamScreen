@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projek/pages/DetailPage.dart';
-import 'package:projek/pages/FavoritPage.dart';
-import 'package:projek/pages/LoginPage.dart';
-import 'package:projek/pages/OnBoardingPage.dart';
-import 'package:projek/pages/CameraPage.dart';
-import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/utils/Colors.dart';
-import 'package:projek/components/navbar.dart'; //coba navbar
+import 'package:projek/components/navbar.dart';
+import 'package:projek/components/filter_jenis.dart';
+import 'package:projek/data/models/film.dart';
+import 'package:projek/data/service/film_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,93 +15,81 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
-  final List<Map<String, String>> movies = [
-    {
-      'title': 'Spider Man',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
-    {
-      'title': 'Spider Man 2',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
-  ];
+  List<Film>? films;
+  List<Film>? displayedFilms;
+  bool isLoaded = false;
+  String selectedCategory = 'All';
 
-  void _onBackToIntro(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const OnBoardingPage()),
-    );
+  void updateCategory(List<Film> filteredFilms) {
+    setState(() {
+      displayedFilms = filteredFilms;
+    });
   }
 
-  Widget _buildCategoryButton(String text, bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? CustomColor.primary : Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-            side: BorderSide(
-              color: isSelected ? Colors.transparent : Colors.grey[300]!,
-              width: 1.5,
-            ),
-          ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-          ),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    loadFilms();
   }
 
-  Widget _buildMovieCard(Map<String, String> movie) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AspectRatio(
-          aspectRatio: 2 / 3,
-          child: ClipRRect(
+  Future<void> loadFilms() async {
+    final filmService = FilmService();
+    films = await filmService.getFilms();
+    setState(() {
+      isLoaded = true;
+      displayedFilms = films;
+    });
+  }
+
+  Widget _buildMovieCard(Film film) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DetailPage(film: film, displayedFilms: displayedFilms!),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              movie['image']!,
+            child: Image.network(
+              film.poster,
+              height: 250,
+              width: 180,
               fit: BoxFit.cover,
             ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                movie['title']!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  film.judul,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            Row(
-              children: [
-                Icon(Icons.star, color: Colors.yellow[800], size: 16),
-                const SizedBox(width: 4),
-                Text(movie['rating']!),
-              ],
-            ),
-          ],
-        ),
-        Text(
-          movie['duration']!,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
+            ],
+          ),
+          Row(
+            children: [
+              Icon(Icons.star, color: Colors.yellow[800], size: 16),
+              const SizedBox(width: 4),
+              Text(film.rateImdb.toString()),
+            ],
+          ),
+          Text(
+            film.durasi.toString(),
+            style: const TextStyle(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 
@@ -112,6 +97,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -125,102 +111,53 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Category Filter
+              // filter jenis
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildCategoryButton('All', true),
-                  _buildCategoryButton('Movies', false),
-                  _buildCategoryButton('Series', false),
+                  CategoryRow(
+                    allFilms: films ?? [],
+                    selectedCategory: selectedCategory,
+                    onCategorySelected: (String category) {
+                      setState(() {
+                        selectedCategory = category;
+                      });
+                    },
+                    onFilteredFilms: updateCategory,
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
 
-              // Recommendations Section
               const Text(
                 'Rekomendasi',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
-              // grid film
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                ),
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  return _buildMovieCard(movies[index]);
-                },
-              ),
-
-              const SizedBox(height: 70),
-
-              // Button and Navigation Section
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("This is the screen after Introduction"),
-                    const SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () => _onBackToIntro(context),
-                      child: const Text('Back to Introduction'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const CameraPage()),
-                        );
-                      },
-                      child: const Text('Open Camera'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginPage()),
-                        );
-                      },
-                      child: const Text('Open Login Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const DetailPage()),
-                        );
-                      },
-                      child: const Text('Open Detail Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => SearchScreen()),
-                        );
-                      },
-                      child: const Text('Open Search Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => FavoriteScreen()),
-                        );
-                      },
-                      child: const Text('Open Favorite Page'),
-                    ),
-                  ],
-                ),
-              ),
+              // Grid film
+              isLoaded && displayedFilms != null
+              ? GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.53,
+                    mainAxisSpacing: 0.5,
+                    crossAxisSpacing: 18,
+                  ),
+                  itemCount: displayedFilms!.length,
+                  itemBuilder: (context, index) {
+                    return _buildMovieCard(displayedFilms![index]);
+                  },
+                )
+              : const Center(child: CircularProgressIndicator()),
             ],
           ),
         ),
       ),
 
-      // navbar
+      // Navbar
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
         onDestinationSelected: (int index) {
