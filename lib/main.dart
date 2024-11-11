@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/debug_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/HomePage.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
-      home: const HomePage(),
+      home: const DebugTest(),
       // home: Text("Test"),
     );
   }
