@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/DetailPage.dart';
-import 'package:projek/components/navbar.dart';
-import 'package:projek/components/filter_jenis.dart';
-import 'package:projek/data/models/film.dart';
-import 'package:projek/data/service/film_service.dart';
+import 'DetailPage.dart';
+import '../components/navbar.dart';
+import '../components/filter_jenis.dart';
+import '../data/models/film.dart';
+import '../data/service/film_service.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _HistorypageState extends State<HistoryPage> {
   }
 
   @override
-    void initState() {
+  void initState() {
     super.initState();
     loadFilms();
   }
@@ -63,7 +63,8 @@ class _HistorypageState extends State<HistoryPage> {
         elevation: 0,
         title: Text(
           'Riwayat',
-          style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -110,83 +111,88 @@ class _HistorypageState extends State<HistoryPage> {
             const SizedBox(height: 10),
             Expanded(
               child: (isLoaded && films != null)
-                ? ListView.builder(
-                itemCount: films!.length,
-                itemBuilder: (context, index) {
-                  final film = films![index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(film: film, displayedFilms: displayedFilms!),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15), // Set the border radius to 15
-                              child: Image.network(
-                                film.poster,
-                                width: 70,
-                                height: 100,
-                                fit: BoxFit.cover,
+                  ? ListView.builder(
+                      itemCount: films!.length,
+                      itemBuilder: (context, index) {
+                        final film = films![index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                    film: film,
+                                    displayedFilms: displayedFilms!),
                               ),
-                            ),
-                            const SizedBox(width: 20),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            );
+                          },
+                          child: Card(
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    film.judul,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        15), // Set the border radius to 15
+                                    child: Image.network(
+                                      film.poster,
+                                      width: 70,
+                                      height: 100,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${film.tahunRilis}  ·  ${film.durasi}  ·  ',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.yellow, // Yellow star icon
-                                        size: 16,
-                                      ),
-                                      Text(
-                                        film.rateImdb,
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    film.deskripsi,
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.grey),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          film.judul,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '${film.tahunRilis}  ·  ${film.durasi}  ·  ',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors
+                                                  .yellow, // Yellow star icon
+                                              size: 16,
+                                            ),
+                                            Text(
+                                              film.rateImdb,
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          film.deskripsi,
+                                          style: const TextStyle(
+                                              fontSize: 12, color: Colors.grey),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              )
-               : Center(child: CircularProgressIndicator()),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(child: CircularProgressIndicator()),
             ),
           ],
         ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../components/filter_jenis.dart';
+import '../data/models/film.dart';
+import '../data/service/film_service.dart';
 import '../utils/Colors.dart';
 import 'CameraPage.dart';
 import 'LoginPage.dart';
@@ -51,7 +54,8 @@ class _HomePageState extends State<HomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => DetailPage(film: film, displayedFilms: displayedFilms!),
+            builder: (_) =>
+                DetailPage(film: film, displayedFilms: displayedFilms!),
           ),
         );
       },
@@ -141,21 +145,22 @@ class _HomePageState extends State<HomePage> {
 
               // Grid film
               isLoaded && displayedFilms != null
-              ? GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.53,
-                    mainAxisSpacing: 0.5,
-                    crossAxisSpacing: 18,
-                  ),
-                  itemCount: displayedFilms!.length,
-                  itemBuilder: (context, index) {
-                    return _buildMovieCard(displayedFilms![index]);
-                  },
-                )
-              : const Center(child: CircularProgressIndicator()),
+                  ? GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.53,
+                        mainAxisSpacing: 0.5,
+                        crossAxisSpacing: 18,
+                      ),
+                      itemCount: displayedFilms!.length,
+                      itemBuilder: (context, index) {
+                        return _buildMovieCard(displayedFilms![index]);
+                      },
+                    )
+                  : const Center(child: CircularProgressIndicator()),
             ],
           ),
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projek/components/navbar.dart';
+import '../components/navbar.dart';
 
 class FavoritPage extends StatefulWidget {
   const FavoritPage({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class FavoritPage extends StatefulWidget {
 }
 
 class _FavoritPageState extends State<FavoritPage> {
-    int currentPageIndex = 1;
+  int currentPageIndex = 1;
 
   @override
   Widget build(BuildContext context) {

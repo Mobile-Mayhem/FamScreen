@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/HomePage.dart';
-import 'package:projek/pages/FavoritPage.dart';
-import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/pages/HistoryPage.dart';
-import 'package:projek/pages/ProfilPage.dart';
+import '../pages/HomePage.dart';
+import '../pages/FavoritPage.dart';
+import '../pages/SearchScreen.dart';
+import '../pages/HistoryPage.dart';
+import '../pages/ProfilPage.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/ProfilPage.dart';
-import 'package:projek/utils/Colors.dart';
-import 'package:projek/components/navbar.dart';
+import 'ProfilPage.dart';
+import '../utils/Colors.dart';
+import '../components/navbar.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -12,12 +12,15 @@ class EditProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<EditProfilePage> {
   int currentPageIndex = 4;
-  
+
   // Controllers for the text fields
-  TextEditingController nameController = TextEditingController(text: 'Melissa Peters');
-  TextEditingController emailController = TextEditingController(text: 'melpeters@gmail.com');
-  TextEditingController passwordController = TextEditingController(text: '******');
-  
+  TextEditingController nameController =
+      TextEditingController(text: 'Melissa Peters');
+  TextEditingController emailController =
+      TextEditingController(text: 'melpeters@gmail.com');
+  TextEditingController passwordController =
+      TextEditingController(text: '******');
+
   // For password visibility
   bool _isPasswordVisible = false;
 
@@ -33,9 +36,9 @@ class _ProfilePageState extends State<EditProfilePage> {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('Edit Profil', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+        title: const Text('Edit Profil',
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
       ),
-      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -49,7 +52,6 @@ class _ProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 50),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             TextField(
@@ -58,7 +60,8 @@ class _ProfilePageState extends State<EditProfilePage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 hintText: 'Nama',
               ),
             ),
@@ -70,24 +73,29 @@ class _ProfilePageState extends State<EditProfilePage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 hintText: 'Email',
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Password', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Password',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             TextField(
               controller: passwordController,
-              obscureText: !_isPasswordVisible,  // Control password visibility
+              obscureText: !_isPasswordVisible, // Control password visibility
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 hintText: 'Password',
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                     color: Colors.grey,
                   ),
                   onPressed: () {
@@ -98,7 +106,6 @@ class _ProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-
             const SizedBox(height: 50),
             InkWell(
               onTap: () {
@@ -109,7 +116,8 @@ class _ProfilePageState extends State<EditProfilePage> {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: CustomColor.primary,
@@ -117,7 +125,8 @@ class _ProfilePageState extends State<EditProfilePage> {
                 alignment: Alignment.center,
                 child: const Text(
                   'Simpan Perubahan',
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -127,15 +136,17 @@ class _ProfilePageState extends State<EditProfilePage> {
                 Navigator.pop(context);
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey[300], 
+                  color: Colors.grey[300],
                 ),
                 alignment: Alignment.center,
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
             )

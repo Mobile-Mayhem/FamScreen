@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/CameraPage.dart';
-import 'package:projek/pages/LoginPage.dart';
-import 'package:projek/pages/DetailPage.dart';
-import 'package:projek/pages/SearchScreen.dart';
-import 'package:projek/pages/FavoritPage.dart';
+import 'CameraPage.dart';
+import 'LoginPage.dart';
+import 'DetailPage.dart';
+import 'SearchScreen.dart';
+import 'FavoritPage.dart';
 
 class DebugTest extends StatefulWidget {
   const DebugTest({super.key});

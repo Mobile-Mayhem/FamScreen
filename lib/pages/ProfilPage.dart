@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projek/pages/EditProfilePage.dart';
-import 'package:projek/utils/Colors.dart';
-import 'package:projek/components/navbar.dart';
+import 'EditProfilePage.dart';
+import '../utils/Colors.dart';
+import '../components/navbar.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int currentPageIndex = 4;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +25,8 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('Profil', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: const Text('Profil',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: Padding(
@@ -74,7 +75,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Password', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Password',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               decoration: BoxDecoration(
@@ -98,7 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: CustomColor.primary,
@@ -107,7 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: const Text(
                   'Edit Profil',
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
