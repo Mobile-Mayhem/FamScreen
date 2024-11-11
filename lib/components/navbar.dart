@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:projek/pages/HomePage.dart';
+import 'package:projek/pages/FavoritPage.dart';
+import 'package:projek/pages/SearchScreen.dart';
+import 'package:projek/pages/HistoryPage.dart';
+import 'package:projek/pages/ProfilPage.dart';
 
-class CustomNavigationBar extends StatelessWidget {
+class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onDestinationSelected;
 
@@ -11,11 +16,35 @@ class CustomNavigationBar extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CustomNavigationBarState createState() => _CustomNavigationBarState();
+}
+
+class _CustomNavigationBarState extends State<CustomNavigationBar> {
+  final List<Widget> _pages = [
+    HomePage(),
+    FavoritPage(),
+    SearchScreen(),
+    HistoryPage(),
+    ProfilePage(),
+  ];
+
+  // Fungsi untuk menangani perubahan halaman
+  void _navigateToPage(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _pages[index]),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NavigationBar(
       backgroundColor: Colors.white,
-      onDestinationSelected: onDestinationSelected,
-      selectedIndex: currentIndex,
+      onDestinationSelected: (index) {
+        _navigateToPage(index); // Memanggil fungsi navigasi
+        widget.onDestinationSelected(index);
+      },
+      selectedIndex: widget.currentIndex,
       destinations: <Widget>[
         NavigationDestination(
           icon: Image.asset(
