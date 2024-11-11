@@ -1,3 +1,4 @@
+import 'package:famscreen/pages/MlTestPage.dart';
 import 'package:flutter/material.dart';
 import 'CameraPage.dart';
 import 'LoginPage.dart';
@@ -50,14 +51,14 @@ class _DebugTest extends State<DebugTest> {
                     },
                     child: const Text('Open Login Page'),
                   ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Navigator.of(context).push(
-                  //       MaterialPageRoute(builder: (_) => const DetailPage()),
-                  //     );
-                  //   },
-                  //   child: const Text('Open Detail Page'),
-                  // ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const MlTestPage()),
+                      );
+                    },
+                    child: const Text('Open ML'),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
