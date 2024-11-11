@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:projek/data/models/film.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({Key? key}) : super(key: key);
+  final Film film;
+  final List<Film> displayedFilms;
+
+  const DetailPage({Key? key, required this.film, required this.displayedFilms}) : super(key: key);
+
+  Widget _buildMovieCard(Film film) {
+    return Column(
+      children: [
+        Image.network(
+          film.poster,
+          height: 150,
+          fit: BoxFit.cover,
+        ),
+        const SizedBox(height: 5),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,13 +26,11 @@ class DetailPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.asset(
-            'assets/images/venom.jpeg',
-            //height: 300,
+          Image.network(
+            film.poster,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.only(top: 210),
@@ -27,7 +42,6 @@ class DetailPage extends StatelessWidget {
               ),
             ),
           ),
-
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +53,7 @@ class DetailPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.3),
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(15)
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -64,7 +78,6 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
-          
           Container(
             margin: const EdgeInsets.only(top: 230, left: 25, right: 25),
             child: Column(
@@ -72,86 +85,102 @@ class DetailPage extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text('2024', style: TextStyle(fontSize: 16)),
+                    Text(film.tahunRilis, style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4), 
-                      color: const Color (0xffF5C518),
+                        borderRadius: BorderRadius.circular(4),
+                        color: const Color(0xffF5C518),
                       ),
                       child: const Text('IMDb', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(width: 8),
-                    const Text('8.0  |', style: TextStyle(fontSize: 16)),
+                    Text('${film.rateImdb}  |', style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    const Text('1h 50m', style: TextStyle(fontSize: 16)),
+                    Text('${film.durasi} menit', style: const TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Venom 3 (Venom: The Last Dance)',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+                Text(
+                  film.judul,
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  '"Venom 3" adalah film superhero Amerika tentang Venom, sekuel dari "Venom" dan "Venom: Let There Be Carnage," diproduksi oleh Columbia Pictures dan Marvel, didistribusikan oleh Sony Pictures.',
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                Text(
+                  film.deskripsi,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 15),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Animasi', style: TextStyle(fontSize: 14)),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Komedi', style: TextStyle(fontSize: 14)),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Drama', style: TextStyle(fontSize: 14)),
-                    )
-                  ]
-                ),
+                // objk kategori genre belom ada, jan lupa
+                // Row(
+                //   children: [
+                //     Container(
+                //       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(10), 
+                //         color: const Color.fromARGB(255, 228, 227, 227),
+                //       ),
+                //       child: const Text('Animasi', style: TextStyle(fontSize: 14)),
+                //     ),
+                //     const SizedBox(width: 8),
+                //     Container(
+                //       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(10), 
+                //         color: const Color.fromARGB(255, 228, 227, 227),
+                //       ),
+                //       child: const Text('Komedi', style: TextStyle(fontSize: 14)),
+                //     ),
+                //     const SizedBox(width: 8),
+                //     Container(
+                //       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(10), 
+                //         color: const Color.fromARGB(255, 228, 227, 227),
+                //       ),
+                //       child: const Text('Drama', style: TextStyle(fontSize: 14)),
+                //     )
+                //   ]
+                // ),
                 const SizedBox(height: 30),
                 const Text(
-                  'Lihat Sekarang',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'LIHAT SEKARANG',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 14),
-                Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child:  Image.asset(
-                          'assets/images/netflix.png',
-                          width: 50,
-                          height: 50,
-                        )
-                      ) 
-                    ],
+                // Row(
+                //   children: [
+                //     ClipRRect(
+                //       borderRadius: BorderRadius.circular(10),
+                //       child: Image.asset(
+                //         'assets/images/netflix.png',
+                //         width: 50,
+                //         height: 50,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                const SizedBox(height: 30),
+                const Text(
+                  'Rekomendasi Lainnya',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                 const SizedBox(height: 1),
+                GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.1,
+                    mainAxisSpacing: 0.5,
+                    crossAxisSpacing: 18,
                   ),
-                  const SizedBox(height: 30),
-                  const Text(
-                    'Rekomendasi Lainnya',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  itemCount: displayedFilms.length,
+                  itemBuilder: (context, index) {
+                    return _buildMovieCard(displayedFilms[index]);
+                  },
+                ),
               ],
             ),
           )

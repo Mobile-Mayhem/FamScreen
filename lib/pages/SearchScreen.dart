@@ -1,37 +1,21 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SearchScreen(),
-    );
-  }
-}
+import 'package:projek/components/navbar.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  int currentPageIndex = 2;
+
   List<String> previousSearches = [
     'Venom 3',
     'Do You See What I See',
     'The Dark Knight'
   ];
-
-  int _currentIndex = 2; // Set 'search' as the default selected index
-
-  void _removeSearchItem(int index) {
-    setState(() {
-      previousSearches.removeAt(index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +55,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   return ListTile(
                     leading: Icon(Icons.history),
                     title: Text(previousSearches[index]),
-                    trailing: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _removeSearchItem(index);
-                      },
-                    ),
+                    // trailing: IconButton(
+                    //   icon: Icon(Icons.close),
+                    //   onPressed: () {
+                    //     _removeSearchItem(index);
+                    //   },
+                    // ),
                   );
                 },
               ),
@@ -84,39 +68,13 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.amber,
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 0, // Hapus teks tambahan yang bisa memengaruhi tampilan
-        unselectedFontSize: 0,
-        onTap: (index) {
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: currentPageIndex,
+        onDestinationSelected: (int index) {
           setState(() {
-            _currentIndex = index; // Ubah indeks saat ini
+            currentPageIndex = index;
           });
         },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
-        ],
       ),
     );
   }

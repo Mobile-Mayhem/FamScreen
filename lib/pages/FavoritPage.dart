@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:projek/components/navbar.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritPage extends StatefulWidget {
+  const FavoritPage({Key? key}) : super(key: key);
+
+  @override
+  State<FavoritPage> createState() => _FavoritPageState();
+}
+
+class _FavoritPageState extends State<FavoritPage> {
+    int currentPageIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,16 +77,13 @@ class FavoritePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.amber,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.tv), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: currentPageIndex,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
       ),
     );
   }
