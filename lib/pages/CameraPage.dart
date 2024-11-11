@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import '../utils/Colors.dart';
 
@@ -20,6 +21,30 @@ class _CameraPageState extends State<CameraPage> {
   void initState() {
     super.initState();
     _initializeCamera();
+  }
+
+  Future<void> sendImage() async {
+    if (_capturedImage == null) {
+      print('No image to send.');
+      return;
+    }
+
+    final url = Uri.parse('http://192.168.64.54:8004/upload');
+
+    try {
+      var request = http.MultipartRequest('POST', url);
+      request.files.add(
+          await http.MultipartFile.fromPath('image', _capturedImage!.path));
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully.');
+      } else {
+        print('Image upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
   }
 
   Future<void> _initializeCamera() async {
@@ -64,6 +89,9 @@ class _CameraPageState extends State<CameraPage> {
           duration: const Duration(seconds: 2),
         ),
       );
+
+      // Send the image to the server
+      await sendImage();
     } catch (e) {
       print('Error taking picture: $e');
     }
