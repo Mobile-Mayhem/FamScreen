@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:famscreen/pages/debug_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'pages/HomePage.dart';
 import 'utils/theme.dart';
 
 late List<CameraDescription> _cameras;

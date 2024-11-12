@@ -1,8 +1,8 @@
 import 'package:famscreen/pages/MlTestPage.dart';
+import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'CameraPage.dart';
 import 'LoginPage.dart';
-import 'DetailPage.dart';
 import 'SearchScreen.dart';
 import 'FavoritPage.dart';
 
@@ -29,10 +29,9 @@ class _DebugTest extends State<DebugTest> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text("This is the screen after Introduction"),
-                  const SizedBox(height: 16.0),
                   ElevatedButton(
-                    onPressed: () => _onBackToIntro(context),
+                    onPressed: () => MaterialPageRoute(
+                        builder: (_) => const OnBoardingPage()),
                     child: const Text('Back to Introduction'),
                   ),
                   ElevatedButton(
