@@ -106,7 +106,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           ),
           label: "",
           selectedIcon: Image.asset(
-            'assets/icons/profile.png',
+            'assets/icons/profile_selected.png',
             width: 30,
             height: 30,
           ),

@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           context,
           MaterialPageRoute(
             builder: (_) =>
-                DetailPage(film: film, displayedFilms: displayedFilms!),
+                DetailPage(film: film),
           ),
         );
       },
