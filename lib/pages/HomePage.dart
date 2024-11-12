@@ -2,13 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/filter_jenis.dart';
 import '../data/models/film.dart';
 import '../data/service/film_service.dart';
-import '../utils/Colors.dart';
-import 'CameraPage.dart';
-import 'LoginPage.dart';
 import 'DetailPage.dart';
-import 'MlTestPage.dart';
-import 'SearchScreen.dart';
-import 'OnBoardingPage.dart';
 // import 'FavoritePage.dart';
 import '../components/navbar.dart'; //coba navbar
 
