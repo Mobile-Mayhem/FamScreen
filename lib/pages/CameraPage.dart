@@ -52,7 +52,7 @@ class _CameraPageState extends State<CameraPage> {
       final cameras = await availableCameras();
       if (cameras.isNotEmpty) {
         controller = CameraController(
-          cameras[0],
+          cameras[1],
           ResolutionPreset.max,
         );
 
@@ -113,33 +113,41 @@ class _CameraPageState extends State<CameraPage> {
       // appBar: AppBar(title: const Text('Camera Page')),
       body: Column(
         children: [
-          if (_capturedImage != null)
-            Expanded(
-              child: Image.file(
-                File(_capturedImage!.path),
-                fit: BoxFit.cover,
-              ),
-            )
-          else
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: CameraPreview(controller),
+          const SizedBox(height: 70),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text('Verifikasi Diri',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: CustomColor.black)),
+            const SizedBox(height: 30),
+            AspectRatio(
+              aspectRatio: controller.value.aspectRatio,
+              child: CameraPreview(controller),
+            ),
+            const SizedBox(height: 40),
+            Text(
+              'Tetaplah berada di posisi ini, harap menunggu pengambilan gambar',
+              style: TextStyle(fontSize: 16, color: CustomColor.black),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 100),
+            ElevatedButton(
+              onPressed: () {
+                _takePicture();
+                print('Gambar diambil');
+              },
+              child: const Text('Login'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                minimumSize: const Size(double.infinity, 50),
               ),
             ),
-          // const SizedBox(height: 100),
+          ])
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          _takePicture();
-        },
-        icon: const Icon(Icons.camera, color: Colors.white),
-        label: const Text('Ambil Gambar',
-            style: TextStyle(color: CustomColor.white)),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
