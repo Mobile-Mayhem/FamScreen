@@ -105,7 +105,7 @@ class _CameraPageState extends State<CameraPage> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 70),
+            const SizedBox(height: 100),
             Column(children: [
               Text('Verifikasi Diri',
                   style: TextStyle(
@@ -137,7 +137,7 @@ class _CameraPageState extends State<CameraPage> {
                 style: TextStyle(fontSize: 16, color: CustomColor.black),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 280),
+              const SizedBox(height: 255),
               ElevatedButton(
                 onPressed: () {
                   _takePicture();
