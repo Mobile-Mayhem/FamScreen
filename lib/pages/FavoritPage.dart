@@ -1,3 +1,6 @@
+import 'package:famscreen/components/filter_jenis.dart';
+import 'package:famscreen/data/models/film.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import '../components/navbar.dart';
 
@@ -11,6 +14,18 @@ class FavoritPage extends StatefulWidget {
 class _FavoritPageState extends State<FavoritPage> {
   int currentPageIndex = 1;
 
+  List<Film>? films; 
+  List<Film> favoriteFilms = []; // List untuk menyimpan film favorit
+  String selectedCategory = 'All';
+  List<Film>? displayedFilms;
+  bool isLoaded = false;
+
+  void updateCategory(List<Film> filteredFilms) {
+    setState(() {
+      displayedFilms = filteredFilms;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +34,18 @@ class _FavoritPageState extends State<FavoritPage> {
         elevation: 0,
         title: Text(
           'Favorit',
-          style: TextStyle(color: Colors.black, fontSize: 20),
+          style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (route) => route.isFirst,
+            );
+          },
         ),
       ),
       body: Padding(
@@ -37,41 +58,54 @@ class _FavoritPageState extends State<FavoritPage> {
                 hintText: 'Cari favorit',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                filled: true,
-                fillColor: Colors.grey[200],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 20),
+            // filter jenis
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                FilterChip(label: Text('All'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Movies'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Series'), onSelected: (_) {}),
+                CategoryRow(
+                  allFilms: films ?? [], 
+                  selectedCategory: selectedCategory,
+                  onCategorySelected: (String category) {
+                    setState(() {
+                      selectedCategory = category;
+                    });
+                  },
+                  onFilteredFilms: updateCategory,
+                ),
               ],
             ),
             SizedBox(height: 16),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 0.6,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: [
-                  FavoriteItem(
-                      title: 'The Dark Knight',
-                      image: 'assets/dark_knight.jpg'),
-                  FavoriteItem(
-                      title: 'The Lord of ...',
-                      image: 'assets/lord_of_the_rings.jpg'),
-                  FavoriteItem(
-                      title: 'Inception', image: 'assets/inception.jpg'),
-                ],
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 0.6,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: favoriteFilms.length, 
+                itemBuilder: (context, index) {
+                  Film film = favoriteFilms[index]; 
+                  return FavoriteItem(
+                    title: film.judul,
+                    image: film.poster,
+                    isFavorite: true,
+                    onFavoriteChanged: () {
+                      setState(() {
+                        if (favoriteFilms.contains(film)) {
+                          favoriteFilms.remove(film);
+                        } else {
+                          favoriteFilms.add(film);
+                        }
+                      });
+                    },
+                  );
+                },
               ),
             ),
           ],
@@ -92,8 +126,15 @@ class _FavoritPageState extends State<FavoritPage> {
 class FavoriteItem extends StatelessWidget {
   final String title;
   final String image;
+  final bool isFavorite; // Menandakan apakah film ini favorit
+  final VoidCallback onFavoriteChanged; // Callback ketika status favorit berubah
 
-  const FavoriteItem({required this.title, required this.image});
+  const FavoriteItem({
+    required this.title,
+    required this.image,
+    required this.isFavorite,
+    required this.onFavoriteChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +148,7 @@ class FavoriteItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
-                  image: AssetImage(image),
+                  image: NetworkImage(image), 
                   fit: BoxFit.cover,
                 ),
               ),
@@ -115,10 +156,13 @@ class FavoriteItem extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: Icon(
-                Icons.favorite,
-                color: Colors.amber,
-                size: 20,
+              child: IconButton(
+                icon: Icon(
+                  Icons.favorite,
+                  color: isFavorite ? Colors.red : Colors.grey, // Mengubah warna ikon berdasarkan status favorit
+                  size: 20,
+                ),
+                onPressed: onFavoriteChanged, // Panggil callback untuk mengubah status favorit
               ),
             ),
           ],
