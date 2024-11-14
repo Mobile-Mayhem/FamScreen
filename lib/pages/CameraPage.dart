@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -105,7 +106,7 @@ class _CameraPageState extends State<CameraPage> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 70),
+            const SizedBox(height: 100),
             Column(children: [
               Text('Verifikasi Diri',
                   style: TextStyle(
@@ -137,11 +138,14 @@ class _CameraPageState extends State<CameraPage> {
                 style: TextStyle(fontSize: 16, color: CustomColor.black),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 280),
+              const SizedBox(height: 255),
               ElevatedButton(
                 onPressed: () {
                   _takePicture();
                   print('Gambar diambil dan dikirim');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
                 },
                 child: const Text('Ambil Gambar'),
                 style: ElevatedButton.styleFrom(
