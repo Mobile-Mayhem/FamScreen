@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -142,6 +143,9 @@ class _CameraPageState extends State<CameraPage> {
                 onPressed: () {
                   _takePicture();
                   print('Gambar diambil dan dikirim');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
                 },
                 child: const Text('Ambil Gambar'),
                 style: ElevatedButton.styleFrom(
