@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../utils/Colors.dart';
@@ -23,13 +22,13 @@ class _CameraPageState extends State<CameraPage> {
     _initializeCamera();
   }
 
-  Future<void> sendImage() async {
+  Future<void> _sendImage() async {
     if (_capturedImage == null) {
       print('No image to send.');
       return;
     }
 
-    final url = Uri.parse('http://192.168.64.54:8004/upload');
+    final url = Uri.parse('http://128.199.78.57:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -91,7 +90,7 @@ class _CameraPageState extends State<CameraPage> {
       );
 
       // Send the image to the server
-      await sendImage();
+      await _sendImage();
     } catch (e) {
       print('Error taking picture: $e');
     }
@@ -135,7 +134,7 @@ class _CameraPageState extends State<CameraPage> {
             ElevatedButton(
               onPressed: () {
                 _takePicture();
-                print('Gambar diambil');
+                print('Gambar diambil dan dikirim');
               },
               child: const Text('Login'),
               style: ElevatedButton.styleFrom(
