@@ -140,9 +140,10 @@ class _CameraPageState extends State<CameraPage> {
               ),
               const SizedBox(height: 255),
               ElevatedButton(
-                onPressed: () {
-                  _takePicture();
+                onPressed: () async {
+                  await _takePicture();
                   print('Gambar diambil dan dikirim');
+                  // controller.dispose();
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const HomePage()),
                   );
