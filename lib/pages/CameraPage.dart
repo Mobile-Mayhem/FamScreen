@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../utils/Colors.dart';
@@ -23,13 +23,13 @@ class _CameraPageState extends State<CameraPage> {
     _initializeCamera();
   }
 
-  Future<void> sendImage() async {
+  Future<void> _sendImage() async {
     if (_capturedImage == null) {
       print('No image to send.');
       return;
     }
 
-    final url = Uri.parse('http://192.168.64.54:8004/upload');
+    final url = Uri.parse('http://128.199.78.57:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -83,15 +83,8 @@ class _CameraPageState extends State<CameraPage> {
         _capturedImage = image;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Picture saved to ${image.path}'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-
       // Send the image to the server
-      await sendImage();
+      await _sendImage();
     } catch (e) {
       print('Error taking picture: $e');
     }
@@ -110,43 +103,61 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      // appBar: AppBar(title: const Text('Camera Page')),
-      body: Column(
-        children: [
-          const SizedBox(height: 70),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Verifikasi Diri',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: CustomColor.black)),
-            const SizedBox(height: 30),
-            AspectRatio(
-              aspectRatio: controller.value.aspectRatio,
-              child: CameraPreview(controller),
-            ),
-            const SizedBox(height: 40),
-            Text(
-              'Tetaplah berada di posisi ini, harap menunggu pengambilan gambar',
-              style: TextStyle(fontSize: 16, color: CustomColor.black),
-              textAlign: TextAlign.center,
-            ),
+      body: Center(
+        child: Column(
+          children: [
             const SizedBox(height: 100),
-            ElevatedButton(
-              onPressed: () {
-                _takePicture();
-                print('Gambar diambil');
-              },
-              child: const Text('Login'),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                minimumSize: const Size(double.infinity, 50),
+            Column(children: [
+              Text('Verifikasi Diri',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: CustomColor.black)),
+              const SizedBox(height: 30),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 278,
+                    height: 278,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: CameraPreview(controller),
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/camera_frame.png',
+                    width: 255,
+                    height: 255,
+                  ),
+                ],
               ),
-            ),
-          ])
-        ],
+              const SizedBox(height: 40),
+              Text(
+                'Tetaplah berada di posisi ini, harap menunggu pengambilan gambar',
+                style: TextStyle(fontSize: 16, color: CustomColor.black),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 255),
+              ElevatedButton(
+                onPressed: () {
+                  _takePicture();
+                  print('Gambar diambil dan dikirim');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
+                },
+                child: const Text('Ambil Gambar'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  minimumSize: const Size(309, 50),
+                ),
+              ),
+            ])
+          ],
+        ),
       ),
     );
   }

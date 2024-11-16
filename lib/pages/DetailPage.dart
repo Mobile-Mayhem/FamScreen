@@ -17,7 +17,7 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   bool isFavorite = false;
   List<Film> favoriteFilms = [];
-  List<Film> displayedFilms = []; 
+  List<Film> displayedFilms = [];
   List<Film>? films;
   bool isLoaded = false;
 
@@ -37,13 +37,12 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void _launchStreamingUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
-
 
   Widget _buildMovieCard(Film film) {
     return GestureDetector(
@@ -120,12 +119,14 @@ class _DetailPageState extends State<DetailPage> {
                     child: Padding(
                       padding: EdgeInsets.all(8),
                       child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back_ios_new_outlined,
+                            color: Colors.white),
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),
-                            (route) => false, //  menghapus semua halaman di stack
+                            (route) =>
+                                false, //  menghapus semua halaman di stack
                           );
                         },
                       ),
@@ -163,27 +164,33 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 Row(
                   children: [
-                    Text(widget.film.tahunRilis, style: const TextStyle(fontSize: 16)),
+                    Text(widget.film.tahunRilis,
+                        style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
                         color: const Color(0xffF5C518),
                       ),
                       child: const Text('IMDb',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(width: 8),
-                    Text('${widget.film.rateImdb}  |', style: const TextStyle(fontSize: 16)),
+                    Text('${widget.film.rateImdb}  |',
+                        style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text('${widget.film.durasi} menit', style: const TextStyle(fontSize: 16)),
+                    Text('${widget.film.durasi} menit',
+                        style: const TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
                   widget.film.judul,
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+                  style: const TextStyle(
+                      fontSize: 26, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
                 ExpandableText(
@@ -194,7 +201,8 @@ class _DetailPageState extends State<DetailPage> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: const Color.fromARGB(255, 228, 227, 227),
@@ -203,12 +211,14 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                     const SizedBox(width: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 7, vertical: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: const Color.fromARGB(255, 228, 227, 227),
                       ),
-                      child: const Text('Belum', style: TextStyle(fontSize: 14)),
+                      child:
+                          const Text('Belum', style: TextStyle(fontSize: 14)),
                     ),
                   ],
                 ),
@@ -222,7 +232,8 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _launchStreamingUrl(widget.film.linkStreaming); // URL dari model Film
+                        _launchStreamingUrl(
+                            widget.film.linkStreaming); // URL dari model Film
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
@@ -244,13 +255,14 @@ class _DetailPageState extends State<DetailPage> {
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      childAspectRatio: 0.6, 
+                      childAspectRatio: 0.6,
                       mainAxisSpacing: 0.8,
                       crossAxisSpacing: 18,
                     ),
-                    itemCount: displayedFilms.length, 
+                    itemCount: displayedFilms.length,
                     itemBuilder: (context, index) {
                       return _buildMovieCard(displayedFilms[index]);
                     },
