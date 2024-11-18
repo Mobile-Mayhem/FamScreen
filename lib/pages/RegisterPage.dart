@@ -1,3 +1,4 @@
+import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'CameraPage.dart';
 import 'LoginPage.dart';
@@ -5,7 +6,7 @@ import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  RegisterPage({super.key});
 
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -15,6 +16,15 @@ class RegisterPage extends StatelessWidget {
         duration: const Duration(milliseconds: 400),
       ),
     );
+  }
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override
@@ -59,6 +69,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -75,6 +86,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: passwordController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_outline, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -96,10 +108,15 @@ class RegisterPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const CameraPage()),
+              onPressed: () async {
+                await AuthService().signup(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  context: context,
                 );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (_) => const CameraPage()),
+                // );
                 print('Daftar');
               },
               child: const Text('Daftar'),
@@ -146,7 +163,7 @@ class RegisterPage extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const LoginPage()),
+                      MaterialPageRoute(builder: (_) => LoginPage()),
                     );
                     print('Masuk');
                   },

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "120163502933",
+    "project_id": "famscreen-f48ae",
+    "storage_bucket": "famscreen-f48ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120163502933:android:69450482aeec7a6e417ddc",
+        "android_client_info": {
+          "package_name": "com.example.mobile_mayhem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ThXyn6yVkbGmN-6-p1IZtxwgCkbSErQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120163502933:android:868a9df18720e756417ddc",
+        "android_client_info": {
+          "package_name": "com.mobile_mayhem.famscreen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ThXyn6yVkbGmN-6-p1IZtxwgCkbSErQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

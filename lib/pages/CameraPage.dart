@@ -29,7 +29,7 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
-    final url = Uri.parse('http://128.199.78.57:8004/upload');
+    final url = Uri.parse('http://192.168.64.7:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -39,11 +39,15 @@ class _CameraPageState extends State<CameraPage> {
 
       if (response.statusCode == 200) {
         print('Image uploaded successfully.');
+        await _showAlertDialog('Success', 'Gambar berhasil dikirim.');
       } else {
         print('Image upload failed with status: ${response.statusCode}');
+        await _showAlertDialog(
+            'Error', 'Image upload failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print('Error uploading image: $e');
+      await _showAlertDialog('Error', 'Error uploading image: $e');
     }
   }
 
@@ -72,22 +76,56 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _takePicture() async {
-    if (!controller.value.isInitialized) {
-      print('Error: Camera is not initialized.');
-      return;
-    }
-
     try {
-      final image = await controller.takePicture();
-      setState(() {
-        _capturedImage = image;
-      });
+      // Periksa apakah controller siap untuk mengambil gambar
+      if (!controller.value.isInitialized) {
+        print('Error: Camera is not initialized.');
+        return;
+      }
 
-      // Send the image to the server
-      await _sendImage();
+      // Ambil gambar hanya jika kamera tidak sedang mengambil gambar
+      if (!controller.value.isTakingPicture) {
+        final image = await controller.takePicture();
+        setState(() {
+          // Perbarui _capturedImage dengan gambar yang baru diambil
+          _capturedImage = image;
+        });
+
+        // Kirim gambar ke server
+        await _sendImage();
+      }
     } catch (e) {
       print('Error taking picture: $e');
     }
+  }
+
+  Future<void> _showAlertDialog(String title, String content) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button to dismiss the dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const HomePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -142,6 +180,7 @@ class _CameraPageState extends State<CameraPage> {
               ElevatedButton(
                 onPressed: () {
                   _takePicture();
+                  dispose();
                   print('Gambar diambil dan dikirim');
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const HomePage()),

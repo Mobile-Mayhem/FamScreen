@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'EditProfilePage.dart';
 import '../utils/Colors.dart';
@@ -68,8 +69,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.transparent,
               ),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'melpeters@gmail.com',
+              child: Text(
+                FirebaseAuth.instance.currentUser!.email!.toString(),
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black54),
               ),

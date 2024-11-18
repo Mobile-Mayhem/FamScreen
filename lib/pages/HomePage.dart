@@ -64,6 +64,18 @@ class _HomePageState extends State<HomePage> {
       ),
       const SizedBox(height: 8),
       Row(
+  Widget _buildMovieCard(Film film) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DetailPage(film: film),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 16,

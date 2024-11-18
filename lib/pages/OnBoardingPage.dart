@@ -15,7 +15,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const RegisterPage()),
+      MaterialPageRoute(builder: (_) => RegisterPage()),
     );
   }
 
@@ -85,7 +85,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const RegisterPage()),
+                  MaterialPageRoute(builder: (_) => RegisterPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
