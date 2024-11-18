@@ -86,13 +86,12 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().signup(
+                await AuthService().signin(
                   email: emailController.text,
                   password: passwordController.text,
+                  context: context,
                 );
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(builder: (_) => const CameraPage()),
-                // );
+
                 print('Loginn');
               },
               child: const Text('Login'),
@@ -139,7 +138,7 @@ class LoginPage extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const RegisterPage()),
+                      MaterialPageRoute(builder: (_) => RegisterPage()),
                     );
                     print('Daftar');
                   },

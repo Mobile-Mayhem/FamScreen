@@ -180,10 +180,11 @@ class _CameraPageState extends State<CameraPage> {
               ElevatedButton(
                 onPressed: () {
                   _takePicture();
+                  dispose();
                   print('Gambar diambil dan dikirim');
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (_) => const HomePage()),
-                  // );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
                 },
                 child: const Text('Ambil Gambar'),
                 style: ElevatedButton.styleFrom(
