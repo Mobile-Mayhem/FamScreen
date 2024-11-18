@@ -45,7 +45,7 @@ class _DebugTest extends State<DebugTest> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const LoginPage()),
+                        MaterialPageRoute(builder: (_) => LoginPage()),
                       );
                     },
                     child: const Text('Open Login Page'),
