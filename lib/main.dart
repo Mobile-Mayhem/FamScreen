@@ -3,12 +3,17 @@ import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'utils/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 late List<CameraDescription> _cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _cameras = await availableCameras();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
