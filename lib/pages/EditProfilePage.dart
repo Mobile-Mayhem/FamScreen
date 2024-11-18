@@ -37,9 +37,10 @@ class _ProfilePageState extends State<EditProfilePage> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text('Edit Profil',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 35),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             TextField(
               controller: nameController,
@@ -65,7 +66,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                 hintText: 'Nama',
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             const Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
             TextField(
               controller: emailController,
@@ -78,7 +79,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                 hintText: 'Email',
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             const Text('Password',
                 style: TextStyle(fontWeight: FontWeight.bold)),
             TextField(
@@ -130,7 +131,7 @@ class _ProfilePageState extends State<EditProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             InkWell(
               onTap: () {
                 Navigator.pop(context);

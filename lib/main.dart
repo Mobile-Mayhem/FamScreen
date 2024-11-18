@@ -1,4 +1,7 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/data/provider/favorite_provider.dart';
+import 'package:provider/provider.dart'; 
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,12 +14,24 @@ late List<CameraDescription> _cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Mendapatkan kamera
   _cameras = await availableCameras();
+
+  // Inisialisasi Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  // Jalankan aplikasi dengan ChangeNotifierProvider
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoriteFilmsProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -31,7 +46,8 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
-      home: const OnBoardingPage(),
+      //home: const OnBoardingPage(),
+      home: const HomePage(),
       // home: Text("Test"),
     );
   }
