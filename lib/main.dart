@@ -1,4 +1,7 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/data/provider/favorite_provider.dart';
+import 'package:provider/provider.dart'; 
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +12,12 @@ late List<CameraDescription> _cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _cameras = await availableCameras();
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => FavoriteFilmsProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +33,8 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
-      home: const OnBoardingPage(),
+      //home: const OnBoardingPage(),
+      home: const HomePage(),
       // home: Text("Test"),
     );
   }

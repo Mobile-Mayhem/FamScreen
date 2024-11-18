@@ -66,14 +66,14 @@ class _DebugTest extends State<DebugTest> {
                     },
                     child: const Text('Open Search Page'),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => FavoritPage()),
-                      );
-                    },
-                    child: const Text('Open Favorite Page'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(builder: (_) => FavoritPage()),
+                  //     );
+                  //   },
+                  //   child: const Text('Open Favorite Page'),
+                  // ),
                   // ElevatedButton(
                   //   onPressed: () {
                   //     Navigator.of(context).push(

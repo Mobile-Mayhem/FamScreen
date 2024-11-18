@@ -39,6 +39,8 @@ dependencies:
   sign_button: ^2.0.6
   video_player: ^2.9.2
   url_launcher: ^6.0.20
+  skeletonizer: ^1.4.2
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_lints: ^4.0.0
