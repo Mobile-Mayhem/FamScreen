@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'famscreen-f48ae',
     storageBucket: 'famscreen-f48ae.firebasestorage.app',
   );
+
 }
