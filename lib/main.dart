@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       debugShowCheckedModeBanner: false,
       theme: customTheme,
-      //home: const OnBoardingPage(),
-      home: const HomePage(),
+      home: const OnBoardingPage(),
+      //home: const HomePage(),
       // home: Text("Test"),
     );
   }
