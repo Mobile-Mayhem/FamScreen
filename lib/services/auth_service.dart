@@ -1,9 +1,11 @@
 import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/pages/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
+  // Sign Up
   Future<void> signup({
     required BuildContext context,
     required String email,
@@ -45,6 +47,7 @@ class AuthService {
     }
   }
 
+  // Sign In
   Future<void> signin({
     required BuildContext context,
     required String email,
@@ -83,6 +86,21 @@ class AuthService {
       );
     } catch (e) {
       print('Error signing up: $e');
+    }
+  }
+
+  // Sign Out
+  Future<void> signout(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+    } catch (e) {
+      print('Error signing out: $e');
     }
   }
 }
