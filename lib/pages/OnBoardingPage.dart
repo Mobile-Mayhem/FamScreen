@@ -40,7 +40,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       globalBackgroundColor: Colors.white,
       allowImplicitScrolling: true,
       autoScrollDuration: 3000,
-      infiniteAutoScroll: true,
+      // infiniteAutoScroll: true,
       globalHeader: const Align(
         alignment: Alignment.topRight,
         child: SafeArea(
@@ -111,14 +111,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-      showSkipButton: true,
       skipOrBackFlex: 0,
       nextFlex: 0,
-      showBackButton: false,
+      showBackButton: true,
       back: const Icon(Icons.arrow_back, color: CustomColor.primary),
-      skip: const Text('Skip',
-          style: TextStyle(
-              fontWeight: FontWeight.w600, color: CustomColor.primary)),
       next: const Icon(
         Icons.arrow_forward,
         color: CustomColor.primary,
