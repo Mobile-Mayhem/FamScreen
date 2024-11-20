@@ -1,18 +1,11 @@
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'CameraPage.dart';
 import 'RegisterPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State <LoginPage> {
 
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -26,13 +19,11 @@ class _LoginPageState extends State <LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    super.dispose();
   }
 
   @override
@@ -77,20 +68,8 @@ class _LoginPageState extends State <LoginPage> {
             SizedBox(height: 15),
             TextField(
               controller: passwordController,
-              obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_outlined, color: CustomColor.gray),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),

@@ -1,18 +1,14 @@
-import 'package:famscreen/services/auth_service.dart';
+// import 'package:famscreen/services/auth_service.dart';
+import 'package:famscreen/pages/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'CameraPage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'LoginPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State <RegisterPage> {
 
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -26,13 +22,52 @@ class _RegisterPageState extends State <RegisterPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
+
+  Future<void> signup({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // Call the Firebase signup function
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      String message = '';
+      if (e.code == 'weak-password') {
+        message = 'Password terlalu lemah';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'Email sudah digunakan';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error signing up: $e');
+    }
+  }
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    super.dispose();
   }
 
   @override
@@ -95,20 +130,8 @@ class _RegisterPageState extends State <RegisterPage> {
             SizedBox(height: 15),
             TextField(
               controller: passwordController,
-              obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_outline, color: CustomColor.gray),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
                 enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(color: CustomColor.primary),
                     borderRadius: BorderRadius.circular(10.0)),
@@ -129,7 +152,7 @@ class _RegisterPageState extends State <RegisterPage> {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().signup(
+                signup(
                   email: emailController.text,
                   password: passwordController.text,
                   context: context,
