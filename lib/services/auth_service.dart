@@ -103,4 +103,9 @@ class AuthService {
       print('Error signing out: $e');
     }
   }
+
+  // Get UID
+  Future<String?> getUID() async {
+    return FirebaseAuth.instance.currentUser?.uid;
+  }
 }
