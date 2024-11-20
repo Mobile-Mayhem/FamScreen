@@ -1,5 +1,7 @@
+import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'EditProfilePage.dart';
 import '../utils/Colors.dart';
 import '../components/navbar.dart';
@@ -13,6 +15,43 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   int currentPageIndex = 4;
+  final AuthService _authService = AuthService();
+
+  Future<void> _showLogoutConfirmation() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi Logout'),
+          content: const Text('Apakah Anda yakin ingin keluar?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tidak'),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(); 
+                await _authService.signout(context); 
+                Fluttertoast.showToast(
+                  msg: 'Anda telah keluar',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.green,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              },
+              child: const Text('Ya'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 45),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -59,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(color: Colors.black54),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             const Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -75,7 +114,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(color: Colors.black54),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             const Text('Password',
                 style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
@@ -92,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(color: Colors.black54),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 45),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -116,6 +155,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            Center(
+            child: InkWell(
+              onTap: () {
+                _showLogoutConfirmation(); 
+              },
+              child: const Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold, 
+                ),
+              ),
+            ),
+            )
           ],
         ),
       ),

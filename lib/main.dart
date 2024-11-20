@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      //home: const OnBoardingPage(),
-      home: const HomePage(),
+      home: const OnBoardingPage(),
+      //home: const HomePage(),
       // home: Text("Test"),
     );
   }
