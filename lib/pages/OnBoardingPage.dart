@@ -15,7 +15,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const RegisterPage()),
+      MaterialPageRoute(builder: (_) => RegisterPage()),
     );
   }
 
@@ -30,7 +30,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
     const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
-      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      bodyPadding: EdgeInsets.fromLTRB(16.0, 15.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
     );
@@ -40,7 +40,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       globalBackgroundColor: Colors.white,
       allowImplicitScrolling: true,
       autoScrollDuration: 3000,
-      infiniteAutoScroll: true,
+      // infiniteAutoScroll: true,
       globalHeader: const Align(
         alignment: Alignment.topRight,
         child: SafeArea(
@@ -85,7 +85,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const RegisterPage()),
+                  MaterialPageRoute(builder: (_) => RegisterPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -111,14 +111,10 @@ class OnBoardingPageState extends State<OnBoardingPage> {
       ],
       onDone: () => _onIntroEnd(context),
       onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-      showSkipButton: true,
       skipOrBackFlex: 0,
       nextFlex: 0,
-      showBackButton: false,
+      showBackButton: true,
       back: const Icon(Icons.arrow_back, color: CustomColor.primary),
-      skip: const Text('Skip',
-          style: TextStyle(
-              fontWeight: FontWeight.w600, color: CustomColor.primary)),
       next: const Icon(
         Icons.arrow_forward,
         color: CustomColor.primary,

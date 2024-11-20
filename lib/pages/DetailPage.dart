@@ -1,21 +1,101 @@
+import 'package:famscreen/components/expandable_text.dart';
+import 'package:famscreen/data/provider/favorite_provider.dart';
+import 'package:famscreen/data/service/film_service.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
+import '../data/models/film.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart'; 
 
-class DetailPage extends StatelessWidget {
-  const DetailPage({Key? key}) : super(key: key);
+class DetailPage extends StatefulWidget {
+  final Film film;
+
+  DetailPage({Key? key, required this.film}) : super(key: key);
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  bool isFavorite = false;
+  List<Film> favoriteFilms = [];
+  List<Film> displayedFilms = [];
+  List<Film>? films;
+  bool isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadFilms();
+  }
+
+  Future<void> loadFilms() async {
+    final filmService = FilmService();
+    films = await filmService.getFilms();
+    setState(() {
+      isLoaded = true;
+      displayedFilms = films ?? [];
+    });
+  }
+
+  void _launchStreamingUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _buildMovieCard(Film film) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailPage(film: film),
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              film.poster,
+              height: 130,
+              width: 110,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+      if (isFavorite) {
+        favoriteFilms.add(widget.film);
+      } else {
+        favoriteFilms.remove(widget.film);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final favoriteFilmsProvider = Provider.of<FavoriteFilmsProvider>(context);
+    bool isFavorite = favoriteFilmsProvider.favoriteFilms.contains(widget.film);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.asset(
-            'assets/images/venom.jpeg',
-            //height: 300,
+          Image.network(
+            widget.film.poster,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.only(top: 210),
@@ -27,7 +107,6 @@ class DetailPage extends StatelessWidget {
               ),
             ),
           ),
-
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,27 +115,48 @@ class DetailPage extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   leading: Container(
+                    width: 50,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.3),
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(15)
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new_outlined,
+                            color: Colors.white),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                            (route) =>
+                                false, //  menghapus semua halaman di stack
+                          );
+                        },
+                      ),
                     ),
                   ),
                   actions: [
                     Container(
+                      width: 55,
+                      //height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.white.withOpacity(0.3),
+                        shape: BoxShape.rectangle,
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border, color: Colors.black),
-                        onPressed: () {},
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: IconButton(
+                          icon: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.red : Colors.white,
+                          ),
+                          onPressed: () {
+                            favoriteFilmsProvider.toggleFavorite(widget.film);
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -64,87 +164,94 @@ class DetailPage extends StatelessWidget {
               ],
             ),
           ),
-          
           Container(
             margin: const EdgeInsets.only(top: 230, left: 25, right: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Text('2024', style: TextStyle(fontSize: 16)),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4), 
-                      color: const Color (0xffF5C518),
-                      ),
-                      child: const Text('IMDb', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text('8.0  |', style: TextStyle(fontSize: 16)),
-                    const SizedBox(width: 8),
-                    const Text('1h 50m', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Venom 3 (Venom: The Last Dance)',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  '"Venom 3" adalah film superhero Amerika tentang Venom, sekuel dari "Venom" dan "Venom: Let There Be Carnage," diproduksi oleh Columbia Pictures dan Marvel, didistribusikan oleh Sony Pictures.',
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Animasi', style: TextStyle(fontSize: 14)),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Komedi', style: TextStyle(fontSize: 14)),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), 
-                        color: const Color.fromARGB(255, 228, 227, 227),
-                      ),
-                      child: const Text('Drama', style: TextStyle(fontSize: 14)),
-                    )
-                  ]
-                ),
-                const SizedBox(height: 30),
-                const Text(
-                  'Lihat Sekarang',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 14),
-                Row(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child:  Image.asset(
-                          'assets/images/netflix.png',
-                          width: 50,
-                          height: 50,
-                        )
-                      ) 
+                      Text(widget.film.tahunRilis,
+                          style: const TextStyle(fontSize: 16)),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: const Color(0xffF5C518),
+                        ),
+                        child: const Text('IMDb',
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(width: 8),
+                      Text('${widget.film.rateImdb}  |',
+                          style: const TextStyle(fontSize: 16)),
+                      const SizedBox(width: 8),
+                      Text('${widget.film.durasi} menit',
+                          style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.film.judul,
+                    style: const TextStyle(
+                        fontSize: 26, fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  ExpandableText(
+                    text: widget.film.deskripsi,
+                    maxWords: 45,
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 228, 227, 227),
+                        ),
+                        child: const Text('Ini', style: TextStyle(fontSize: 14)),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 7, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 228, 227, 227),
+                        ),
+                        child:
+                            const Text('Belum', style: TextStyle(fontSize: 14)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'LIHAT SEKARANG',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _launchStreamingUrl(
+                              widget.film.linkStreaming); // URL dari model Film
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/images/netflix.png',
+                            width: 60,
+                            height: 60,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 30),
@@ -152,8 +259,27 @@ class DetailPage extends StatelessWidget {
                     'Rekomendasi Lainnya',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-              ],
-            ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    //height: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        displayedFilms.length > 3 ? 3 : displayedFilms.length, 
+                        (index) {
+                          return Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5), 
+                              child: _buildMovieCard(displayedFilms[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           )
         ],
       ),

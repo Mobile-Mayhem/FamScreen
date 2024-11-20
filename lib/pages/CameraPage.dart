@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import '../utils/Colors.dart';
 
@@ -22,12 +23,40 @@ class _CameraPageState extends State<CameraPage> {
     _initializeCamera();
   }
 
+  Future<void> _sendImage() async {
+    if (_capturedImage == null) {
+      print('No image to send.');
+      return;
+    }
+
+    final url = Uri.parse('http://192.168.64.7:8004/upload');
+
+    try {
+      var request = http.MultipartRequest('POST', url);
+      request.files.add(
+          await http.MultipartFile.fromPath('image', _capturedImage!.path));
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully.');
+        await _showAlertDialog('Success', 'Gambar berhasil dikirim.');
+      } else {
+        print('Image upload failed with status: ${response.statusCode}');
+        await _showAlertDialog(
+            'Error', 'Image upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+      await _showAlertDialog('Error', 'Error uploading image: $e');
+    }
+  }
+
   Future<void> _initializeCamera() async {
     try {
       final cameras = await availableCameras();
       if (cameras.isNotEmpty) {
         controller = CameraController(
-          cameras[0],
+          cameras[1],
           ResolutionPreset.max,
         );
 
@@ -47,26 +76,56 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _takePicture() async {
-    if (!controller.value.isInitialized) {
-      print('Error: Camera is not initialized.');
-      return;
-    }
-
     try {
-      final image = await controller.takePicture();
-      setState(() {
-        _capturedImage = image;
-      });
+      // Periksa apakah controller siap untuk mengambil gambar
+      if (!controller.value.isInitialized) {
+        print('Error: Camera is not initialized.');
+        return;
+      }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Picture saved to ${image.path}'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      // Ambil gambar hanya jika kamera tidak sedang mengambil gambar
+      if (!controller.value.isTakingPicture) {
+        final image = await controller.takePicture();
+        setState(() {
+          // Perbarui _capturedImage dengan gambar yang baru diambil
+          _capturedImage = image;
+        });
+
+        // Kirim gambar ke server
+        await _sendImage();
+      }
     } catch (e) {
       print('Error taking picture: $e');
     }
+  }
+
+  Future<void> _showAlertDialog(String title, String content) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button to dismiss the dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const HomePage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -82,36 +141,63 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      // appBar: AppBar(title: const Text('Camera Page')),
-      body: Column(
-        children: [
-          if (_capturedImage != null)
-            Expanded(
-              child: Image.file(
-                File(_capturedImage!.path),
-                fit: BoxFit.cover,
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 100),
+            Column(children: [
+              Text('Verifikasi Diri',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: CustomColor.black)),
+              const SizedBox(height: 30),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 278,
+                    height: 278,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: CameraPreview(controller),
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/camera_frame.png',
+                    width: 255,
+                    height: 255,
+                  ),
+                ],
               ),
-            )
-          else
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: controller.value.aspectRatio,
-                child: CameraPreview(controller),
+              const SizedBox(height: 40),
+              Text(
+                'Tetaplah berada di posisi ini, harap menunggu pengambilan gambar',
+                style: TextStyle(fontSize: 16, color: CustomColor.black),
+                textAlign: TextAlign.center,
               ),
-            ),
-          // const SizedBox(height: 100),
-        ],
+              const SizedBox(height: 255),
+              ElevatedButton(
+                onPressed: () {
+                  _takePicture();
+                  dispose();
+                  print('Gambar diambil dan dikirim');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
+                },
+                child: const Text('Ambil Gambar'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  minimumSize: const Size(309, 50),
+                ),
+              ),
+            ])
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          _takePicture();
-        },
-        icon: const Icon(Icons.camera, color: Colors.white),
-        label: const Text('Ambil Gambar',
-            style: TextStyle(color: CustomColor.white)),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

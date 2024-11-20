@@ -1,11 +1,11 @@
+import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'CameraPage.dart';
 import 'RegisterPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -15,6 +15,15 @@ class LoginPage extends StatelessWidget {
         duration: const Duration(milliseconds: 400),
       ),
     );
+  }
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override
@@ -41,6 +50,7 @@ class LoginPage extends StatelessWidget {
               child: Text('Masukkan email dan password anda'),
             ),
             TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -57,6 +67,7 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: passwordController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -73,10 +84,13 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 25.0),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const CameraPage()),
+              onPressed: () async {
+                await AuthService().signin(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  context: context,
                 );
+
                 print('Loginn');
               },
               child: const Text('Login'),
@@ -108,7 +122,7 @@ class LoginPage extends StatelessWidget {
                   buttonType: ButtonType.facebook,
                   buttonSize: ButtonSize.medium,
                   onPressed: () {
-                    _showButtonPressDialog(context, 'Google');
+                    _showButtonPressDialog(context, 'Facebook');
                   },
                 ),
               ],
@@ -123,7 +137,7 @@ class LoginPage extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const RegisterPage()),
+                      MaterialPageRoute(builder: (_) => RegisterPage()),
                     );
                     print('Daftar');
                   },

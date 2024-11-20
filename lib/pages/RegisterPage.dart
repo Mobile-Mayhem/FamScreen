@@ -1,11 +1,14 @@
+// import 'package:famscreen/services/auth_service.dart';
+import 'package:famscreen/pages/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'CameraPage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'LoginPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  RegisterPage({super.key});
 
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -15,6 +18,56 @@ class RegisterPage extends StatelessWidget {
         duration: const Duration(milliseconds: 400),
       ),
     );
+  }
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signup({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // Call the Firebase signup function
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      String message = '';
+      if (e.code == 'weak-password') {
+        message = 'Password terlalu lemah';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'Email sudah digunakan';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error signing up: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override
@@ -59,6 +112,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -75,6 +129,7 @@ class RegisterPage extends StatelessWidget {
             ),
             SizedBox(height: 15),
             TextField(
+              controller: passwordController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock_outline, color: CustomColor.gray),
                 enabledBorder: OutlineInputBorder(
@@ -96,10 +151,15 @@ class RegisterPage extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const CameraPage()),
+              onPressed: () async {
+                signup(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  context: context,
                 );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (_) => const CameraPage()),
+                // );
                 print('Daftar');
               },
               child: const Text('Daftar'),
@@ -146,7 +206,7 @@ class RegisterPage extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const LoginPage()),
+                      MaterialPageRoute(builder: (_) => LoginPage()),
                     );
                     print('Masuk');
                   },

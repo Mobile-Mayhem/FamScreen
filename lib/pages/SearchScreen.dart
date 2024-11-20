@@ -1,123 +1,120 @@
+import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/pages/DetailPage.dart';
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SearchScreen(),
-    );
-  }
-}
+import '../components/navbar.dart';
+import '../data/service/film_service.dart';
+import '../data/models/film.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key? key}) : super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<String> previousSearches = [
-    'Venom 3',
-    'Do You See What I See',
-    'The Dark Knight'
-  ];
+  int currentPageIndex = 2;
+  List<Film> searchResults = [];
+  final FilmService filmService = FilmService();
+  TextEditingController searchController = TextEditingController();
+  bool isLoading = false;
 
-  int _currentIndex = 2; // Set 'search' as the default selected index
-
-  void _removeSearchItem(int index) {
+  void performSearch(String query) async {
     setState(() {
-      previousSearches.removeAt(index);
+      isLoading = true;
     });
+
+    try {
+      final results = await filmService.searchFilms(query);
+      setState(() {
+        searchResults = results;
+      });
+    } catch (e) {
+      print("Error searching films: $e");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white, 
+    appBar: AppBar(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        title: Text('Search', style: TextStyle(color: Colors.white)),
+      elevation: 0,
+      title: Text(
+        'Search',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Pencarian sebelumnya',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: previousSearches.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(Icons.history),
-                    title: Text(previousSearches[index]),
-                    trailing: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _removeSearchItem(index);
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.amber,
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 0, // Hapus teks tambahan yang bisa memengaruhi tampilan
-        unselectedFontSize: 0,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index; // Ubah indeks saat ini
-          });
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => route.isFirst,
+          );
         },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
+      ),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0), 
+      child: Column(
+        children: [
+          TextField(
+            controller: searchController,
+            onSubmitted: (query) {
+              if (query.isNotEmpty) {
+                performSearch(query);
+              }
+            },
+            decoration: InputDecoration(
+              hintText: 'Cari film',
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
+          SizedBox(height: 20),
+          Expanded(
+            child: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : searchResults.isEmpty
+                    ? Center(child: Text('Tidak ada hasil untuk pencarian ini'))
+                    : ListView.builder(
+                        itemCount: searchResults.length,
+                        itemBuilder: (context, index) {
+                          final film = searchResults[index];
+                          return ListTile(
+                            title: Text(film.judul),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailPage(film: film),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
           ),
         ],
       ),
-    );
-  }
+    ),
+    bottomNavigationBar: CustomNavigationBar(
+      currentIndex: currentPageIndex,
+      onDestinationSelected: (int index) {
+        setState(() {
+          currentPageIndex = index;
+        });
+      },
+    ),
+  );
+}
 }

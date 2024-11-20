@@ -36,7 +36,7 @@ class _MlTestPageState extends State<MlTestPage> {
       return;
     }
 
-    final url = Uri.parse('http://localhost:8004/upload');
+    final url = Uri.parse('http://127.0.0.1:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);

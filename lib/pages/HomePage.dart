@@ -1,13 +1,13 @@
+import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
-import '../utils/Colors.dart';
-import 'CameraPage.dart';
-import 'LoginPage.dart';
+import '../components/filter_jenis.dart';
+import '../data/models/film.dart';
+import '../data/service/film_service.dart';
+import '../services/movie_service.dart';
 import 'DetailPage.dart';
-import 'MlTestPage.dart';
-import 'SearchScreen.dart';
-import 'OnBoardingPage.dart';
-import 'FavoritePage.dart';
-import '../components/navbar.dart'; //coba navbar
+// import 'FavoritePage.dart';
+import '../components/navbar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,91 +19,74 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
-  final List<Map<String, String>> movies = [
-    {
-      'title': 'Spider Man',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
-    {
-      'title': 'Spider Man 2',
-      'duration': '1h 35m',
-      'rating': '8.1',
-      'image': 'assets/images/spiderman.jpg'
-    },
-  ];
+  List<Film>? films;
+  List<Film>? displayedFilms;
+  bool isLoaded = false;
+  String selectedCategory = 'All';
+  final MovieService movieService = MovieService();
 
-  void _onBackToIntro(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const OnBoardingPage()),
-    );
+  // Future<void> loadFilms() async {
+  //   films = await movieService.loadFilms();
+  //   setState(() {
+  //     isLoaded = true;
+  //     displayedFilms = films;
+  //   });
+  // }
+
+  void updateCategory(List<Film> filteredFilms) {
+    setState(() {
+      displayedFilms = filteredFilms;
+    });
   }
 
-  Widget _buildCategoryButton(String text, bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? CustomColor.primary : Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-            side: BorderSide(
-              color: isSelected ? Colors.transparent : Colors.grey[300]!,
-              width: 1.5,
-            ),
-          ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-          ),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    // loadFilms();
   }
 
-  Widget _buildMovieCard(Map<String, String> movie) {
+  // Future<void> loadFilms() async {
+  //   final filmService = FilmService();
+  //   films = await filmService.getFilms();
+  //   setState(() {
+  //     isLoaded = true;
+  //     displayedFilms = films;
+  //   });
+  // }
+
+  Widget _buildSkeletonCard() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AspectRatio(
-          aspectRatio: 2 / 3,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              movie['image']!,
-              fit: BoxFit.cover,
-            ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            height: 220,
+            width: 180,
+            color: Colors.grey[300],
           ),
         ),
         const SizedBox(height: 8),
+        Container(
+          height: 16,
+          width: 180,
+          color: Colors.grey[300],
+        ),
+        const SizedBox(height: 8),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Text(
-                movie['title']!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Container(
+              height: 16,
+              width: 50,
+              color: Colors.grey[300],
             ),
-            Row(
-              children: [
-                Icon(Icons.star, color: Colors.yellow[800], size: 16),
-                const SizedBox(width: 4),
-                Text(movie['rating']!),
-              ],
+            const SizedBox(width: 55),
+            Container(
+              height: 16,
+              width: 50,
+              color: Colors.grey[300],
             ),
           ],
-        ),
-        Text(
-          movie['duration']!,
-          style: const TextStyle(color: Colors.grey),
         ),
       ],
     );
@@ -113,6 +96,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -120,116 +104,65 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Category Filter
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildCategoryButton('All', true),
-                  _buildCategoryButton('Movies', false),
-                  _buildCategoryButton('Series', false),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // Recommendations Section
-              const Text(
-                'Rekomendasi',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-
-              // grid film
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                ),
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  return _buildMovieCard(movies[index]);
-                },
-              ),
-
-              const SizedBox(height: 70),
-
-              // Button and Navigation Section
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+      body: RefreshIndicator(
+        onRefresh: MovieService().loadFilms,
+        color: CustomColor.primary,
+        backgroundColor: Colors.white,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Text("This is the screen after Introduction"),
-                    const SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const MlTestPage()),
-                        );
+                    CategoryRow(
+                      allFilms: films ?? [],
+                      selectedCategory: selectedCategory,
+                      onCategorySelected: (String category) {
+                        setState(() {
+                          selectedCategory = category;
+                        });
                       },
-                      child: const Text('Open ML Test Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _onBackToIntro(context),
-                      child: const Text('Back to Introduction'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const CameraPage()),
-                        );
-                      },
-                      child: const Text('Open Camera'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginPage()),
-                        );
-                      },
-                      child: const Text('Open Login Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const DetailPage()),
-                        );
-                      },
-                      child: const Text('Open Detail Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => SearchScreen()),
-                        );
-                      },
-                      child: const Text('Open Search Page'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Navigator.of(context).push(
-                        // MaterialPageRoute(builder: (_) => FavoritePage()),
-                        // );
-                      },
-                      child: const Text('Open Favorite Page'),
+                      onFilteredFilms: updateCategory,
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                const Text(
+                  'Rekomendasi',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Skeletonizer(
+                  enabled: !isLoaded,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.53,
+                      mainAxisSpacing: 0.5,
+                      crossAxisSpacing: 18,
+                    ),
+                    itemCount: isLoaded ? displayedFilms!.length : 4,
+                    itemBuilder: (context, index) {
+                      if (!isLoaded) {
+                        return _buildSkeletonCard();
+                      }
+
+                      return _buildMovieCard(displayedFilms![index]);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
-      // navbar
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
         onDestinationSelected: (int index) {
