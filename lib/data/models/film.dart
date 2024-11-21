@@ -12,10 +12,10 @@ String filmToJson(List<Film> data) =>
 
 class Film {
   int id;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String poster;
+  String posterPotrait;
+  String posterLandscap;
   String judul;
+  String genre;
   String deskripsi;
   String tahunRilis;
   int durasi;
@@ -23,13 +23,15 @@ class Film {
   String jenis;
   String kategoriUsia;
   String linkStreaming;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   Film({
     required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.poster,
+    required this.posterPotrait,
+    required this.posterLandscap,
     required this.judul,
+    required this.genre,
     required this.deskripsi,
     required this.tahunRilis,
     required this.durasi,
@@ -37,14 +39,16 @@ class Film {
     required this.jenis,
     required this.kategoriUsia,
     required this.linkStreaming,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Film.fromJson(Map<String, dynamic> json) => Film(
         id: json["id"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        poster: json["poster"],
+        posterPotrait: json["poster_potrait"],
+        posterLandscap: json["poster_landscap"],
         judul: json["judul"],
+        genre: json["genre"],
         deskripsi: json["deskripsi"],
         tahunRilis: json["tahun_rilis"],
         durasi: json["durasi"],
@@ -52,14 +56,16 @@ class Film {
         jenis: json["jenis"],
         kategoriUsia: json["kategori_usia"],
         linkStreaming: json["link_streaming"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "poster": poster,
+        "poster_potrait": posterPotrait,
+        "poster_landscap": posterLandscap,
         "judul": judul,
+        "genre": genre,
         "deskripsi": deskripsi,
         "tahun_rilis": tahunRilis,
         "durasi": durasi,
@@ -67,5 +73,7 @@ class Film {
         "jenis": jenis,
         "kategori_usia": kategoriUsia,
         "link_streaming": linkStreaming,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
       };
 }

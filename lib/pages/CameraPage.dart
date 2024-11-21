@@ -37,7 +37,7 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.1.100:8004/upload');
+    final url = Uri.parse('http://192.168.73.222:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -48,18 +48,9 @@ class _CameraPageState extends State<CameraPage> {
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
+        String prediction = jsonData['prediction'];
 
-        if (jsonData['status'] == 'success') {
-          String prediction = jsonData['prediction'];
-          String imageUrl = jsonData['image_url'];
-
-          await _showAlertDialog('Prediction', 'Predicted Age: $prediction');
-        } else if (jsonData['status'] == 'failure') {
-          String message = jsonData['message'];
-
-          print('Error: $message');
-          await _showAlertDialog('Wajah Tidak Terdeteksi', '$message');
-        }
+        await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $prediction');
       } else {
         print('Image upload failed with status: ${response.statusCode}');
         await _showAlertDialog(

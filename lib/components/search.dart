@@ -64,7 +64,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   itemBuilder: (context, index) {
                     final film = searchResults[index];
                     return ListTile(
-                      leading: Image.network(film.poster,
+                      leading: Image.network(film.posterPotrait,
                           width: 50, height: 75, fit: BoxFit.cover),
                       title: Text(film.judul),
                       subtitle: Text('${film.tahunRilis} - ${film.rateImdb}'),

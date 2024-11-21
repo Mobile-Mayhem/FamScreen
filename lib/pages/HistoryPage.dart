@@ -127,7 +127,7 @@ class _HistorypageState extends State<HistoryPage> {
                                     borderRadius: BorderRadius.circular(
                                         15), // Set the border radius to 15
                                     child: Image.network(
-                                      film.poster,
+                                      film.posterPotrait,
                                       width: 70,
                                       height: 100,
                                       fit: BoxFit.cover,

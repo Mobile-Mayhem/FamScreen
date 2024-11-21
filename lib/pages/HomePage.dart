@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
-              film.poster,
+              film.posterPotrait,
               height: 220,
               width: 180,
               fit: BoxFit.cover,
