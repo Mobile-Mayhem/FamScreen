@@ -1,5 +1,6 @@
 // import 'package:famscreen/services/auth_service.dart';
 import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,59 +11,8 @@ import 'package:sign_button/sign_button.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
-  void _showButtonPressDialog(BuildContext context, String provider) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$provider Button Pressed!'),
-        backgroundColor: Colors.black26,
-        duration: const Duration(milliseconds: 400),
-      ),
-    );
-  }
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  Future<void> signup({
-    required BuildContext context,
-    required String email,
-    required String password,
-  }) async {
-    try {
-      // Call the Firebase signup function
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      await Future.delayed(const Duration(seconds: 1));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      // Handle errors
-      String message = '';
-      if (e.code == 'weak-password') {
-        message = 'Password terlalu lemah';
-      } else if (e.code == 'email-already-in-use') {
-        message = 'Email sudah digunakan';
-      }
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } catch (e) {
-      print('Error signing up: $e');
-    }
-  }
 
   @override
   void dispose() {
@@ -152,7 +102,7 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
-                signup(
+                await AuthService().signup(
                   email: emailController.text,
                   password: passwordController.text,
                   context: context,
@@ -183,16 +133,12 @@ class RegisterPage extends StatelessWidget {
                 SignInButton.mini(
                   buttonSize: ButtonSize.medium,
                   buttonType: ButtonType.google,
-                  onPressed: () {
-                    _showButtonPressDialog(context, 'Google');
-                  },
+                  onPressed: () {},
                 ),
                 SignInButton.mini(
                   buttonType: ButtonType.facebook,
                   buttonSize: ButtonSize.medium,
-                  onPressed: () {
-                    _showButtonPressDialog(context, 'Google');
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),

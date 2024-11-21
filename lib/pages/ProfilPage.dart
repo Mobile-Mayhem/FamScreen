@@ -2,7 +2,6 @@ import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'EditProfilePage.dart';
 import '../utils/Colors.dart';
 import '../components/navbar.dart';
 
@@ -20,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _showLogoutConfirmation() async {
     showDialog(
       context: context,
-      barrierDismissible: false, 
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Konfirmasi Logout'),
@@ -34,8 +33,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(); 
-                await _authService.signout(context); 
+                Navigator.of(context).pop();
+                await _authService.signout(context);
                 Fluttertoast.showToast(
                   msg: 'Anda telah keluar',
                   toastLength: Toast.LENGTH_SHORT,
@@ -134,10 +133,10 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 45),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const EditProfilePage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
+                // );
               },
               child: Container(
                 padding:
@@ -157,18 +156,18 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 20),
             Center(
-            child: InkWell(
-              onTap: () {
-                _showLogoutConfirmation(); 
-              },
-              child: const Text(
-                'Logout',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold, 
+              child: InkWell(
+                onTap: () {
+                  _showLogoutConfirmation();
+                },
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
             )
           ],
         ),

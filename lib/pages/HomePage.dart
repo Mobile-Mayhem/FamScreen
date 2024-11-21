@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../components/filter_jenis.dart';
 import '../data/models/film.dart';
 import '../data/service/film_service.dart';
-import '../services/movie_service.dart';
 import 'DetailPage.dart';
 // import 'FavoritePage.dart';
 import '../components/navbar.dart';
@@ -23,15 +22,6 @@ class _HomePageState extends State<HomePage> {
   List<Film>? displayedFilms;
   bool isLoaded = false;
   String selectedCategory = 'All';
-  final MovieService movieService = MovieService();
-
-  // Future<void> loadFilms() async {
-  //   films = await movieService.loadFilms();
-  //   setState(() {
-  //     isLoaded = true;
-  //     displayedFilms = films;
-  //   });
-  // }
 
   void updateCategory(List<Film> filteredFilms) {
     setState(() {
@@ -42,17 +32,17 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // loadFilms();
+    loadFilms();
   }
 
-  // Future<void> loadFilms() async {
-  //   final filmService = FilmService();
-  //   films = await filmService.getFilms();
-  //   setState(() {
-  //     isLoaded = true;
-  //     displayedFilms = films;
-  //   });
-  // }
+  Future<void> loadFilms() async {
+    final filmService = FilmService();
+    films = await filmService.getFilms();
+    setState(() {
+      isLoaded = true;
+      displayedFilms = films;
+    });
+  }
 
   Widget _buildSkeletonCard() {
     return Column(
@@ -73,22 +63,79 @@ class _HomePageState extends State<HomePage> {
           color: Colors.grey[300],
         ),
         const SizedBox(height: 8),
-        Row(
-          children: [
-            Container(
-              height: 16,
-              width: 50,
-              color: Colors.grey[300],
-            ),
-            const SizedBox(width: 55),
-            Container(
-              height: 16,
-              width: 50,
-              color: Colors.grey[300],
-            ),
-          ],
+        Container(
+          height: 16,
+          width: 50,
+          color: Colors.grey[300],
+        ),
+        const SizedBox(width: 55),
+        Container(
+          height: 16,
+          width: 50,
+          color: Colors.grey[300],
         ),
       ],
+    );
+  }
+
+  Widget _buildMovieCard(Film film) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DetailPage(film: film),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              film.posterPotrait,
+              height: 220,
+              width: 180,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  film.judul,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${film.durasi}m',
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.star, color: Colors.yellow[800], size: 16),
+                  const SizedBox(width: 4),
+                  Text(film.rateImdb.toString()),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -105,7 +152,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: MovieService().loadFilms,
+        onRefresh: loadFilms,
         color: CustomColor.primary,
         backgroundColor: Colors.white,
         child: SingleChildScrollView(

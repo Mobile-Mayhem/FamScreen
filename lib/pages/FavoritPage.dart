@@ -20,25 +20,28 @@ class FavoritPage extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Favorit',
-          style: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-            (route) => route.isFirst,
-          );
-        },
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (route) => route.isFirst,
+            );
+          },
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Consumer<FavoriteFilmsProvider>( // Menggunakan Consumer untuk mendengarkan perubahan
+        child: Consumer<FavoriteFilmsProvider>(
+          // Menggunakan Consumer untuk mendengarkan perubahan
           builder: (context, favoriteFilmsProvider, child) {
-            List<Film> favoriteFilms = favoriteFilmsProvider.favoriteFilms; // Ambil daftar favorit
+            List<Film> favoriteFilms =
+                favoriteFilmsProvider.favoriteFilms; // Ambil daftar favorit
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,7 +56,7 @@ class FavoritPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 CategoryRow(
-                  allFilms: favoriteFilms, 
+                  allFilms: favoriteFilms,
                   selectedCategory: 'All',
                   onCategorySelected: (String category) {},
                   onFilteredFilms: (List<Film> filteredFilms) {},
@@ -61,19 +64,20 @@ class FavoritPage extends StatelessWidget {
                 SizedBox(height: 16),
                 Expanded(
                   child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 0.6,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                     ),
-                    itemCount: favoriteFilms.length, 
+                    itemCount: favoriteFilms.length,
                     itemBuilder: (context, index) {
-                      Film film = favoriteFilms[index]; 
+                      Film film = favoriteFilms[index];
                       return FavoriteItem(
                         film: film,
                         title: film.judul,
-                        image: film.poster,
+                        image: film.posterPotrait,
                         isFavorite: true,
                         onFavoriteChanged: () {
                           favoriteFilmsProvider.toggleFavorite(film);
@@ -131,7 +135,7 @@ class FavoriteItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: NetworkImage(image), 
+                    image: NetworkImage(image),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -145,7 +149,8 @@ class FavoriteItem extends StatelessWidget {
                     color: isFavorite ? Colors.red : Colors.white,
                     size: 20,
                   ),
-                  onPressed: onFavoriteChanged, // Panggil toggleFavorite saat ikon diklik
+                  onPressed:
+                      onFavoriteChanged, // Panggil toggleFavorite saat ikon diklik
                 ),
               ),
             ],

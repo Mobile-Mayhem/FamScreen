@@ -1,8 +1,9 @@
-import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../pages/CameraPage.dart';
 
 class AuthService {
   // Sign Up
@@ -18,11 +19,21 @@ class AuthService {
         password: password,
       );
 
+      Fluttertoast.showToast(
+        msg: 'Registrasi berhasil',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const CameraPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -60,11 +71,21 @@ class AuthService {
         password: password,
       );
 
+      Fluttertoast.showToast(
+        msg: 'Login berhasil',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => const CameraPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -107,5 +128,15 @@ class AuthService {
   // Get UID
   Future<String?> getUID() async {
     return FirebaseAuth.instance.currentUser?.uid;
+  }
+
+  // Get Name
+  Future<String?> getName() async {
+    return FirebaseAuth.instance.currentUser?.displayName;
+  }
+
+  // Get Email
+  Future<String?> getEmail() async {
+    return FirebaseAuth.instance.currentUser?.email;
   }
 }
