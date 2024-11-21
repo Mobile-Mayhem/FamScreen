@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:camera/camera.dart';
-import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'HomePage.dart';
 import '../utils/Colors.dart';
 
 class CameraPage extends StatefulWidget {
@@ -18,6 +20,12 @@ class _CameraPageState extends State<CameraPage> {
   XFile? _capturedImage;
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _initializeCamera();
@@ -29,7 +37,7 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.64.7:8004/upload');
+    final url = Uri.parse('http://192.168.1.100:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -38,15 +46,26 @@ class _CameraPageState extends State<CameraPage> {
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        print('Image uploaded successfully.');
-        await _showAlertDialog('Success', 'Gambar berhasil dikirim.');
+        var responseData = await http.Response.fromStream(response);
+        var jsonData = json.decode(responseData.body);
+
+        if (jsonData['status'] == 'success') {
+          String prediction = jsonData['prediction'];
+          String imageUrl = jsonData['image_url'];
+
+          await _showAlertDialog('Prediction', 'Predicted Age: $prediction');
+        } else if (jsonData['status'] == 'failure') {
+          String message = jsonData['message'];
+
+          print('Error: $message');
+          await _showAlertDialog('Wajah Tidak Terdeteksi', '$message');
+        }
       } else {
         print('Image upload failed with status: ${response.statusCode}');
         await _showAlertDialog(
             'Error', 'Image upload failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error uploading image: $e');
       await _showAlertDialog('Error', 'Error uploading image: $e');
     }
   }
@@ -129,12 +148,6 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (!_isCameraInitialized) {
       return const Center(child: CircularProgressIndicator());
@@ -180,11 +193,11 @@ class _CameraPageState extends State<CameraPage> {
               ElevatedButton(
                 onPressed: () {
                   _takePicture();
-                  dispose();
+                  // dispose();
                   print('Gambar diambil dan dikirim');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const HomePage()),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (_) => const HomePage()),
+                  // );
                 },
                 child: const Text('Ambil Gambar'),
                 style: ElevatedButton.styleFrom(
