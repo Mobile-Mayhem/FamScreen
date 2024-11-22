@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../components/filter_jenis.dart';
 import '../data/models/film.dart';
 import '../data/service/film_service.dart';
+import '../models/movies.dart';
+import '../services/databases_services.dart';
 import 'DetailPage.dart';
 // import 'FavoritePage.dart';
 import '../components/navbar.dart';
@@ -18,30 +20,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
-  List<Film>? films;
-  List<Film>? displayedFilms;
+  List<Movies>? movie;
+  List<Movies>? displayedMovies;
   bool isLoaded = false;
   String selectedCategory = 'All';
 
-  void updateCategory(List<Film> filteredFilms) {
+  void updateCategory(List<Film> filteredMovies) {
     setState(() {
-      displayedFilms = filteredFilms;
+      displayedMovies = filteredMovies.cast<Movies>();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    loadFilms();
+    loadMovies();
   }
 
-  Future<void> loadFilms() async {
-    final filmService = FilmService();
-    films = await filmService.getFilms();
-    setState(() {
-      isLoaded = true;
-      displayedFilms = films;
-    });
+  Future<void> loadMovies() async {
+    final databaseService = DatabasesServices(); // Initialize DatabasesServices
+    try {
+      databaseService.getMoviesStream().listen((querySnapshot) {
+        // Map Firestore documents to Movies objects
+        movie = querySnapshot.docs.map((doc) => doc.data() as Movies).toList();
+
+        setState(() {
+          isLoaded = true;
+          displayedMovies = movie; // Set the movie to be displayed
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isLoaded = true; // Set loading to true so UI doesn't hang
+      });
+      print('Error fetching movies: $e');
+    }
   }
 
   Widget _buildSkeletonCard() {
@@ -78,15 +91,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMovieCard(Film film) {
+  Widget _buildMovieCard(Movies movie) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => DetailPage(film: film),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) =>
+        //         DetailPage(movie: movie), // Passing Movies object to DetailPage
+        //   ),
+        // );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +108,7 @@ class _HomePageState extends State<HomePage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.network(
-              film.posterPotrait,
+              movie.posterPotrait,
               height: 220,
               width: 180,
               fit: BoxFit.cover,
@@ -106,7 +120,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: Text(
-                  film.judul,
+                  movie.judul,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -120,7 +134,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Text(
-                    '${film.durasi}m',
+                    '${movie.durasi}m',
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -129,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Icon(Icons.star, color: Colors.yellow[800], size: 16),
                   const SizedBox(width: 4),
-                  Text(film.rateImdb.toString()),
+                  Text(movie.rateImdb.toString()),
                 ],
               ),
             ],
@@ -152,7 +166,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: loadFilms,
+        onRefresh: loadMovies,
         color: CustomColor.primary,
         backgroundColor: Colors.white,
         child: SingleChildScrollView(
@@ -166,12 +180,21 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CategoryRow(
-                      allFilms: films ?? [],
+                      allFilms: movie?.cast<Film>() ?? [],
                       selectedCategory: selectedCategory,
                       onCategorySelected: (String category) {
                         setState(() {
                           selectedCategory = category;
                         });
+
+                        // Filter the movies based on category selection
+                        if (category == 'All') {
+                          displayedMovies = movie;
+                        } else {
+                          displayedMovies = movie
+                              ?.where((movie) => movie.jenis == category)
+                              .toList();
+                        }
                       },
                       onFilteredFilms: updateCategory,
                     ),
@@ -195,13 +218,13 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSpacing: 0.5,
                       crossAxisSpacing: 18,
                     ),
-                    itemCount: isLoaded ? displayedFilms!.length : 4,
+                    itemCount: isLoaded ? displayedMovies?.length : 4,
                     itemBuilder: (context, index) {
                       if (!isLoaded) {
                         return _buildSkeletonCard();
                       }
 
-                      return _buildMovieCard(displayedFilms![index]);
+                      return _buildMovieCard(displayedMovies![index]);
                     },
                   ),
                 ),

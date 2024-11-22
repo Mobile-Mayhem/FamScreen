@@ -1,5 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:famscreen/data/provider/favorite_provider.dart';
+import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/pages/LoginPage.dart';
+import 'package:famscreen/pages/MovieListPage.dart';
 import 'package:provider/provider.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +45,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      home: const OnBoardingPage(),
-      // home: const HomePage(),
+      home: Movielistpage(),
     );
   }
 }

@@ -1,8 +1,8 @@
-import '/data/provider/film_api.dart';
+import '../provider/film_provider.dart';
 import '/data/models/film.dart';
 
 class FilmService {
-  final _api = FilmApi();
+  final _api = FilmProvider();
   Future<List<Film>?> getFilms() async {
     return _api.getFilms();
   }
@@ -13,9 +13,8 @@ class FilmService {
       return [];
     }
 
-    return allFilms.where((film) => 
-      film.judul.toLowerCase().contains(judul.toLowerCase())
-    ).toList();
+    return allFilms
+        .where((film) => film.judul.toLowerCase().contains(judul.toLowerCase()))
+        .toList();
   }
-
 }

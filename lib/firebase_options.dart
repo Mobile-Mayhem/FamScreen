@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:120163502933:android:69450482aeec7a6e417ddc',
     messagingSenderId: '120163502933',
     projectId: 'famscreen-f48ae',
+    databaseURL: 'https://famscreen-f48ae-default-rtdb.firebaseio.com',
     storageBucket: 'famscreen-f48ae.firebasestorage.app',
   );
 

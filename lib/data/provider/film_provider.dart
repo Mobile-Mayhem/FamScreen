@@ -3,10 +3,10 @@ import '/data/models/film.dart';
 import 'package:http/http.dart' as http;
 import '../models/film.dart'; // Assuming filmFromJson is defined in this file
 
-class FilmApi {
+class FilmProvider {
   Future<List<Film>?> getFilms() async {
     var client = http.Client();
-    var uri = Uri.parse('http://128.199.78.57/movie');
+    var uri = Uri.parse('http://127.0.0.1:8005/movie');
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       return filmFromJson(const Utf8Decoder().convert(response.bodyBytes));
