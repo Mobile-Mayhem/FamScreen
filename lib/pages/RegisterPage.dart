@@ -1,9 +1,6 @@
 // import 'package:famscreen/services/auth_service.dart';
-import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'LoginPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
