@@ -2,6 +2,7 @@ import 'package:famscreen/components/expandable_text.dart';
 import 'package:famscreen/data/provider/favorite_provider.dart';
 import 'package:famscreen/data/service/film_service.dart';
 import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/widgets/MovieCardDetail.dart';
 import 'package:flutter/material.dart';
 import '../data/models/film.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,32 +45,6 @@ class _DetailPageState extends State<DetailPage> {
     } else {
       throw 'Could not launch $url';
     }
-  }
-
-  Widget _buildMovieCard(Film film) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetailPage(film: film),
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              film.posterPotrait,
-              height: 130,
-              width: 110,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void _toggleFavorite() {
@@ -274,7 +249,7 @@ class _DetailPageState extends State<DetailPage> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
-                                child: _buildMovieCard(displayedFilms[index]),
+                                child: MovieCardDetail(),
                               ),
                             );
                           },

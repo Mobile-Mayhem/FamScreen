@@ -1,10 +1,9 @@
-import 'package:famscreen/widgets/SkeletonCard.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
 
-class MovieCard extends StatelessWidget {
-  MovieCard({super.key});
+class MovieCardDetail extends StatelessWidget {
+  MovieCardDetail({super.key});
 
   final _dbService = DatabasesServices();
 
@@ -14,7 +13,7 @@ class MovieCard extends StatelessWidget {
       future: _dbService.read(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: SkeletonCard());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Terjadi kesalahan: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -24,7 +23,7 @@ class MovieCard extends StatelessWidget {
 
           return GridView.builder(
             shrinkWrap: true, 
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(), 
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, 
               crossAxisSpacing: 12, 
