@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:famscreen/pages/RegisterPage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      home: RegisterPage(),
+      home: OnBoardingPage(),
     );
   }
 }
