@@ -6,12 +6,26 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../pages/CameraPage.dart';
 
 class AuthService {
+  // Email validation regex
+  final RegExp emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+
+  // Validate Email Format
+  bool isValidEmail(String email) {
+    if (!emailRegex.hasMatch(email)) {
+      showInvalidEmailToast();
+      return false;
+    }
+    return true;
+  }
+
   // Sign Up
   Future<void> signup({
     required BuildContext context,
     required String email,
     required String password,
   }) async {
+    if (!isValidEmail(email)) return;
+
     try {
       // Call the Firebase signup function
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -64,6 +78,8 @@ class AuthService {
     required String email,
     required String password,
   }) async {
+    if (!isValidEmail(email)) return;
+
     try {
       // Call the Firebase signup function
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -106,7 +122,7 @@ class AuthService {
         fontSize: 16.0,
       );
     } catch (e) {
-      print('Error signing up: $e');
+      print('Error signing in: $e');
     }
   }
 
@@ -139,4 +155,17 @@ class AuthService {
   Future<String?> getEmail() async {
     return FirebaseAuth.instance.currentUser?.email;
   }
+}
+
+// Show Invalid Email Toast
+void showInvalidEmailToast() {
+  Fluttertoast.showToast(
+    msg: 'Format email tidak sesuai',
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }
