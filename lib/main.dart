@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      home: RegisterPage(),
+      home: OnBoardingPage(),
     );
   }
 }
