@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/HomePage.dart';
 import '../pages/FavoritPage.dart';
-import '../pages/SearchScreen.dart';
+import '../pages/SearchPage.dart';
 import '../pages/HistoryPage.dart';
 import '../pages/ProfilPage.dart';
 
@@ -22,8 +22,8 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   final List<Widget> _pages = [
     HomePage(),
-    FavoritPage(),
-    SearchScreen(),
+    FavoritePage(),
+    SearchPage(),
     HistoryPage(),
     ProfilePage(),
   ];

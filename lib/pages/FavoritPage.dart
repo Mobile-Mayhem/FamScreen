@@ -1,17 +1,10 @@
-import 'package:famscreen/components/filter_jenis.dart';
-import 'package:famscreen/data/models/film.dart';
 import 'package:famscreen/components/navbar.dart';
-import 'package:famscreen/data/provider/favorite_provider.dart';
 import 'package:famscreen/pages/DetailPage.dart';
 import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FavoritPage extends StatelessWidget {
-  //final Film film;
-
-  const FavoritPage({Key? key}) : super(key: key);
-
+class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,149 +13,120 @@ class FavoritPage extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Favorit',
-          style: TextStyle(
-              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontSize: 20),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (route) => route.isFirst,
-            );
-          },
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {},
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Consumer<FavoriteFilmsProvider>(
-          // Menggunakan Consumer untuk mendengarkan perubahan
-          builder: (context, favoriteFilmsProvider, child) {
-            List<Film> favoriteFilms =
-                favoriteFilmsProvider.favoriteFilms; // Ambil daftar favorit
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Cari favorit',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+              ),
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Cari favorit',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                CategoryRow(
-                  allFilms: favoriteFilms,
-                  selectedCategory: 'All',
-                  onCategorySelected: (String category) {},
-                  onFilteredFilms: (List<Film> filteredFilms) {},
-                ),
-                SizedBox(height: 16),
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.6,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: favoriteFilms.length,
-                    itemBuilder: (context, index) {
-                      Film film = favoriteFilms[index];
-                      return FavoriteItem(
-                        film: film,
-                        title: film.judul,
-                        image: film.posterPotrait,
-                        isFavorite: true,
-                        onFavoriteChanged: () {
-                          favoriteFilmsProvider.toggleFavorite(film);
-                        },
-                      );
-                    },
-                  ),
-                ),
+                FilterChip(label: Text('All'), onSelected: (_) {}),
+                SizedBox(width: 8),
+                FilterChip(label: Text('Movies'), onSelected: (_) {}),
+                SizedBox(width: 8),
+                FilterChip(label: Text('Series'), onSelected: (_) {}),
               ],
-            );
-          },
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 0.6,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: [
+                  FavoriteItem(
+                      title: 'The Dark Knight',
+                      image: 'assets/dark_knight.jpg'),
+                  FavoriteItem(
+                      title: 'The Lord of ...',
+                      image: 'assets/lord_of_the_rings.jpg'),
+                  FavoriteItem(
+                      title: 'Inception', image: 'assets/inception.jpg'),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: 1,
-        onDestinationSelected: (int index) {},
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.amber,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.tv), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        ],
       ),
     );
   }
 }
 
 class FavoriteItem extends StatelessWidget {
-  final Film film;
   final String title;
   final String image;
-  final bool isFavorite;
-  final VoidCallback onFavoriteChanged;
 
-  const FavoriteItem({
-    required this.film,
-    required this.title,
-    required this.image,
-    required this.isFavorite,
-    required this.onFavoriteChanged,
-  });
+  const FavoriteItem({required this.title, required this.image});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DetailPage(film: film),
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 130,
-                width: 110,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: NetworkImage(image),
-                    fit: BoxFit.cover,
-                  ),
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Container(
+              height: 120,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(image),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
-                top: 5,
-                right: 5,
-                child: IconButton(
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.white,
-                    size: 20,
-                  ),
-                  onPressed:
-                      onFavoriteChanged, // Panggil toggleFavorite saat ikon diklik
-                ),
+            ),
+            Positioned(
+              top: 5,
+              right: 5,
+              child: Icon(
+                Icons.favorite,
+                color: Colors.amber,
+                size: 20,
               ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            title,
-            style: TextStyle(fontSize: 12),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+        SizedBox(height: 8),
+        Text(
+          title,
+          style: TextStyle(fontSize: 12),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }

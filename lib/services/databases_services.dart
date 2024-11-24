@@ -25,5 +25,33 @@ class DatabasesServices {
     }
   }
 
-  getMoviesStream() {}
+  final collectionName = 'movies';
+  Future<void> deleteAllDocuments(String collectionName) async {
+    try {
+      // Ambil referensi koleksi
+      CollectionReference collectionRef =
+          FirebaseFirestore.instance.collection(collectionName);
+
+      // Ambil semua dokumen dalam koleksi
+      QuerySnapshot snapshot = await collectionRef.get();
+
+      // Iterasi melalui dokumen dan hapus satu per satu
+      for (QueryDocumentSnapshot doc in snapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      print("Semua dokumen dalam koleksi '$collectionName' berhasil dihapus.");
+    } catch (e) {
+      print("Terjadi kesalahan saat menghapus dokumen: $e");
+    }
+  }
+
+  Future<void> refresh() async {
+    try {
+      await deleteAllDocuments(collectionName);
+      print("Koleksi berhasil di-refresh.");
+    } catch (e) {
+      print("Terjadi kesalahan saat me-refresh koleksi: $e");
+    }
+  }
 }

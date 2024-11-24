@@ -1,9 +1,7 @@
-import 'package:famscreen/models/movies.dart';
+import 'package:famscreen/data/dbMovies.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
-import '../components/filter_jenis.dart';
-import '../data/models/film.dart';
 import '../services/databases_services.dart';
 import '../components/navbar.dart';
 
@@ -17,44 +15,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
 
-  List<Movies>? movie;
-  List<Movies>? displayedMovies;
-  bool isLoaded = false;
-  String selectedCategory = 'All';
+  final dbServices = DatabasesServices();
 
-  void updateCategory(List<Film> filteredMovies) {
-    setState(() {
-      displayedMovies = filteredMovies.cast<Movies>();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadMovies();
-  }
-
-  Future<void> loadMovies() async {
-    final databaseService = DatabasesServices(); // Initialize DatabasesServices
-    try {
-      databaseService.getMoviesStream().listen((querySnapshot) {
-        // Map Firestore documents to Movies objects
-        final fetchedMovies =
-            querySnapshot.docs.map((doc) => doc.data() as Movies).toList();
-
-        setState(() {
-          isLoaded = true;
-          movie = fetchedMovies; // Set the fetched movies
-          displayedMovies = fetchedMovies; // Set the movies to be displayed
-        });
-      });
-    } catch (e) {
-      setState(() {
-        isLoaded = true; // Ensure the UI does not hang
-      });
-      print('Error fetching movies: $e');
-    }
-  }
+  final data = DBMovies().movies;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +31,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: loadMovies,
-        color: CustomColor.primary,
-        backgroundColor: Colors.white,
+      body: Container(
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
@@ -96,6 +56,18 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+      ),
+      // ! NANTI HAPUS, INI BUAT DEBUG AJA
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // dbServices.deleteAllDocuments('movies');
+          await dbServices.addData(data[0]);
+          for (var movie in data) {
+            await dbServices.addData(movie);
+          }
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: CustomColor.primary,
       ),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,

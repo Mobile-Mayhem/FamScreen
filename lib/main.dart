@@ -1,9 +1,8 @@
 import 'package:camera/camera.dart';
-import 'package:famscreen/data/provider/favorite_provider.dart';
-import 'package:famscreen/pages/MovieListPage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'pages/HomePage.dart';
 import 'utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -23,10 +22,7 @@ Future<void> main() async {
 
   // Jalankan aplikasi dengan ChangeNotifierProvider
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => FavoriteFilmsProvider(),
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 

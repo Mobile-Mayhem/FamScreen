@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../utils/Colors.dart';
-import '../data/models/film.dart';
 
 class CategoryButton extends StatelessWidget {
   final String text;
@@ -98,4 +97,8 @@ class CategoryRow extends StatelessWidget {
       ],
     );
   }
+}
+
+class Film {
+  var jenis;
 }

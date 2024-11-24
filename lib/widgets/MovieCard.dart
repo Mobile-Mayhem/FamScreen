@@ -2,6 +2,7 @@ import 'package:famscreen/widgets/SkeletonCard.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
+import '../pages/MovieListPage.dart';
 
 class MovieCard extends StatelessWidget {
   MovieCard({super.key});
@@ -23,26 +24,26 @@ class MovieCard extends StatelessWidget {
           final movies = snapshot.data!;
 
           return GridView.builder(
-            shrinkWrap: true, 
+            shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, 
-              crossAxisSpacing: 12, 
-              childAspectRatio: 0.53, 
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.53,
             ),
             itemCount: movies.length,
             itemBuilder: (context, index) {
               final movie = movies[index];
 
-              return GestureDetector(
-                // onTap: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (_) => DetailPage(movie: movie),
-                //     ),
-                //   );
-                // },
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(movie: movie),
+                    ),
+                  );
+                },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -72,7 +73,8 @@ class MovieCard extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Icon(Icons.star, color: Colors.yellow[800], size: 16),
+                            Icon(Icons.star,
+                                color: Colors.yellow[800], size: 16),
                             const SizedBox(width: 4),
                             Text(movie['rate_imdb'].toString()),
                           ],
