@@ -1,117 +1,48 @@
-import 'package:flutter/material.dart';
-import '../pages/HomePage.dart';
-import '../pages/FavoritPage.dart';
-import '../pages/SearchScreen.dart';
-import '../pages/HistoryPage.dart';
-import '../pages/ProfilPage.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 
-class CustomNavigationBar extends StatefulWidget {
-  final int currentIndex;
-  final ValueChanged<int> onDestinationSelected;
+import '../utils/Colors.dart';
 
-  const CustomNavigationBar({
-    Key? key,
-    required this.currentIndex,
-    required this.onDestinationSelected,
-  }) : super(key: key);
-
-  @override
-  _CustomNavigationBarState createState() => _CustomNavigationBarState();
-}
-
-class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  final List<Widget> _pages = [
-    HomePage(),
-    FavoritPage(),
-    SearchScreen(),
-    HistoryPage(),
-    ProfilePage(),
-  ];
-
-  // Fungsi untuk menangani perubahan halaman
-  void _navigateToPage(int index) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => _pages[index]),
-    );
-  }
+class NavBar extends StatelessWidget {
+  const NavBar({
+    super.key,
+    required int currentIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      backgroundColor: Colors.white,
-      onDestinationSelected: (index) {
-        _navigateToPage(index); // Memanggil fungsi navigasi
-        widget.onDestinationSelected(index);
-      },
-      selectedIndex: widget.currentIndex,
-      destinations: <Widget>[
-        NavigationDestination(
-          icon: Image.asset(
-            'assets/icons/home.png',
-            width: 30,
-            height: 30,
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: GNav(
+        gap: 5,
+        rippleColor: CustomColor.primary,
+        tabActiveBorder: Border.all(color: CustomColor.primary, width: 2),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        iconSize: 25,
+        tabs: [
+          GButton(
+            icon: LineIcons.home,
+            text: 'Home',
           ),
-          label: "",
-          selectedIcon: Image.asset(
-            'assets/icons/home_selected.png',
-            width: 30,
-            height: 30,
+          GButton(
+            icon: LineIcons.heart,
+            text: 'Likes',
           ),
-        ),
-        NavigationDestination(
-          icon: Image.asset(
-            'assets/icons/heart.png',
-            width: 30,
-            height: 30,
+          GButton(
+            icon: LineIcons.search,
+            text: 'Search',
           ),
-          label: "",
-          selectedIcon: Image.asset(
-            'assets/icons/heart_selected.png',
-            width: 30,
-            height: 30,
+          GButton(
+            icon: LineIcons.clock,
+            text: 'History',
           ),
-        ),
-        NavigationDestination(
-          icon: Image.asset(
-            'assets/icons/search.png',
-            width: 30,
-            height: 30,
+          GButton(
+            icon: LineIcons.user,
+            text: 'Profile',
           ),
-          label: "",
-          selectedIcon: Image.asset(
-            'assets/icons/search_selected.png',
-            width: 30,
-            height: 30,
-          ),
-        ),
-        NavigationDestination(
-          icon: Image.asset(
-            'assets/icons/history.png',
-            width: 30,
-            height: 30,
-          ),
-          label: "",
-          selectedIcon: Image.asset(
-            'assets/icons/history_selected.png',
-            width: 30,
-            height: 30,
-          ),
-        ),
-        NavigationDestination(
-          icon: Image.asset(
-            'assets/icons/profile.png',
-            width: 30,
-            height: 30,
-          ),
-          label: "",
-          selectedIcon: Image.asset(
-            'assets/icons/profile_selected.png',
-            width: 30,
-            height: 30,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

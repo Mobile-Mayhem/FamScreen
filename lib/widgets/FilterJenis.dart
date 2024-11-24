@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../utils/Colors.dart';
-import '../data/models/film.dart';
 
 class CategoryButton extends StatelessWidget {
   final String text;
@@ -46,8 +45,7 @@ class CategoryRow extends StatelessWidget {
   final List<Film> allFilms;
   final String selectedCategory;
   final Function(String) onCategorySelected;
-  final Function(List<Film>)
-      onFilteredFilms; // Callback untuk mengirim daftar film yang difilter
+  final Function(List<Film>) onFilteredFilms;
 
   const CategoryRow({
     Key? key,
@@ -99,4 +97,8 @@ class CategoryRow extends StatelessWidget {
       ],
     );
   }
+}
+
+class Film {
+  var jenis;
 }

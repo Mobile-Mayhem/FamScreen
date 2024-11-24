@@ -1,33 +1,27 @@
 // To parse this JSON data, do
 //
-//     final film = filmFromJson(jsonString);
+//     final movies = moviesFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Film> filmFromJson(String str) =>
-    List<Film>.from(json.decode(str).map((x) => Film.fromJson(x)));
+Movies moviesFromJson(String str) => Movies.fromJson(json.decode(str));
 
-String filmToJson(List<Film> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String moviesToJson(Movies data) => json.encode(data.toJson());
 
-class Film {
-  int id;
+class Movies {
   String posterPotrait;
   String posterLandscap;
   String judul;
   String genre;
   String deskripsi;
-  String tahunRilis;
+  int tahunRilis;
   int durasi;
-  String rateImdb;
+  double rateImdb;
   String jenis;
-  String kategoriUsia;
+  String ratingFilm;
   String linkStreaming;
-  DateTime createdAt;
-  DateTime updatedAt;
 
-  Film({
-    required this.id,
+  Movies({
     required this.posterPotrait,
     required this.posterLandscap,
     required this.judul,
@@ -37,14 +31,11 @@ class Film {
     required this.durasi,
     required this.rateImdb,
     required this.jenis,
-    required this.kategoriUsia,
+    required this.ratingFilm,
     required this.linkStreaming,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
-  factory Film.fromJson(Map<String, dynamic> json) => Film(
-        id: json["id"],
+  factory Movies.fromJson(Map<String, dynamic> json) => Movies(
         posterPotrait: json["poster_potrait"],
         posterLandscap: json["poster_landscap"],
         judul: json["judul"],
@@ -52,16 +43,13 @@ class Film {
         deskripsi: json["deskripsi"],
         tahunRilis: json["tahun_rilis"],
         durasi: json["durasi"],
-        rateImdb: json["rate_imdb"],
+        rateImdb: json["rate_imdb"]?.toDouble(),
         jenis: json["jenis"],
-        kategoriUsia: json["kategori_usia"],
+        ratingFilm: json["rating_film"],
         linkStreaming: json["link_streaming"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "poster_potrait": posterPotrait,
         "poster_landscap": posterLandscap,
         "judul": judul,
@@ -71,9 +59,7 @@ class Film {
         "durasi": durasi,
         "rate_imdb": rateImdb,
         "jenis": jenis,
-        "kategori_usia": kategoriUsia,
+        "rating_film": ratingFilm,
         "link_streaming": linkStreaming,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }
