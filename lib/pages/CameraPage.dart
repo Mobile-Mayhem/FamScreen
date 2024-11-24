@@ -128,7 +128,7 @@ class _CameraPageState extends State<CameraPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const HomePage()),
+                  MaterialPageRoute(builder: (_) => HomePage()),
                 );
               },
             ),

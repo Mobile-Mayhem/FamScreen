@@ -2,7 +2,6 @@ import 'package:famscreen/widgets/SkeletonCard.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
-import '../pages/MovieListPage.dart';
 
 class MovieCard extends StatelessWidget {
   MovieCard({super.key});

@@ -172,14 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-      ),
+      bottomNavigationBar: NavBar(currentIndex: currentPageIndex),
     );
   }
 }

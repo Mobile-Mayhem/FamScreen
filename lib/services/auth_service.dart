@@ -1,5 +1,4 @@
 import 'package:famscreen/pages/LoginPage.dart';
-import 'package:famscreen/pages/MovieListPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -86,7 +85,7 @@ class AuthService {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Movielistpage(),
+          builder: (context) => CameraPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {
