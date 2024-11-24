@@ -101,7 +101,21 @@ class RegForm extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        OtherLoginMethod(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SignInButton.mini(
+              buttonSize: ButtonSize.medium,
+              buttonType: ButtonType.google,
+              onPressed: () {},
+            ),
+            SignInButton.mini(
+              buttonType: ButtonType.facebook,
+              buttonSize: ButtonSize.medium,
+              onPressed: () {},
+            ),
+          ],
+        ),
         SizedBox(
           height: 20,
         ),
@@ -121,31 +135,6 @@ class RegForm extends StatelessWidget {
             )
           ],
         )
-      ],
-    );
-  }
-}
-
-class OtherLoginMethod extends StatelessWidget {
-  const OtherLoginMethod({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SignInButton.mini(
-          buttonSize: ButtonSize.medium,
-          buttonType: ButtonType.google,
-          onPressed: () {},
-        ),
-        SignInButton.mini(
-          buttonType: ButtonType.facebook,
-          buttonSize: ButtonSize.medium,
-          onPressed: () {},
-        ),
       ],
     );
   }
