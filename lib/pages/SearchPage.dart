@@ -1,7 +1,6 @@
 import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/DetailPage.dart';
 import 'package:flutter/material.dart';
-import '../components/navbar.dart';
 
 class SearchPage extends StatefulWidget {
   @override

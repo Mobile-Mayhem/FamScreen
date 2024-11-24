@@ -4,10 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter/src/widgets/framework.dart';
-
 Movies moviesFromJson(String str) => Movies.fromJson(json.decode(str));
 
 String moviesToJson(Movies data) => json.encode(data.toJson());

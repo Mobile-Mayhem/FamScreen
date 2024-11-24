@@ -1,6 +1,11 @@
+import 'package:famscreen/models/HistoryItem.dart';
 import 'package:flutter/material.dart';
 
+import '../models/HistoryItem.dart';
+
 class HistoryPage extends StatelessWidget {
+  // Removed incorrect declaration of HistoryItem
+
   final List<HistoryItem> historyItems = [
     HistoryItem(
       title: 'Venom 3 (Venom: The Last Dance)',
@@ -24,12 +29,8 @@ class HistoryPage extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Riwayat',
-          style: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -143,15 +144,6 @@ class HistoryPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class HistoryItem {
-  final String title;
-  final String image;
-  final String description;
-
-  HistoryItem(
-      {required this.title, required this.image, required this.description});
 }
 
 class FilterButton extends StatelessWidget {

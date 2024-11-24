@@ -1,8 +1,9 @@
 import 'package:famscreen/data/dbMovies.dart';
 import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:famscreen/utils/Colors.dart';
-import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:line_icons/line_icons.dart';
 import '../services/databases_services.dart';
 import 'FavoritPage.dart';
 import 'SearchPage.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentPageIndex], // Mengubah halaman berdasarkan index
+      body: _pages[_currentPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await dbServices.addData(data[0]);
@@ -44,51 +45,43 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
         backgroundColor: CustomColor.primary,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPageIndex,
-        onTap: (index) {
-          setState(() {
-            _currentPageIndex = index; // Memperbarui halaman saat di-klik
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: CustomColor.primary,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorit'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-        ],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GNav(
+          onTabChange: (index) {
+            setState(() {
+              _currentPageIndex = index; // Memperbarui halaman saat tab diubah
+            });
+          },
+          gap: 5,
+          rippleColor: CustomColor.primary,
+          tabActiveBorder: Border.all(color: CustomColor.primary, width: 2),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          iconSize: 25,
+          tabs: [
+            GButton(
+              icon: LineIcons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: LineIcons.heart,
+              text: 'Likes',
+            ),
+            GButton(
+              icon: LineIcons.search,
+              text: 'Search',
+            ),
+            GButton(
+              icon: LineIcons.clock,
+              text: 'History',
+            ),
+            GButton(
+              icon: LineIcons.user,
+              text: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-/// Halaman Konten HomePage (agar lebih modular)
-// class HomePageContent extends StatelessWidget {
-//   const HomePageContent({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SingleChildScrollView(
-//       physics: const AlwaysScrollableScrollPhysics(),
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 16),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: 16),
-//             const Text(
-//               'Rekomendasi',
-//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//             ),
-//             const SizedBox(height: 16),
-//             MovieCard(),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

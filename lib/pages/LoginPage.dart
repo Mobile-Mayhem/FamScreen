@@ -1,5 +1,7 @@
+import 'package:famscreen/components/PasswordForm.dart';
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import '../components/EmailForm.dart';
 import 'RegisterPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
@@ -49,39 +51,9 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Text('Masukkan email dan password anda'),
             ),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email_outlined, color: CustomColor.gray),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: CustomColor.primary),
-                    borderRadius: BorderRadius.circular(10.0)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: CustomColor.primary, width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0)),
-                labelText: 'Email',
-                labelStyle: TextStyle(color: CustomColor.gray),
-                border: const OutlineInputBorder(),
-              ),
-            ),
+            EmailForm(emailController: emailController),
             SizedBox(height: 15),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outlined, color: CustomColor.gray),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: CustomColor.primary),
-                    borderRadius: BorderRadius.circular(10.0)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: CustomColor.primary, width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0)),
-                labelText: 'Password',
-                labelStyle: TextStyle(color: CustomColor.gray),
-                border: const OutlineInputBorder(),
-              ),
-            ),
+            PasswordForm(passwordController: passwordController),
             const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () async {

@@ -1,4 +1,3 @@
-import 'package:famscreen/components/navbar.dart';
 import 'package:famscreen/pages/DetailPage.dart';
 import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +12,8 @@ class FavoritePage extends StatelessWidget {
         elevation: 0,
         title: Text(
           'Favorit',
-          style: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

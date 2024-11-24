@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/RegisterPage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Jalankan aplikasi dengan ChangeNotifierProvider
   runApp(
     const MyApp(),
   );
@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      //home: Movielistpage(),
-      home: HomePage(),
+      home: RegisterPage(),
     );
   }
 }
