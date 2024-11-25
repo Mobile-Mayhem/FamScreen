@@ -1,4 +1,4 @@
-import 'package:famscreen/data/dbMovies.dart';
+import 'package:famscreen/pages/AddMoviePage.dart';
 import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final dbServices = DatabasesServices();
-  final data = DBMovies().movies;
 
   int _currentPageIndex = 0;
 
@@ -35,21 +34,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentPageIndex],
-      persistentFooterButtons: [
-        ElevatedButton(
-          onPressed: () {
-            dbServices.setAges("Dewasa");
-          },
-          child: const Text('Add data'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            // Action for second button
-            dbServices.getAges();
-          },
-          child: const Text('Get Data'),
-        ),
-      ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => AddMoviePage()),
+          );
+        },
+        child: const Icon(Icons.add_moderator_sharp),
+        backgroundColor: CustomColor.primary,
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GNav(

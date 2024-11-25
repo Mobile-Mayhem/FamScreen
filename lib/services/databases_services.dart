@@ -36,7 +36,7 @@ class DatabasesServices {
 
   addData(Map<String, dynamic> data) async {
     try {
-      await db.collection("moviesRec").add(data);
+      await db.collection("movies").add(data);
       print("Data berhasil ditambahkan");
     } catch (e) {
       print('Error adding data: $e');
@@ -46,8 +46,8 @@ class DatabasesServices {
   Future<List<Map<String, dynamic>>> read() async {
     try {
       final querySnapshot = await db
-          .collection("moviesRec")
-          .where("kategori_usia", whereIn: _age) // Use whereIn
+          .collection("movies")
+          .where("kategori_usia", whereIn: _age)
           .get();
       return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {

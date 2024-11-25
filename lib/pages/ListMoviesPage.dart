@@ -1,5 +1,3 @@
-import 'package:famscreen/data/dbMovies.dart';
-import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
@@ -13,7 +11,6 @@ class ListMoviesPage extends StatefulWidget {
 
 class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
-  final data = DBMovies().movies;
 
   @override
   Widget build(BuildContext context) {
