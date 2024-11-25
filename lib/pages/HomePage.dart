@@ -35,16 +35,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await dbServices.addData(data[0]);
-          for (var movie in data) {
-            await dbServices.addData(movie);
-          }
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: CustomColor.primary,
-      ),
+      persistentFooterButtons: [
+        ElevatedButton(
+          onPressed: () {
+            dbServices.setAges("Dewasa");
+          },
+          child: const Text('Add data'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            // Action for second button
+            dbServices.getAges();
+          },
+          child: const Text('Get Data'),
+        ),
+      ],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GNav(
