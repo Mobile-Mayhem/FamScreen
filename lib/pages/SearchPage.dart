@@ -1,65 +1,51 @@
-import 'package:famscreen/pages/HomePage.dart';
-import 'package:famscreen/pages/DetailPage.dart';
+import 'package:famscreen/widgets/SearchBar.dart';
+import 'package:famscreen/widgets/SearchResultCard.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<String> previousSearches = [
-    'Venom 3',
-    'Do You See What I See',
-    'The Dark Knight'
-  ];
-
-  void _removeSearchItem(int index) {
-    setState(() {
-      previousSearches.removeAt(index);
-    });
-  }
+  final List<Map<String, dynamic>> searchResults = []; 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Search',
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            SearchInput(
+              onChanged: (query) {
+                // Tambahkan logika pencarian di sini
+              },
             ),
-            SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Pencarian sebelumnya',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: previousSearches.length,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.53,
+                ),
+                itemCount: searchResults.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(Icons.history),
-                    title: Text(previousSearches[index]),
-                    trailing: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        _removeSearchItem(index);
-                      },
-                    ),
-                  );
+                  final movie = searchResults[index];
+                  return SearchResultCard(movie: movie);
                 },
               ),
             ),

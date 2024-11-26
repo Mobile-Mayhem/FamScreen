@@ -1,24 +1,26 @@
-import 'package:famscreen/models/HistoryItem.dart';
+import 'package:famscreen/widgets/FilterJenis.dart';
+import 'package:famscreen/widgets/HistoryCard.dart';
+import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 
-import '../models/HistoryItem.dart';
+class HistoryPage extends StatefulWidget {
+  const HistoryPage({Key? key}) : super(key: key);
 
-class HistoryPage extends StatelessWidget {
-  // Removed incorrect declaration of HistoryItem
-
-  final List<HistoryItem> historyItems = [
-    HistoryItem(
-      title: 'Venom 3 (Venom: The Last Dance)',
-      image: 'assets/images/venom.jpeg',
-      description:
-          '"Venom 3" adalah film superhero Amerika tentang Venom, sekuel dari "Venom" dan "Venom: Let There Be Carnage," diproduksi oleh Columbia Pictures dan Marvel...',
-    ),
-    HistoryItem(
-      title: 'Do You See What I See',
-      image: 'assets/images/venom.jpeg',
-      description:
-          'Do You See What I See adalah film hantu Indonesia tahun 2024 yang disutradarai oleh Awi Suryadi berdasarkan siniar Do You See What I See Episode #64.',
-    ),
+  @override
+  State<HistoryPage> createState() => _HistorypageState();
+}
+ 
+class _HistorypageState extends State<HistoryPage> {
+  String selectedCategory = 'All'; 
+  final List<Map<String, dynamic>> movies = [ // coba
+    // {
+    //   'poster_potrait': 'https://i.pinimg.com/736x/d2/22/ab/d222ab7828905795cd8591afe0b35721.jpg', 
+    //   'judul': 'Film A',
+    //   'tahun_rilis': 2023,
+    //   'durasi': 120,
+    //   'rate_imdb': 8.5,
+    //   'deskripsi': 'Deskripsi film A yang menarik.',
+    // },
   ];
 
   @override
@@ -27,7 +29,7 @@ class HistoryPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Riwayat',
           style: TextStyle(
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
@@ -36,104 +38,31 @@ class HistoryPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari riwayat',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
-              ),
+            SearchInput(
+              onChanged: (query) {
+                // 
+              },
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                FilterChip(label: Text('All'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Movies'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Series'), onSelected: (_) {}),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.filter_list),
-                  onPressed: () {
-                    // Fungsi untuk tombol lainnya
-                  },
-                ),
-              ],
+            FilterRow(
+              selectedCategory: selectedCategory, 
+              onCategorySelected: (newCategory) {
+                setState(() {
+                  selectedCategory = newCategory;
+                });
+                // 
+              },
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Today',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: historyItems.length,
+                itemCount: movies.length, 
                 itemBuilder: (context, index) {
-                  final item = historyItems[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                15), // Set the border radius to 15
-                            child: Image.asset(
-                              item.image,
-                              width: 70,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "2015  ·  1h 35m  ·  ",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.yellow, // Yellow star icon
-                                      size: 16,
-                                    ),
-                                    const Text(
-                                      " 8.1",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  item.description,
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: HistoryCard(
+                      movie: movies[index], 
                     ),
                   );
                 },
@@ -141,29 +70,6 @@ class HistoryPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class FilterButton extends StatelessWidget {
-  final String label;
-
-  const FilterButton({Key? key, required this.label}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.amber,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      onPressed: () {},
-      child: Text(
-        label,
-        style: const TextStyle(color: Colors.black),
       ),
     );
   }
