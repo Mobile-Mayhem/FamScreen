@@ -43,4 +43,12 @@ class FavMoviesServices {
     await prefs.setStringList(_favKey, favMovies);
     print('Removed from favorites: $title');
   }
+
+// Fungsi untuk mengecek apakah film sudah ada di favorit
+  Future<bool> isMovieFav(Map<String, dynamic> movie) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favMovies = prefs.getStringList(_favKey) ?? [];
+
+    return favMovies.any((item) => jsonDecode(item)['judul'] == movie['judul']);
+  }
 }
