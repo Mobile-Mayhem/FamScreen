@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
 
+import '../widgets/FavItem.dart';
+
 class FavoritePage extends StatefulWidget {
   @override
   _FavoritePageState createState() => _FavoritePageState();
@@ -21,6 +23,14 @@ class _FavoritePageState extends State<FavoritePage> {
     setState(() {
       favoriteMovies = movies;
     });
+  }
+
+  Future<void> _removeFavorite(String title) async {
+    await FavMoviesServices().removeFav(title);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$title dihapus dari favorit.')),
+    );
+    _loadFavorites();
   }
 
   @override
@@ -53,62 +63,10 @@ class _FavoritePageState extends State<FavoritePage> {
                 return FavoriteItem(
                   title: movie['judul'],
                   image: movie['poster_landscap'] ?? 'assets/placeholder.jpg',
+                  onRemove: () => _removeFavorite(movie['judul']),
                 );
               },
             ),
-    );
-  }
-}
-
-class FavoriteItem extends StatelessWidget {
-  final String title;
-  final String image;
-
-  const FavoriteItem({required this.title, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 120,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: NetworkImage(image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 5,
-              right: 5,
-              child: GestureDetector(
-                onTap: () async {
-                  await FavMoviesServices().removeFav(title);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$title dihapus dari favorit.')),
-                  );
-                },
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
     );
   }
 }
