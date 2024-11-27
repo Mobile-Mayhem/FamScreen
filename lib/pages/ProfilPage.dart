@@ -83,8 +83,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.transparent,
               ),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Melissa Peters',
+              child: Text(
+                FirebaseAuth.instance.currentUser?.displayName ?? 'Belum diisi',
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black54),
               ),

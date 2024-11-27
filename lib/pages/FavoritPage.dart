@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
 
 import '../widgets/FavItem.dart';
+import 'DetailPage.dart';
 
 class FavoritePage extends StatefulWidget {
   @override
@@ -64,6 +65,14 @@ class _FavoritePageState extends State<FavoritePage> {
                   title: movie['judul'],
                   image: movie['poster_landscap'] ?? 'assets/placeholder.jpg',
                   onRemove: () => _removeFavorite(movie['judul']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(movie: movie),
+                      ),
+                    );
+                  },
                 );
               },
             ),
