@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../utils/Colors.dart';
 
-class CategoryButton extends StatelessWidget {
+class FilterJenis extends StatelessWidget {
   final String text;
   final bool isSelected;
   final VoidCallback onPressed;
 
-  const CategoryButton({
+  const FilterJenis({
     Key? key,
     required this.text,
     required this.isSelected,
@@ -41,64 +41,43 @@ class CategoryButton extends StatelessWidget {
   }
 }
 
-class CategoryRow extends StatelessWidget {
-  final List<Film> allFilms;
+class FilterRow extends StatelessWidget {
   final String selectedCategory;
   final Function(String) onCategorySelected;
-  final Function(List<Film>) onFilteredFilms;
 
-  const CategoryRow({
+  const FilterRow({
     Key? key,
-    required this.allFilms,
     required this.selectedCategory,
     required this.onCategorySelected,
-    required this.onFilteredFilms,
   }) : super(key: key);
-
-  void filterFilms(String jenis) {
-    List<Film> filteredFilms;
-    if (jenis == 'All') {
-      filteredFilms = allFilms;
-    } else {
-      filteredFilms = allFilms.where((film) => film.jenis == jenis).toList();
-    }
-    onFilteredFilms(filteredFilms);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        CategoryButton(
+        FilterJenis(
           text: 'All',
           isSelected: selectedCategory == 'All',
           onPressed: () {
             onCategorySelected('All');
-            filterFilms('All');
           },
         ),
-        CategoryButton(
+        FilterJenis(
           text: 'Movies',
           isSelected: selectedCategory == 'Movies',
           onPressed: () {
             onCategorySelected('Movies');
-            filterFilms('film');
           },
         ),
-        CategoryButton(
+        FilterJenis(
           text: 'Series',
           isSelected: selectedCategory == 'Series',
           onPressed: () {
             onCategorySelected('Series');
-            filterFilms('series');
           },
         ),
       ],
     );
   }
-}
-
-class Film {
-  var jenis;
 }
