@@ -16,8 +16,7 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading:
-            false, // Adjust based on need for back button
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
@@ -25,26 +24,70 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                const Text(
+      body: CustomScrollView(
+        slivers: [
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _SliverAppBarDelegate(
+              minHeight: 60.0,
+              maxHeight: 60.0,
+              child: Container(
+                color: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                alignment: Alignment.centerLeft,
+                child: const Text(
                   'Rekomendasi',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
-                MovieCard(), // Movie card will display the movies from the database
-              ],
+              ),
             ),
           ),
-        ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child:
+                      MovieCard(), // Movie card will display the movies from the database
+                );
+              },
+              childCount: 1, // Adjust based on the number of movie cards
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }

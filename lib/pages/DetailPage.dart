@@ -1,8 +1,35 @@
+import 'package:famscreen/services/fav_movies_services.dart';
 import 'package:flutter/material.dart';
+import '../components/MovieGenre.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
   const DetailPage({Key? key, required this.movie}) : super(key: key);
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  late Future<bool> _isFavoriteFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
+  }
+
+  void _toggleFavorite() async {
+    bool isFavorite = await _isFavoriteFuture;
+    if (!isFavorite) {
+      await FavMoviesServices().addFav(widget.movie);
+    } else {
+      await FavMoviesServices().removeFav(widget.movie['judul']);
+    }
+    setState(() {
+      _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +37,7 @@ class DetailPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.network(movie['poster_landscap'],
+          Image.network(widget.movie['poster_landscap'],
               width: double.infinity, height: 300, fit: BoxFit.cover),
           Container(
             padding: const EdgeInsets.all(20),
@@ -27,36 +54,7 @@ class DetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  leading: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.3),
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: IconButton(
-                      icon:
-                          const Icon(Icons.arrow_back_ios, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  actions: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border,
-                            color: Colors.black),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
+                AppBarDetail(context),
               ],
             ),
           ),
@@ -67,7 +65,7 @@ class DetailPage extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(movie['tahun_rilis'].toString(),
+                    Text(widget.movie['tahun_rilis'].toString(),
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Container(
@@ -82,33 +80,25 @@ class DetailPage extends StatelessWidget {
                               fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(width: 8),
-                    Text(movie['rate_imdb'].toString() + ' |',
+                    Text(widget.movie['rate_imdb'].toString() + ' |',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text(movie['durasi'].toString() + ' menit',
+                    Text(widget.movie['durasi'].toString() + ' menit',
                         style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  movie['judul'],
+                  widget.movie['judul'],
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  movie['deskripsi'],
+                  widget.movie['deskripsi'],
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 15),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(255, 228, 227, 227),
-                  ),
-                  child: const Text('Animasi', style: TextStyle(fontSize: 14)),
-                ),
+                MovieGenre(movie: widget.movie),
                 const SizedBox(height: 30),
                 const Text(
                   'Lihat Sekarang',
@@ -136,6 +126,51 @@ class DetailPage extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  AppBar AppBarDetail(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: Container(
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.3),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(15)),
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      actions: [
+        FutureBuilder<bool>(
+          future: _isFavoriteFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+
+            bool isFavorite = snapshot.data ?? false;
+
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.red : Colors.black,
+                ),
+                onPressed: _toggleFavorite,
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

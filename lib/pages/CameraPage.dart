@@ -42,8 +42,8 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
-    // final url = Uri.parse('http://128.199.78.57:5000/upload');
-    final url = Uri.parse('http://192.168.1.100:8004/upload');
+    final url = Uri.parse('http://128.199.78.57:5000/upload');
+    // final url = Uri.parse('http://192.168.1.100:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
