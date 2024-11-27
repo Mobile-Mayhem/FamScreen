@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
+import 'package:famscreen/services/databases_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +19,10 @@ class _CameraPageState extends State<CameraPage> {
   late CameraController controller;
   bool _isCameraInitialized = false;
   XFile? _capturedImage;
+  String age = '';
+
+  // final DatabasesServices dbServices = DatabasesServices();
+  final dbServices = DatabasesServices();
 
   @override
   void dispose() {
@@ -37,7 +42,8 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.73.222:8004/upload');
+    // final url = Uri.parse('http://128.199.78.57:5000/upload');
+    final url = Uri.parse('http://192.168.1.100:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -48,9 +54,16 @@ class _CameraPageState extends State<CameraPage> {
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
-        String prediction = jsonData['prediction'];
-
-        await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $prediction');
+        int prediction = jsonData['prediction'];
+        if (prediction == 0) {
+          age = 'Anak-anak';
+        } else if (prediction == 1) {
+          age = 'Remaja';
+        } else if (prediction == 2) {
+          age = 'Dewasa';
+        }
+        dbServices.setAges(age);
+        await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $age');
       } else {
         print('Image upload failed with status: ${response.statusCode}');
         await _showAlertDialog(
@@ -112,7 +125,7 @@ class _CameraPageState extends State<CameraPage> {
   Future<void> _showAlertDialog(String title, String content) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button to dismiss the dialog
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
@@ -126,10 +139,15 @@ class _CameraPageState extends State<CameraPage> {
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => HomePage()),
-                );
+              onPressed: () async {
+                if (age.isNotEmpty) {
+                  await dbServices.setAges(age);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HomePage()),
+                  );
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],
@@ -186,9 +204,9 @@ class _CameraPageState extends State<CameraPage> {
                   _takePicture();
                   // dispose();
                   print('Gambar diambil dan dikirim');
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const HomePage()),
-                  );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(builder: (_) => const HomePage()),
+                  // );
                 },
                 child: const Text('Ambil Gambar'),
                 style: ElevatedButton.styleFrom(

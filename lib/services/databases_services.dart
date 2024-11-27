@@ -1,7 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabasesServices {
+  static final DatabasesServices _instance = DatabasesServices._internal();
+
+  factory DatabasesServices() {
+    return _instance;
+  }
+
+  DatabasesServices._internal();
+
   final db = FirebaseFirestore.instance;
+  List<String> _age = [];
+  String moviesRec = "";
+  setAges(moviesRec) {
+    if (moviesRec == "Anak-anak") {
+      _age = ["SU"];
+    } else if (moviesRec == "Remaja") {
+      _age = ["SU", "13+"];
+    } else if (moviesRec == "Dewasa") {
+      _age = ["SU", "13+", "18+", "21+"];
+    } else {
+      _age = [];
+      print("Kategori usia tidak diketahui.");
+    }
+    print(_age);
+  }
+
+  getAges() {
+    print(moviesRec);
+    print(_age);
+    if (_age.isEmpty) {
+      print("Kategori usia tidak diketahui.");
+    }
+  }
 
   addData(Map<String, dynamic> data) async {
     try {
@@ -14,18 +45,18 @@ class DatabasesServices {
 
   Future<List<Map<String, dynamic>>> read() async {
     try {
-      final querySnapshot = await db.collection("movies").get();
-      print("Data berhasil diambil");
-      return querySnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+      final querySnapshot = await db
+          .collection("movies")
+          .where("kategori_usia", whereIn: _age)
+          .get();
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       print('Error reading data: $e');
       return [];
     }
   }
 
-  final collectionName = 'movies';
+  final collectionName = 'moviesRec';
   Future<void> deleteAllDocuments(String collectionName) async {
     try {
       // Ambil referensi koleksi

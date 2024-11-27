@@ -1,5 +1,3 @@
-import 'package:famscreen/data/dbMovies.dart';
-import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
@@ -13,7 +11,6 @@ class ListMoviesPage extends StatefulWidget {
 
 class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
-  final data = DBMovies().movies;
 
   @override
   Widget build(BuildContext context) {
@@ -47,27 +44,6 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
             ),
           ),
         ),
-      ),
-      // ! Hapus saat production
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            await dbServices
-                .addData(data[0]); // Add the first movie for debugging
-            for (var movie in data) {
-              await dbServices.addData(movie); // Add all movies to the database
-            }
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Movies added successfully!"),
-            ));
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Error adding movies: $e"),
-            ));
-          }
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: CustomColor.primary,
       ),
     );
   }
