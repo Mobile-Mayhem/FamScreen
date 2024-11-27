@@ -85,4 +85,29 @@ class DatabasesServices {
       print("Terjadi kesalahan saat me-refresh koleksi: $e");
     }
   }
+
+  // Fungsi search
+  Future<List<Map<String, dynamic>>> performSearch(String query) async {
+    List<Map<String, dynamic>> searchResults = [];
+
+    if (query.isEmpty) {
+      return searchResults;
+    }
+
+    try {
+      final snapshot = await db
+          .collection('movies')
+          .where('judul', isGreaterThanOrEqualTo: query)
+          .where('judul', isLessThanOrEqualTo: query + '\uf8ff')
+          .get();
+
+      for (var doc in snapshot.docs) {
+        searchResults.add(doc.data() as Map<String, dynamic>);
+      }
+    } catch (e) {
+      throw Exception('Error searching: $e');
+    }
+
+    return searchResults;
+  }
 }

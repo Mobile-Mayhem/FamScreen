@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famscreen/services/databases_services.dart';
 import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:famscreen/widgets/SearchResultCard.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,20 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final List<Map<String, dynamic>> searchResults = []; 
+  final List<Map<String, dynamic>> searchResults = [];
+  final DatabasesServices searchService = DatabasesServices();
+
+  Future<void> performSearch(String query) async {
+    try {
+      final results = await searchService.performSearch(query);
+      setState(() {
+        searchResults.clear();
+        searchResults.addAll(results);
+      });
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             SearchInput(
               onChanged: (query) {
-                // Tambahkan logika pencarian di sini
+                performSearch(query);
               },
             ),
             const SizedBox(height: 20),
