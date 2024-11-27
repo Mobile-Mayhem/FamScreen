@@ -1,4 +1,7 @@
+import 'package:famscreen/services/fav_movies_services.dart';
 import 'package:flutter/material.dart';
+
+import '../components/MovieGenre.dart';
 
 class DetailPage extends StatelessWidget {
   final Map<String, dynamic> movie;
@@ -52,7 +55,10 @@ class DetailPage extends StatelessWidget {
                       child: IconButton(
                         icon: const Icon(Icons.favorite_border,
                             color: Colors.black),
-                        onPressed: () {},
+                        onPressed: () {
+                          // Add your favorite movie here
+                          FavMoviesServices().addFav(movie);
+                        },
                       ),
                     ),
                   ],
@@ -100,15 +106,7 @@ class DetailPage extends StatelessWidget {
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 15),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(255, 228, 227, 227),
-                  ),
-                  child: const Text('Animasi', style: TextStyle(fontSize: 14)),
-                ),
+                MovieGenre(movie: movie),
                 const SizedBox(height: 30),
                 const Text(
                   'Lihat Sekarang',

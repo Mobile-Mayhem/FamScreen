@@ -1,9 +1,28 @@
-import 'package:famscreen/pages/DetailPage.dart';
-import 'package:famscreen/pages/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:famscreen/services/fav_movies_services.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
+  @override
+  _FavoritePageState createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
+  List<Map<String, dynamic>> favoriteMovies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
+
+  Future<void> _loadFavorites() async {
+    List<Map<String, dynamic>> movies =
+        await FavMoviesServices().getFavMovies();
+    setState(() {
+      favoriteMovies = movies;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,56 +35,27 @@ class FavoritePage extends StatelessWidget {
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari favorit',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-              ),
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FilterChip(label: Text('All'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Movies'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Series'), onSelected: (_) {}),
-              ],
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
+      body: favoriteMovies.isEmpty
+          ? Center(
+              child: Text('Belum ada film favorit.'),
+            )
+          : GridView.builder(
+              padding: EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.6,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
-                children: [
-                  FavoriteItem(
-                      title: 'The Dark Knight',
-                      image: 'assets/dark_knight.jpg'),
-                  FavoriteItem(
-                      title: 'The Lord of ...',
-                      image: 'assets/lord_of_the_rings.jpg'),
-                  FavoriteItem(
-                      title: 'Inception', image: 'assets/inception.jpg'),
-                ],
               ),
+              itemCount: favoriteMovies.length,
+              itemBuilder: (context, index) {
+                var movie = favoriteMovies[index];
+                return FavoriteItem(
+                  title: movie['judul'],
+                  image: movie['poster_landscap'] ?? 'assets/placeholder.jpg',
+                );
+              },
             ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -88,7 +78,7 @@ class FavoriteItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
-                  image: AssetImage(image),
+                  image: NetworkImage(image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -96,10 +86,18 @@ class FavoriteItem extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: Icon(
-                Icons.favorite,
-                color: Colors.amber,
-                size: 20,
+              child: GestureDetector(
+                onTap: () async {
+                  await FavMoviesServices().removeFav(title);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('$title dihapus dari favorit.')),
+                  );
+                },
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  size: 20,
+                ),
               ),
             ),
           ],

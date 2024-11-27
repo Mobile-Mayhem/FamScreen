@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:famscreen/pages/CameraPage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'utils/theme.dart';
