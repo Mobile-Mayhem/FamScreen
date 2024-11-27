@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       theme: customTheme,
       // home: OnBoardingPage(),
-      home: CameraPage(),
+      home: OnBoardingPage(),
     );
   }
 }
