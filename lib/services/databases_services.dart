@@ -10,8 +10,9 @@ class DatabasesServices {
   DatabasesServices._internal();
 
   final db = FirebaseFirestore.instance;
-  List<String> _age = [];
-  String moviesRec = "";
+  List<String> _age = ["SU", "13+", "18+", "21+"];
+  String moviesRec = "Dewasa";
+
   setAges(moviesRec) {
     if (moviesRec == "Anak-anak") {
       _age = ["SU"];

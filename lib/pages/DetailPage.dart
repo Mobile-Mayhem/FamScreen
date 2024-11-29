@@ -37,8 +37,22 @@ class _DetailPageState extends State<DetailPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.network(widget.movie['poster_landscap'],
-              width: double.infinity, height: 300, fit: BoxFit.cover),
+          Image.network(
+            widget.movie['poster_landscap'],
+            width: double.infinity,
+            height: 300,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Image.asset(
+                  'assets/imgnotfound.png',
+                  height: 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          ),
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.only(top: 210),
@@ -65,7 +79,7 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 Row(
                   children: [
-                    Text(widget.movie['tahun_rilis'].toString(),
+                    Text(widget.movie['tahun_rilis']?.toString() ?? '',
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Container(
@@ -80,21 +94,21 @@ class _DetailPageState extends State<DetailPage> {
                               fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(width: 8),
-                    Text(widget.movie['rate_imdb'].toString() + ' |',
+                    Text(widget.movie['rate_imdb']?.toString() ?? '' + ' |',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text(widget.movie['durasi'].toString() + ' menit',
+                    Text(widget.movie['durasi']?.toString() ?? '' + ' menit',
                         style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.movie['judul'],
+                  widget.movie['judul']?.toString() ?? '',
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.movie['deskripsi'],
+                  widget.movie['deskripsi']?.toString() ?? '',
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 15),

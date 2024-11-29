@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
 import 'utils/theme.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       theme: customTheme,
       // home: OnBoardingPage(),
-      home: OnBoardingPage(),
+      home: HomePage(),
     );
   }
 }

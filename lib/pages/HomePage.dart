@@ -36,9 +36,10 @@ class _HomePageState extends State<HomePage> {
       body: _pages[_currentPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => AddMoviePage()),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(builder: (_) => AddMoviePage()),
+          // );
+          dbServices.getAges();
         },
         child: const Icon(Icons.add_moderator_sharp),
         backgroundColor: CustomColor.primary,
