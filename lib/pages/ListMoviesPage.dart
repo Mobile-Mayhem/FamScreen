@@ -1,6 +1,7 @@
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
+import '../widgets/FilterJenis.dart';
 
 class ListMoviesPage extends StatefulWidget {
   const ListMoviesPage({super.key});
@@ -11,6 +12,7 @@ class ListMoviesPage extends StatefulWidget {
 
 class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
+  // String selectedCategory = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +45,21 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
               ),
             ),
           ),
+          // FilterRow(
+          //   selectedCategory: selectedCategory,
+          //   onCategorySelected: (newCategory) {
+          //     setState(() {
+          //       selectedCategory = newCategory;
+          //     });
+          //     //
+          //   },
+          // ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child:
-                      MovieCard(), // Movie card will display the movies from the database
+                  child: MovieCard(),
                 );
               },
               childCount: 1, // Adjust based on the number of movie cards

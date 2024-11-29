@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../components/MovieGenre.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../services/history_services.dart';
+
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
   const DetailPage({Key? key, required this.movie}) : super(key: key);
@@ -125,6 +127,7 @@ class _DetailPageState extends State<DetailPage> {
                     GestureDetector(
                       onTap: () async {
                         String url = widget.movie['link_streaming'];
+                        await HistoryServices().addHistory(widget.movie);
                         // if (await canLaunchUrl(Uri.parse(url))) {
                         await launchUrl(Uri.parse(url));
                         // } else {
