@@ -130,7 +130,6 @@ class _DetailPageState extends State<DetailPage> {
                         // } else {
                         //   print("Could not launch URL");
                         // }
-                        print(widget.movie['link_streaming']);
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
