@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -65,15 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage(
-                  'assets/images/venom.jpeg',
-                ),
-              ),
-            ),
-            const SizedBox(height: 45),
+            Center(child: Image.asset('assets/images/profil.png', height: 220)),
+            const SizedBox(height: 35),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

@@ -1,6 +1,9 @@
 import 'package:famscreen/services/fav_movies_services.dart';
 import 'package:flutter/material.dart';
 import '../components/MovieGenre.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../services/history_services.dart';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -37,8 +40,22 @@ class _DetailPageState extends State<DetailPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Image.network(widget.movie['poster_landscap'],
-              width: double.infinity, height: 300, fit: BoxFit.cover),
+          Image.network(
+            widget.movie['poster_landscap'],
+            width: double.infinity,
+            height: 300,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Image.asset(
+                  'assets/imgnotfound.png',
+                  height: 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          ),
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.only(top: 210),
@@ -65,7 +82,7 @@ class _DetailPageState extends State<DetailPage> {
               children: [
                 Row(
                   children: [
-                    Text(widget.movie['tahun_rilis'].toString(),
+                    Text(widget.movie['tahun_rilis']?.toString() ?? '',
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Container(
@@ -80,21 +97,21 @@ class _DetailPageState extends State<DetailPage> {
                               fontSize: 12, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(width: 8),
-                    Text(widget.movie['rate_imdb'].toString() + ' |',
+                    Text(widget.movie['rate_imdb']?.toString() ?? '' + ' |',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text(widget.movie['durasi'].toString() + ' menit',
+                    Text(widget.movie['durasi']?.toString() ?? '' + ' menit',
                         style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.movie['judul'],
+                  widget.movie['judul']?.toString() ?? '',
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.movie['deskripsi'],
+                  widget.movie['deskripsi']?.toString() ?? '',
                   style: TextStyle(fontSize: 14, color: Colors.black54),
                 ),
                 const SizedBox(height: 15),
@@ -107,13 +124,25 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    ClipRRect(
+                    GestureDetector(
+                      onTap: () async {
+                        String url = widget.movie['link_streaming'];
+                        await HistoryServices().addHistory(widget.movie);
+                        // if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url));
+                        // } else {
+                        //   print("Could not launch URL");
+                        // }
+                      },
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
                           'assets/images/netflix.png',
                           width: 50,
                           height: 50,
-                        ))
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 30),
