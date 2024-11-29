@@ -1,6 +1,7 @@
 import 'package:famscreen/services/fav_movies_services.dart';
 import 'package:flutter/material.dart';
 import '../components/MovieGenre.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -121,13 +122,25 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    ClipRRect(
+                    GestureDetector(
+                      onTap: () async {
+                        String url = widget.movie['link_streaming'];
+                        // if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url));
+                        // } else {
+                        //   print("Could not launch URL");
+                        // }
+                        print(widget.movie['link_streaming']);
+                      },
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
                           'assets/images/netflix.png',
                           width: 50,
                           height: 50,
-                        ))
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 30),

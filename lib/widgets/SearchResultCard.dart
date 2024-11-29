@@ -41,7 +41,7 @@ class SearchResultCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            movie['judul'],
+            movie['judul'] ?? '',
             style: const TextStyle(fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
