@@ -128,6 +128,7 @@ class _DetailPageState extends State<DetailPage> {
                     GestureDetector(
                       onTap: () async {
                         String url = widget.movie['link_streaming'];
+                        print(widget.movie['link_streaming']);
                         await HistoryServices().addHistory(widget.movie);
                         // if (await canLaunchUrl(Uri.parse(url))) {
                         await launchUrl(Uri.parse(url));
