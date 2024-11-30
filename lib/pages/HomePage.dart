@@ -1,4 +1,5 @@
 import 'package:famscreen/pages/AddMoviePage.dart';
+import 'package:famscreen/pages/CameraPage.dart';
 import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => AddMoviePage()),
+            MaterialPageRoute(builder: (_) => CameraPage()),
           );
           // dbServices.getAges();
         },
-        child: const Icon(Icons.add_moderator_sharp),
+        child: const Icon(Icons.face_unlock_sharp),
         backgroundColor: CustomColor.primary,
       ),
       bottomNavigationBar: Padding(

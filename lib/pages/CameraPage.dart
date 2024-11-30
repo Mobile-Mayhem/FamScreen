@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
+import 'dart:math' as math;
 import 'package:famscreen/services/databases_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +44,6 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     final url = Uri.parse('http://128.199.78.57:5000/upload');
-    // final url = Uri.parse('http://192.168.1.100:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -70,6 +70,7 @@ class _CameraPageState extends State<CameraPage> {
             'Error', 'Image upload failed with status: ${response.statusCode}');
       }
     } catch (e) {
+      Navigator.of(context).pop(); // Tutup dialog loading jika terjadi error
       await _showAlertDialog('Error', 'Error uploading image: $e');
     }
   }
@@ -164,60 +165,64 @@ class _CameraPageState extends State<CameraPage> {
 
     return Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 100),
-            Column(children: [
-              Text('Verifikasi Diri',
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: CustomColor.black)),
-              const SizedBox(height: 30),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: 278,
-                    height: 278,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: CameraPreview(controller),
-                    ),
-                  ),
-                  Image.asset(
-                    'assets/camera_frame.png',
-                    width: 255,
-                    height: 255,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Tetaplah berada di posisi ini, harap menunggu pengambilan gambar',
-                style: TextStyle(fontSize: 16, color: CustomColor.black),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 255),
-              ElevatedButton(
-                onPressed: () {
-                  _takePicture();
-                  // dispose();
-                  print('Gambar diambil dan dikirim');
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (_) => const HomePage()),
-                  // );
-                },
-                child: const Text('Ambil Gambar'),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
+          child: Column(children: [
+        const SizedBox(height: 100),
+        Column(children: [
+          Text('Verifikasi Diri',
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: CustomColor.black)),
+          const SizedBox(height: 30),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 280,
+                height: 320,
+                child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  minimumSize: const Size(309, 50),
-                ),
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationY(math.pi),
+                      child: CameraPreview(controller),
+                    )),
               ),
-            ])
-          ],
+              Image.asset(
+                'assets/camera_frame.png',
+                width: 255,
+                height: 255,
+              ),
+            ],
+          ),
+          const SizedBox(height: 40),
+          Text(
+            'Tetaplah berada di posisi ini dan lihat ke kamera, harap tekan tombol Ambil Gambar apabila anda sudah siap',
+            style: TextStyle(fontSize: 16, color: CustomColor.black),
+            textAlign: TextAlign.center,
+          ),
+          // const SizedBox(height: 255),
+        ]),
+      ])),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: ElevatedButton(
+          onPressed: () {
+            _takePicture();
+            // dispose();
+            print('Gambar diambil dan dikirim');
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(builder: (_) => const HomePage()),
+            // );
+          },
+          child: const Text('Ambil Gambar'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            minimumSize: const Size(309, 50),
+          ),
         ),
       ),
     );
