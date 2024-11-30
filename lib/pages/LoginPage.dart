@@ -6,6 +6,8 @@ import 'RegisterPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
+import 'ResetPasswordPage.dart';
+
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
@@ -55,6 +57,19 @@ class LoginPage extends StatelessWidget {
             EmailForm(emailController: emailController),
             SizedBox(height: 15),
             PasswordForm(passwordController: passwordController),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => ResetPasswordPage()),
+                    );
+                  },
+                  child: const Text('Lupa Password?'),
+                ),
+              ],
+            ),
             const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () async {

@@ -28,4 +28,9 @@ final ThemeData customTheme = ThemeData(
       ),
     ),
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: CustomColor.primary,
+    ),
+  ),
 );

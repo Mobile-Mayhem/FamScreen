@@ -20,7 +20,7 @@ class HistoryCard extends StatelessWidget {
       child: Column(
         children: [
           Card(
-            color: Colors.white, 
+            color: Colors.white,
             elevation: 0,
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: Padding(
@@ -30,10 +30,18 @@ class HistoryCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      movie['poster_potrait'], 
+                      movie['poster_potrait'],
                       width: 70,
                       height: 100,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/imgnotfound.png',
+                          width: 70,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -42,7 +50,7 @@ class HistoryCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          movie['judul'], 
+                          movie['judul'],
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -61,14 +69,14 @@ class HistoryCard extends StatelessWidget {
                               size: 16,
                             ),
                             Text(
-                              movie['rate_imdb'].toString(), 
+                              movie['rate_imdb'].toString(),
                               style: const TextStyle(fontSize: 12),
                             ),
                           ],
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          movie['deskripsi'], 
+                          movie['deskripsi'],
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -83,11 +91,11 @@ class HistoryCard extends StatelessWidget {
               ),
             ),
           ),
-          Divider( 
-            color: Colors.grey.shade300, 
-            thickness: 1, 
+          Divider(
+            color: Colors.grey.shade300,
+            thickness: 1,
             indent: 7,
-            endIndent: 7, 
+            endIndent: 7,
           ),
         ],
       ),
