@@ -1,4 +1,4 @@
-// import 'package:famscreen/services/auth_service.dart';
+import 'package:famscreen/components/NameForm.dart';
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../components/EmailForm.dart';
@@ -10,6 +10,7 @@ import 'package:sign_button/sign_button.dart';
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
 
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -44,6 +45,8 @@ class RegisterPage extends StatelessWidget {
                   padding: const EdgeInsets.all(15.0),
                   child: Text('Gunakan informasi yang sesuai'),
                 ),
+                // NameForm(nameController: nameController),
+                NameForm(nameController: nameController),
                 SizedBox(height: 15),
                 EmailForm(emailController: emailController),
                 SizedBox(height: 15),
@@ -57,6 +60,7 @@ class RegisterPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     await AuthService().signup(
+                      name: nameController.text,
                       email: emailController.text,
                       password: passwordController.text,
                       context: context,

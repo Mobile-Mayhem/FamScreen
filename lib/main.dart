@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:flutter/material.dart';
+import 'pages/ResetPasswordPage.dart';
 import 'utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'FamScreen',
       theme: customTheme,
       home: OnBoardingPage(),
-      // home: HomePage(),
+      // home: ResetPasswordPage(),
     );
   }
 }

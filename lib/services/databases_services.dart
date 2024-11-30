@@ -15,11 +15,11 @@ class DatabasesServices {
 
   setAges(moviesRec) {
     if (moviesRec == "Anak-anak") {
-      _age = ["SU"];
+      _age = ["SU", "7+"];
     } else if (moviesRec == "Remaja") {
-      _age = ["SU", "13+"];
+      _age = ["SU", "7+", "13+"];
     } else if (moviesRec == "Dewasa") {
-      _age = ["SU", "13+", "18+", "21+"];
+      _age = ["SU", "7+", "13+", "18+", "21+"];
     } else {
       _age = [];
       print("Kategori usia tidak diketahui.");
@@ -54,6 +54,15 @@ class DatabasesServices {
     } catch (e) {
       print('Error reading data: $e');
       return [];
+    }
+  }
+
+  Future<void> removeData(String id) async {
+    try {
+      await db.collection("movies").doc(id).delete();
+      print("Data berhasil dihapus");
+    } catch (e) {
+      print('Error removing data: $e');
     }
   }
 
