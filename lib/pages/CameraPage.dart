@@ -44,6 +44,7 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     final url = Uri.parse('http://128.199.78.57:5000/upload');
+    // final url = Uri.parse('http://192.168.1.101:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -55,11 +56,11 @@ class _CameraPageState extends State<CameraPage> {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
         int prediction = jsonData['prediction'];
-        if (prediction == 0) {
+        if (prediction == 3) {
           age = 'Anak-anak';
-        } else if (prediction == 1) {
-          age = 'Remaja';
         } else if (prediction == 2) {
+          age = 'Remaja';
+        } else if (prediction == 1) {
           age = 'Dewasa';
         }
         dbServices.setAges(age);

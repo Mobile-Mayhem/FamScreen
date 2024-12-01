@@ -1,7 +1,6 @@
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
-import '../widgets/FilterJenis.dart';
 
 class ListMoviesPage extends StatefulWidget {
   const ListMoviesPage({super.key});

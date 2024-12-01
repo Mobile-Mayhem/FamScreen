@@ -112,7 +112,7 @@ class DatabasesServices {
           .get();
 
       for (var doc in snapshot.docs) {
-        searchResults.add(doc.data() as Map<String, dynamic>);
+        searchResults.add(doc.data());
       }
     } catch (e) {
       throw Exception('Error searching: $e');
