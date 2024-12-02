@@ -44,7 +44,6 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     final url = Uri.parse('http://128.199.78.57:5000/upload');
-    // final url = Uri.parse('http://192.168.1.101:8004/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -56,15 +55,24 @@ class _CameraPageState extends State<CameraPage> {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
         int prediction = jsonData['prediction'];
-        if (prediction == 3) {
-          age = 'Anak-anak';
-        } else if (prediction == 2) {
-          age = 'Remaja';
+        String ageCategory = '';
+
+        // Periksa nilai prediksi dan tentukan kategori umur
+        if (prediction == 0) {
+          ageCategory = 'Anak-anak';
         } else if (prediction == 1) {
-          age = 'Dewasa';
+          ageCategory = 'Remaja';
+        } else if (prediction == 2) {
+          ageCategory = 'Dewasa';
+        } else {
+          ageCategory = 'Tidak dapat mendeteksi umur';
         }
-        dbServices.setAges(age);
-        await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $age');
+
+        // Simpan hasil prediksi umur ke dalam database
+        dbServices.setAges(ageCategory);
+
+        // Tampilkan hasil prediksi
+        await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $ageCategory');
       } else {
         print('Image upload failed with status: ${response.statusCode}');
         await _showAlertDialog(
@@ -74,6 +82,38 @@ class _CameraPageState extends State<CameraPage> {
       Navigator.of(context).pop(); // Tutup dialog loading jika terjadi error
       await _showAlertDialog('Error', 'Error uploading image: $e');
     }
+  }
+
+  Future<void> _showAlertDialog(String title, String content) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(content),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                Navigator.of(context).pop(); // Tutup dialog
+                // Pindah ke halaman HomePage setelah menyimpan data
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const HomePage()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _initializeCamera() async {
@@ -122,40 +162,6 @@ class _CameraPageState extends State<CameraPage> {
     } catch (e) {
       print('Error taking picture: $e');
     }
-  }
-
-  Future<void> _showAlertDialog(String title, String content) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () async {
-                if (age.isNotEmpty) {
-                  await dbServices.setAges(age);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const HomePage()),
-                  );
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override

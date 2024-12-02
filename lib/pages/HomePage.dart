@@ -34,22 +34,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => CameraPage()),
-          );
-          // dbServices.getAges();
-        },
-        child: const Icon(Icons.face_unlock_sharp),
-        backgroundColor: CustomColor.primary,
-      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GNav(
           onTabChange: (index) {
             setState(() {
-              _currentPageIndex = index; // Memperbarui halaman saat tab diubah
+              _currentPageIndex = index;
             });
           },
           gap: 5,

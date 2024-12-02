@@ -1,6 +1,8 @@
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
+import '../utils/Colors.dart';
+import 'CameraPage.dart';
 
 class ListMoviesPage extends StatefulWidget {
   const ListMoviesPage({super.key});
@@ -65,6 +67,16 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => CameraPage()),
+          );
+          // dbServices.getAges();
+        },
+        child: const Icon(Icons.face_unlock_sharp),
+        backgroundColor: CustomColor.primary,
       ),
     );
   }
