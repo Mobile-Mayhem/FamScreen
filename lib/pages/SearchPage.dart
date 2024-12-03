@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famscreen/services/databases_services.dart';
 import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:famscreen/widgets/SearchResultCard.dart';

@@ -8,9 +8,14 @@ import 'package:sign_button/sign_button.dart';
 
 import 'ResetPasswordPage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -28,6 +33,7 @@ class LoginPage extends StatelessWidget {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
   @override

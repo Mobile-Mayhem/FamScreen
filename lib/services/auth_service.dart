@@ -86,7 +86,7 @@ class AuthService {
     if (!isValidEmail(email)) return;
 
     try {
-      // Call the Firebase signup function
+      // Call the Firebase sigin function
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,

@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../utils/Colors.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -118,29 +115,29 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 45),
-            InkWell(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
-                // );
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: CustomColor.primary,
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Edit Profil',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
+            //     // );
+            //   },
+            //   child: Container(
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(12),
+            //       color: CustomColor.primary,
+            //     ),
+            //     alignment: Alignment.center,
+            //     child: const Text(
+            //       'Edit Profil',
+            //       textAlign: TextAlign.left,
+            //       style: TextStyle(
+            //           color: Colors.black, fontWeight: FontWeight.bold),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20),
             Center(
               child: InkWell(

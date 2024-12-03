@@ -1,10 +1,11 @@
-import 'package:famscreen/services/databases_services.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+import '../components/ImdbComponent.dart';
 import '../components/MovieGenre.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../services/history_services.dart';
+import '../widgets/ShapePutihDetail.dart';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -16,11 +17,18 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   late Future<bool> _isFavoriteFuture;
+  late FlickManager flickManager;
+  late String url;
 
   @override
   void initState() {
     super.initState();
+    url = widget.movie['link_streaming'];
     _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
+    flickManager = FlickManager(
+        videoPlayerController: VideoPlayerController.networkUrl(
+      Uri.parse(url),
+    ));
   }
 
   void _toggleFavorite() async {
@@ -38,36 +46,23 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[700],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(2.0),
+        child: AppBarDetail(context),
+      ),
       body: Stack(
         children: [
-          Image.network(
-            widget.movie['poster_landscap'],
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Center(
-                child: Image.asset(
-                  'assets/imgnotfound.png',
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-          ),
           Container(
-            padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.only(top: 210),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
+            height: 210,
+            child: AspectRatio(
+              // await HistoryServices().addHistory(widget.movie);
+              aspectRatio: flickManager
+                  .flickVideoManager!.videoPlayerController!.value.aspectRatio,
+              child: FlickVideoPlayer(flickManager: flickManager),
             ),
           ),
+          ShapePutihDetail(),
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,17 +81,7 @@ class _DetailPageState extends State<DetailPage> {
                     Text(widget.movie['tahun_rilis']?.toString() ?? '',
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: const Color(0xffF5C518),
-                      ),
-                      child: const Text('IMDb',
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold)),
-                    ),
+                    ImdbComponent(),
                     const SizedBox(width: 8),
                     Text(widget.movie['rate_imdb']?.toString() ?? '' + ' |',
                         style: const TextStyle(fontSize: 16)),
@@ -117,36 +102,6 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 const SizedBox(height: 15),
                 MovieGenre(movie: widget.movie),
-                const SizedBox(height: 30),
-                const Text(
-                  'Lihat Sekarang',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        String url = widget.movie['link_streaming'];
-                        print(widget.movie['link_streaming']);
-                        await HistoryServices().addHistory(widget.movie);
-                        // if (await canLaunchUrl(Uri.parse(url))) {
-                        await launchUrl(Uri.parse(url));
-                        // } else {
-                        //   print("Could not launch URL");
-                        // }
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'assets/images/netflix.png',
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
                 const SizedBox(height: 30),
                 const Text(
                   'Rekomendasi Lainnya',
