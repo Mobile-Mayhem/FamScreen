@@ -53,13 +53,15 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Stack(
         children: [
-          Container(
-            height: 210,
-            child: AspectRatio(
-              // await HistoryServices().addHistory(widget.movie);
-              aspectRatio: flickManager
-                  .flickVideoManager!.videoPlayerController!.value.aspectRatio,
-              child: FlickVideoPlayer(flickManager: flickManager),
+          Padding(
+            padding: const EdgeInsets.only(top: 0),
+            child: Container(
+              height: 210,
+              child: AspectRatio(
+                aspectRatio: flickManager.flickVideoManager!
+                    .videoPlayerController!.value.aspectRatio,
+                child: FlickVideoPlayer(flickManager: flickManager),
+              ),
             ),
           ),
           ShapePutihDetail(),
