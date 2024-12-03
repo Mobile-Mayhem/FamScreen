@@ -47,21 +47,13 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[700],
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(2.0),
-        child: AppBarDetail(context),
-      ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 0),
-            child: Container(
-              height: 210,
-              child: AspectRatio(
-                aspectRatio: flickManager.flickVideoManager!
-                    .videoPlayerController!.value.aspectRatio,
-                child: FlickVideoPlayer(flickManager: flickManager),
-              ),
+            padding: const EdgeInsets.only(top: 23),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: FlickVideoPlayer(flickManager: flickManager),
             ),
           ),
           ShapePutihDetail(),
@@ -74,7 +66,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 230, left: 25, right: 25),
+            margin: const EdgeInsets.only(top: 269, left: 25, right: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
