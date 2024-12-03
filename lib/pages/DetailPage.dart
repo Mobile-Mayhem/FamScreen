@@ -1,5 +1,8 @@
 import 'package:famscreen/services/fav_movies_services.dart';
+import 'package:famscreen/utils/Colors.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import '../components/MovieGenre.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,11 +18,18 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   late Future<bool> _isFavoriteFuture;
+  late FlickManager flickManager;
+  late String url;
 
   @override
   void initState() {
     super.initState();
+    url = widget.movie['link_streaming'];
     _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
+    flickManager = FlickManager(
+        videoPlayerController: VideoPlayerController.networkUrl(
+      Uri.parse(url),
+    ));
   }
 
   void _toggleFavorite() async {
@@ -37,33 +47,29 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[700],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(2.0),
+        child: AppBarDetail(context),
+      ),
       body: Stack(
         children: [
-          Image.network(
-            widget.movie['poster_landscap'],
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Center(
-                child: Image.asset(
-                  'assets/imgnotfound.png',
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
+          Container(
+            height: 210,
+            child: AspectRatio(
+              aspectRatio: flickManager
+                  .flickVideoManager!.videoPlayerController!.value.aspectRatio,
+              child: FlickVideoPlayer(flickManager: flickManager),
+            ),
           ),
           Container(
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.only(top: 210),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: CustomColor.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
             ),
           ),
@@ -117,10 +123,6 @@ class _DetailPageState extends State<DetailPage> {
                 const SizedBox(height: 15),
                 MovieGenre(movie: widget.movie),
                 const SizedBox(height: 30),
-                const Text(
-                  'Lihat Sekarang',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
                 const SizedBox(height: 14),
                 Row(
                   children: [

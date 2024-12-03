@@ -1,4 +1,3 @@
-import 'package:famscreen/pages/CameraPage.dart';
 import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
