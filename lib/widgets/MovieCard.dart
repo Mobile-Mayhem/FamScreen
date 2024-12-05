@@ -4,14 +4,15 @@ import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
 
 class MovieCard extends StatelessWidget {
-  MovieCard({super.key});
+  final String selectedGenre;
+  MovieCard({super.key, required this.selectedGenre});
 
   final _dbService = DatabasesServices();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _dbService.read(),
+      future: _dbService.filterByGenre(selectedGenre),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: SkeletonCard());

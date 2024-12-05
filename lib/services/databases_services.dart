@@ -120,4 +120,27 @@ class DatabasesServices {
 
     return searchResults;
   }
+
+  Future<List<Map<String, dynamic>>> filterByGenre(String genre) async {
+    List<Map<String, dynamic>> genreResults = [];
+
+    try {
+      Query<Map<String, dynamic>> query = db.collection('movies');
+      query = query.where('kategori_usia', whereIn: _age);
+
+      if (genre.toLowerCase() != "semua") {
+        query = query.where('genre', arrayContains: genre);
+      }
+
+      final snapshot = await query.get();
+
+      for (var doc in snapshot.docs) {
+        genreResults.add(doc.data() as Map<String, dynamic>);
+      }
+    } catch (e) {
+      throw Exception('Error filtering by genre: $e');
+    }
+
+    return genreResults;
+  }
 }

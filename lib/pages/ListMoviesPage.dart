@@ -1,3 +1,4 @@
+import 'package:famscreen/widgets/FilterBottomSheet.dart';
 import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
@@ -13,7 +14,13 @@ class ListMoviesPage extends StatefulWidget {
 
 class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
-  // String selectedCategory = 'All';
+  String selectedGenre = 'semua';
+
+  void onGenreSelected(String genre) {
+    setState(() {
+      selectedGenre = genre;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +42,68 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
               minHeight: 60.0,
               maxHeight: 60.0,
               child: Container(
-                color: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                alignment: Alignment.centerLeft,
-                child: const Text(
-                  'Rekomendasi',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
+                  color: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Rekomendasi',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: CustomColor.primary,
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20)),
+                              ),
+                              builder: (BuildContext context) {
+                                return FilterBottomSheet(
+                                  selectedGenre: selectedGenre,
+                                  onGenreSelected: onGenreSelected,
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            //mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Filter',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(Icons.filter_list, color: Colors.black),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
             ),
           ),
-          // FilterRow(
-          //   selectedCategory: selectedCategory,
-          //   onCategorySelected: (newCategory) {
-          //     setState(() {
-          //       selectedCategory = newCategory;
-          //     });
-          //     //
-          //   },
-          // ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: MovieCard(),
+                  child: MovieCard(selectedGenre: selectedGenre),
                 );
               },
               childCount: 1, // Adjust based on the number of movie cards

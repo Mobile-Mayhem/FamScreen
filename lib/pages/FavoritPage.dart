@@ -1,3 +1,4 @@
+import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
 
@@ -46,36 +47,59 @@ class _FavoritePageState extends State<FavoritePage> {
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
-      body: favoriteMovies.isEmpty
-          ? Center(
-              child: Text('Belum ada film favorit.'),
-            )
-          : GridView.builder(
-              padding: EdgeInsets.all(16),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.6,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: favoriteMovies.length,
-              itemBuilder: (context, index) {
-                var movie = favoriteMovies[index];
-                return FavoriteItem(
-                  title: movie['judul'],
-                  image: movie['poster_potrait'] ?? 'assets/placeholder.jpg',
-                  onRemove: () => _removeFavorite(movie['judul']),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(movie: movie),
-                      ),
-                    );
-                  },
-                );
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            SearchInput(
+              onChanged: (query) {
+                setState(() {
+                  favoriteMovies = favoriteMovies
+                      .where((movie) => movie['judul']
+                          .toString()
+                          .toLowerCase()
+                          .contains(query.toLowerCase()))
+                      .toList();
+                });
               },
             ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: favoriteMovies.isEmpty
+                  ? Center(
+                      child: Text('Belum ada film favorit.'),
+                    )
+                  : GridView.builder(
+                      padding: EdgeInsets.all(3),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 0.6,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemCount: favoriteMovies.length,
+                      itemBuilder: (context, index) {
+                        var movie = favoriteMovies[index];
+                        return FavoriteItem(
+                          title: movie['judul'],
+                          image: movie['poster_landscap'] ??
+                              'assets/placeholder.jpg',
+                          onRemove: () => _removeFavorite(movie['judul']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(movie: movie),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
