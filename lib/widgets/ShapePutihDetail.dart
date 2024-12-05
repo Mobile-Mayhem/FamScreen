@@ -11,7 +11,7 @@ class ShapePutihDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(top: 210),
+      margin: const EdgeInsets.only(top: 240),
       decoration: const BoxDecoration(
         color: CustomColor.white,
         borderRadius: BorderRadius.only(
