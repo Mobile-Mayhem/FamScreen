@@ -8,6 +8,7 @@ import 'pages/CameraPage.dart';
 import 'utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -35,23 +36,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FamScreen',
       theme: customTheme,
-      // home: FutureBuilder(
-      //   future: FirebaseAuth.instance.authStateChanges().first,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return Center(
-      //         child: CircularProgressIndicator(
-      //           valueColor: AlwaysStoppedAnimation<Color>(CustomColor.primary),
-      //         ),
-      //       );
-      //     } else if (snapshot.hasData) {
-      //       return CameraPage();
-      //     } else {
-      //       return OnBoardingPage();
-      //     }
-      //   },
-      // ),
-      home: HomePage(),
+      home: FutureBuilder(
+        future: FirebaseAuth.instance.authStateChanges().first,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(CustomColor.primary),
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return CameraPage();
+          } else {
+            return OnBoardingPage();
+          }
+        },
+      ),
+      // home: CameraPage(),
     );
   }
 }

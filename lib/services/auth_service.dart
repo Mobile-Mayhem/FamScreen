@@ -52,7 +52,7 @@ class AuthService {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const CameraPage(),
+          builder: (context) => CameraPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {
