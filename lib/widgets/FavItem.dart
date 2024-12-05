@@ -1,3 +1,4 @@
+import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteItem extends StatelessWidget {
@@ -33,13 +34,20 @@ class FavoriteItem extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 5,
-                right: 5,
-                child: GestureDetector(
-                  onTap: onRemove,
+                top: 0,
+                left: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CustomColor.primary,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8)
+                    )
+                  ),
+                  padding: EdgeInsets.all(6),
                   child: Icon(
                     Icons.favorite,
-                    color: Colors.red,
+                    color: Colors.white,
                     size: 20,
                   ),
                 ),
