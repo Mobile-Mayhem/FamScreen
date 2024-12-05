@@ -82,7 +82,7 @@ class _FavoritePageState extends State<FavoritePage> {
                         var movie = favoriteMovies[index];
                         return FavoriteItem(
                           title: movie['judul'],
-                          image: movie['poster_landscap'] ??
+                          image: movie['poster_potrait'] ??
                               'assets/placeholder.jpg',
                           onRemove: () => _removeFavorite(movie['judul']),
                           onTap: () {
