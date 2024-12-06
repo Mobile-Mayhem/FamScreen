@@ -5,6 +5,7 @@ import 'package:famscreen/widgets/OtherMovieCard.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../components/ImdbComponent.dart';
 import '../components/MovieGenre.dart';
 import '../services/history_services.dart';
@@ -22,17 +23,35 @@ class _DetailPageState extends State<DetailPage> {
   late Future<bool> _isFavoriteFuture;
   late FlickManager flickManager;
   late String url;
-  int _selectedTab = 0; // 0 for Recommendations, 1 for Comments
+  int _selectedTab = 0; 
+  late YoutubePlayerController _youtubeController;
 
   @override
   void initState() {
     super.initState();
+
+     // youtube player
+     _youtubeController = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.movie['poster_landscap']) ?? '',
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+
+    // flickplayer
     url = widget.movie['link_streaming'];
     _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
     flickManager = FlickManager(
         videoPlayerController: VideoPlayerController.networkUrl(
       Uri.parse(url),
     ));
+  }
+
+  @override
+  void dispose() {
+    _youtubeController.dispose();
+    super.dispose();
   }
 
   void _toggleFavorite() async {
@@ -50,36 +69,24 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[700],
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Image.network(
-            widget.movie['poster_landscap'],
-            width: double.infinity,
-            height: 300,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Center(
-                child: Image.asset(
-                  'assets/imgnotfound.png',
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+          YoutubePlayer(
+                controller: _youtubeController,
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: Colors.amber,
+                progressColors: const ProgressBarColors(
+                  playedColor: Colors.amber,
+                  handleColor: Colors.amberAccent,
                 ),
-              );
-            },
-          ),
+              ),
+
+          AppBarDetail(context),
           ShapePutihDetail(),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppBarDetail(context),
-              ],
-            ),
-          ),
           Container(
-            margin: const EdgeInsets.only(top: 260, left: 25, right: 25),
+            margin: const EdgeInsets.only(top: 215, left: 25, right: 25),
+            child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -93,8 +100,10 @@ class _DetailPageState extends State<DetailPage> {
                     Text((widget.movie['rate_imdb']?.toString() ?? '') + '   | ',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text((widget.movie['durasi']?.toString() ?? '') + ' menit',
-                        style: TextStyle(fontSize: 16)),
+                    Text((widget.movie['durasi']?.toString() ?? '') + ' menit   |   ',
+                      style: TextStyle(fontSize: 16)),
+                     Text((widget.movie['kategori_usia']?.toString() ?? ''),
+                      style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -141,6 +150,7 @@ class _DetailPageState extends State<DetailPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
+                          minimumSize: const Size(309, 50),
                         ),
                       ),
                     ),
@@ -222,6 +232,7 @@ class _DetailPageState extends State<DetailPage> {
               ],
             ),
           )
+          ),
         ],
       ),
     );
