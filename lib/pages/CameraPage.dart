@@ -22,7 +22,6 @@ class _CameraPageState extends State<CameraPage> {
   XFile? _capturedImage;
   String age = '';
 
-  // final DatabasesServices dbServices = DatabasesServices();
   final dbServices = DatabasesServices();
 
   @override
@@ -122,7 +121,7 @@ class _CameraPageState extends State<CameraPage> {
       if (cameras.isNotEmpty) {
         controller = CameraController(
           cameras[1],
-          ResolutionPreset.high, 
+          ResolutionPreset.high,
         );
 
         await controller.initialize();
@@ -148,11 +147,9 @@ class _CameraPageState extends State<CameraPage> {
         return;
       }
 
-      // Ambil gambar hanya jika kamera tidak sedang mengambil gambar
       if (!controller.value.isTakingPicture) {
         final image = await controller.takePicture();
         setState(() {
-          // Perbarui _capturedImage dengan gambar yang baru diambil
           _capturedImage = image;
         });
 
@@ -228,7 +225,8 @@ class _CameraPageState extends State<CameraPage> {
           ),
           // Menempatkan instruksi di bawah 80% dari panjang layar
           Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.15, // 85% dari panjang layar
+            bottom: MediaQuery.of(context).size.height *
+                0.15, // 85% dari panjang layar
             left: 20,
             right: 20,
             child: Text(
