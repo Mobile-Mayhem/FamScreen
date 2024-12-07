@@ -24,7 +24,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
 
   @override
   void dispose() {
-    flickManager.dispose();
+    flickManager.dispose(); 
     super.dispose();
   }
 

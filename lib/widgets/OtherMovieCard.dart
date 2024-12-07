@@ -25,9 +25,7 @@ class OtherMovieCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(
-                movies.length > 3
-                    ? 3
-                    : movies.length, // Menampilkan hingga 3 film
+                movies.length > 3 ? 3 : movies.length, // Menampilkan hingga 3 film
                 (index) {
                   final movie = movies[index];
                   return InkWell(
@@ -40,8 +38,7 @@ class OtherMovieCard extends StatelessWidget {
                       );
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          right: 13.0), // Memberikan jarak antar film
+                      padding: const EdgeInsets.only(right: 13.0), // Memberikan jarak antar film
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

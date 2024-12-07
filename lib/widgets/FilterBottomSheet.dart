@@ -56,8 +56,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                right: 210.0), // Padding added to align with the buttons
+            padding: const EdgeInsets.only(right: 210.0), // Padding added to align with the buttons
             child: const Text(
               "Filter Genre",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -68,7 +67,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             selectedGenre: _selectedGenre,
             onGenreSelected: (genre) {
               setState(() {
-                _selectedGenre = genre;
+                _selectedGenre = genre; 
               });
               widget.onGenreSelected(genre);
             },
@@ -104,7 +103,7 @@ class FilterRow extends StatelessWidget {
       {'text': 'Psikologi', 'value': 'psikologi'},
     ];
 
-    return Wrap(
+     return Wrap(
       spacing: 5.0, // button
       runSpacing: 3.0, // line
       children: genres.map((genre) {
