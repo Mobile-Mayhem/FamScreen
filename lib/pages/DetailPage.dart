@@ -82,11 +82,21 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
 
-          AppBarDetail(context),
           ShapePutihDetail(),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBarDetail(context),
+              ],
+            ),
+          ),
           Container(
-            margin: const EdgeInsets.only(top: 215, left: 25, right: 25),
-            child: SingleChildScrollView(
+            margin: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.275,
+              left: MediaQuery.of(context).size.width * 0.05,
+              right: MediaQuery.of(context).size.width * 0.05,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,9 +111,9 @@ class _DetailPageState extends State<DetailPage> {
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
                     Text((widget.movie['durasi']?.toString() ?? '') + ' menit   |   ',
-                      style: TextStyle(fontSize: 16)),
-                     Text((widget.movie['kategori_usia']?.toString() ?? ''),
-                      style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontSize: 16)),
+                    Text((widget.movie['kategori_usia']?.toString() ?? ''),
+                        style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -123,9 +133,9 @@ class _DetailPageState extends State<DetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 310,
-                      height: 45,
-                      child: TextButton.icon(
+                      width: MediaQuery.of(context).size.width * 0.8, 
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: TextButton.icon(
                         onPressed: () async {
                           Navigator.push(
                             context,
@@ -145,8 +155,10 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         style: TextButton.styleFrom(
                           backgroundColor: CustomColor.primary,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: MediaQuery.of(context).size.width * 0.05, 
+                            vertical: MediaQuery.of(context).size.height * 0.01,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -232,7 +244,6 @@ class _DetailPageState extends State<DetailPage> {
               ],
             ),
           )
-          ),
         ],
       ),
     );
