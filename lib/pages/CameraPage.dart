@@ -122,7 +122,7 @@ class _CameraPageState extends State<CameraPage> {
       if (cameras.isNotEmpty) {
         controller = CameraController(
           cameras[1],
-          ResolutionPreset.max,
+          ResolutionPreset.high, 
         );
 
         await controller.initialize();
@@ -171,66 +171,77 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     return Scaffold(
-      body: Center(
-          child: Column(children: [
-        const SizedBox(height: 100),
-        Column(children: [
-          Text('Verifikasi Diri',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: CustomColor.black)),
-          const SizedBox(height: 30),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 280,
-                height: 320,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationY(math.pi),
-                      child: CameraPreview(controller),
-                    )),
-              ),
-              Image.asset(
-                'assets/camera_frame.png',
-                width: 255,
-                height: 255,
-              ),
-            ],
-          ),
-          const SizedBox(height: 40),
-          Text(
-            'Tetaplah berada di posisi ini dan lihat ke kamera, harap tekan tombol Ambil Gambar apabila anda sudah siap',
-            style: TextStyle(fontSize: 16, color: CustomColor.black),
-            textAlign: TextAlign.center,
-          ),
-          // const SizedBox(height: 255),
-        ]),
-      ])),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: ElevatedButton(
-          onPressed: () {
-            _takePicture();
-            // dispose();
-            print('Gambar diambil dan dikirim');
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(builder: (_) => const HomePage()),
-            // );
-          },
-          child: const Text('Ambil Gambar'),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Kamera Fullscreen
+          SizedBox.expand(
+            child: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(math.pi),
+              child: CameraPreview(controller),
             ),
-            minimumSize: const Size(309, 50),
           ),
-        ),
+          Image.asset(
+            'assets/camera_frame.png',
+            width: 225,
+            height: 225,
+          ),
+          // Menambahkan teks dan button di atas kamera
+          Positioned(
+            top: 40,
+            left: 20,
+            right: 20,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  'Verifikasi Diri',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: CustomColor.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Tombol Ambil Gambar
+          Positioned(
+            bottom: 20,
+            left: 50,
+            right: 50,
+            child: ElevatedButton(
+              onPressed: () {
+                _takePicture();
+              },
+              child: const Text('Ambil Gambar'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                minimumSize: const Size(309, 50),
+              ),
+            ),
+          ),
+          // Menempatkan instruksi di bawah 80% dari panjang layar
+          Positioned(
+            bottom: MediaQuery.of(context).size.height * 0.15, // 85% dari panjang layar
+            left: 20,
+            right: 20,
+            child: Text(
+              'Tetaplah berada di posisi ini dan lihat ke kamera, harap tekan tombol Ambil Gambar apabila anda sudah siap',
+              style: TextStyle(
+                color: Colors.white, // Warna teks putih
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }
