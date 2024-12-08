@@ -11,15 +11,18 @@ class DatabasesServices {
 
   final db = FirebaseFirestore.instance;
   List<String> _age = ["SU", "13+", "18+", "21+"];
-  String moviesRec = "Dewasa";
+  String ageCategory = "";
 
-  setAges(moviesRec) {
-    if (moviesRec == "Anak-anak") {
+  setAges(ageCategory) {
+    if (ageCategory == "Anak-anak") {
       _age = ["SU", "7+"];
-    } else if (moviesRec == "Remaja") {
+      print(ageCategory);
+    } else if (ageCategory == "Remaja") {
       _age = ["SU", "7+", "13+"];
-    } else if (moviesRec == "Dewasa") {
+      print(ageCategory);
+    } else if (ageCategory == "Dewasa") {
       _age = ["SU", "7+", "13+", "18+", "21+"];
+      print(ageCategory);
     } else {
       _age = [];
       print("Kategori usia tidak diketahui.");
@@ -28,7 +31,7 @@ class DatabasesServices {
   }
 
   getAges() {
-    print(moviesRec);
+    print(ageCategory);
     print(_age);
     if (_age.isEmpty) {
       print("Kategori usia tidak diketahui.");

@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/quickalert.dart';
 
 import '../services/age_control_services.dart';
 import '../services/databases_services.dart';
 
 class FullscreenVideoPage extends StatefulWidget {
   final String url;
+  final String ageCatMovie;
 
-  FullscreenVideoPage({required this.url});
+  FullscreenVideoPage({required this.url, required this.ageCatMovie});
 
   @override
   _FullscreenVideoPageState createState() => _FullscreenVideoPageState();
@@ -24,8 +26,9 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   bool _isCameraInitialized = false;
   late Timer _timer;
   XFile? _capturedImage;
+  String ageCategory = '';
   final dbServices = DatabasesServices();
-  final ageControlServices = AgeControlServices();
+  final ageControl = AgeControlServices();
 
   @override
   void initState() {
@@ -40,7 +43,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   bool _isDisposed = false;
 
   void _startAutoCapture() {
-    Future.delayed(Duration(minutes: 3), () async {
+    Future.delayed(Duration(seconds: 40), () async {
       if (_isDisposed) return;
       print("HALOOOOOOOOOOOOOOOOOO");
       // _initializeCamera();
@@ -100,44 +103,119 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
       print('Tidak ada gambar yang diambil.');
     }
 
-    final imageFile = _capturedImage!.path;
     final url = Uri.parse('http://128.199.78.57:5000/upload');
 
     // Kirim gambar ke server
     try {
-      var request = http.MultipartRequest('POST', url)
-        ..files.add(await http.MultipartFile.fromPath('image', imageFile));
+      var request = http.MultipartRequest('POST', url);
+      request.files.add(
+          await http.MultipartFile.fromPath('image', _capturedImage!.path));
       var response = await request.send();
+
       if (response.statusCode == 200) {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
-        print("haloooo");
-        print(jsonData);
         int prediction = jsonData['prediction'];
-        String ageCategory = '';
 
         // Periksa nilai prediksi dan tentukan kategori umur
         if (prediction == 0) {
           ageCategory = 'Anak-anak';
         } else if (prediction == 1) {
           ageCategory = 'Remaja';
-        } else if (prediction == 2) {
+        } else if (prediction == 2 || prediction == 3) {
           ageCategory = 'Dewasa';
         } else {
           ageCategory = 'Tidak dapat mendeteksi umur';
         }
 
-        // Simpan hasil prediksi umur ke dalam database
         dbServices.setAges(ageCategory);
         print(ageCategory);
-        ageControlServices.setAges(context);
       } else {
         print('Failed to send image to server.');
       }
     } catch (e) {
       print('Error sending image to server: $e');
     }
+    _ageControl();
   }
+
+  Future<void> _ageControl() async {
+    if (ageCategory == '') {
+      print("DATA KOSONG NGAB");
+    } else if (widget.ageCatMovie == '18+' && ageCategory == 'Anak-anak' ||
+        ageCategory == 'Remaja') {
+      // _showAlert(context);
+      _showAlertOverlay(context);
+      print('LU OLANG GA CUKUP UMUR.');
+    } else if (widget.ageCatMovie == '13+' && ageCategory == 'Anak-anak') {
+      print('LU OLANG GA CUKUP UMUR.');
+      // _showAlert(context);
+      _showAlertOverlay(context);
+    }
+  }
+
+  getAgesCat() {
+    print(widget.ageCatMovie);
+  }
+
+  void _showAlertOverlay(BuildContext context) {
+    final overlayState = Overlay.of(context);
+    late OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => GestureDetector(
+        onTap: () {
+          overlayEntry.remove();
+        },
+        child: Material(
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.warning_amber_rounded,
+                      size: 50, color: Colors.red),
+                  Text(
+                    'Konten Tidak Sesuai Usia',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Maaf, video ini tidak tersedia untuk usia Anda. Silakan pilih konten lain yang sesuai dengan batasan usia Anda.',
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      overlayEntry.remove();
+                    },
+                    child: Text('Tutup'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlayState.insert(overlayEntry);
+  }
+
+  // Future<void> _showAlert(BuildContext context) async {
+  //   QuickAlert.show(
+  //     context: context,
+  //     type: QuickAlertType.error,
+  //     title: 'Konten Tidak Sesuai Usia',
+  //     text:
+  //         'Maaf, video ini tidak tersedia untuk usia Anda. Silakan pilih konten lain yang sesuai dengan batasan usia Anda.',
+  //   );
+  // }
 
   @override
   void dispose() {
@@ -151,17 +229,42 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _takePicture();
-        },
-        child: Icon(Icons.camera_alt),
-      ),
       backgroundColor: Colors.black,
       body: Center(
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: FlickVideoPlayer(flickManager: flickManager),
+        child: Column(
+          children: [
+            Container(
+              height: 300,
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: FlickVideoPlayer(flickManager: flickManager),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  ageCategory = 'Dewasa';
+                  print(ageCategory);
+                },
+                child: const Text('Set Ages Dewasa')),
+            ElevatedButton(
+                onPressed: () {
+                  dbServices.setAges('Anak-anak');
+                  _ageControl();
+                  print(ageCategory);
+                },
+                child: const Text('Set Ages anak-anak')),
+            ElevatedButton(
+                onPressed: () {
+                  _takePicture();
+                },
+                child: const Text('Ambil gambar')),
+            ElevatedButton(
+                onPressed: () {
+                  print(ageCategory);
+                  _ageControl();
+                },
+                child: const Text('Cek umur')),
+          ],
         ),
       ),
     );
