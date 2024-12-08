@@ -1,37 +1,22 @@
-import 'package:camera/camera.dart';
+import 'package:famscreen/pages/CameraPage.dart';
+import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'pages/CameraPage.dart';
-import 'services/video_services.dart';
 import 'utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:provider/provider.dart';
-
-late List<CameraDescription> _cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Mendapatkan kamera
-  _cameras = await availableCameras();
 
   // Inisialisasi Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    // const MyApp(),
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => VideoServices()),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -53,6 +38,7 @@ class MyApp extends StatelessWidget {
             );
           } else if (snapshot.hasData) {
             return CameraPage();
+            // return HomePage();
           } else {
             return OnBoardingPage();
           }

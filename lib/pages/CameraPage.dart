@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:famscreen/services/databases_services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:quickalert/quickalert.dart';
 
 import 'HomePage.dart';
 import '../utils/Colors.dart';
@@ -21,8 +22,8 @@ class _CameraPageState extends State<CameraPage> {
   bool _isCameraInitialized = false;
   XFile? _capturedImage;
   String age = '';
+  String ageCategory = '';
 
-  // final DatabasesServices dbServices = DatabasesServices();
   final dbServices = DatabasesServices();
 
   @override
@@ -55,7 +56,6 @@ class _CameraPageState extends State<CameraPage> {
         var responseData = await http.Response.fromStream(response);
         var jsonData = json.decode(responseData.body);
         int prediction = jsonData['prediction'];
-        String ageCategory = '';
 
         // Periksa nilai prediksi dan tentukan kategori umur
         if (prediction == 0) {
@@ -85,34 +85,15 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _showAlertDialog(String title, String content) async {
-    return showDialog<void>(
+    QuickAlert.show(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(content),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () async {
-                Navigator.of(context).pop(); // Tutup dialog
-                // Pindah ke halaman HomePage setelah menyimpan data
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const HomePage()),
-                  (route) => false,
-                );
-              },
-            ),
-          ],
-        );
-      },
+      type: QuickAlertType.success,
+      title: '$title',
+      text: '$content',
+      onConfirmBtnTap: () => Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const HomePage()),
+        (route) => false,
+      ),
     );
   }
 
@@ -122,7 +103,7 @@ class _CameraPageState extends State<CameraPage> {
       if (cameras.isNotEmpty) {
         controller = CameraController(
           cameras[1],
-          ResolutionPreset.high, 
+          ResolutionPreset.high,
         );
 
         await controller.initialize();
@@ -148,11 +129,9 @@ class _CameraPageState extends State<CameraPage> {
         return;
       }
 
-      // Ambil gambar hanya jika kamera tidak sedang mengambil gambar
       if (!controller.value.isTakingPicture) {
         final image = await controller.takePicture();
         setState(() {
-          // Perbarui _capturedImage dengan gambar yang baru diambil
           _capturedImage = image;
         });
 
@@ -164,7 +143,7 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     if (!_isCameraInitialized) {
       return const Center(child: CircularProgressIndicator());
@@ -176,7 +155,10 @@ class _CameraPageState extends State<CameraPage> {
     if (scale < 1) scale = 1 / scale;
 
     // Rotasi untuk menghilangkan mirror pada kamera depan
-    final double mirror = controller.description.lensDirection == CameraLensDirection.front ? math.pi : 0;
+    final double mirror =
+        controller.description.lensDirection == CameraLensDirection.front
+            ? math.pi
+            : 0;
 
     return Scaffold(
       body: Stack(
@@ -241,7 +223,8 @@ class _CameraPageState extends State<CameraPage> {
           ),
           // Menempatkan instruksi di bawah 80% dari panjang layar
           Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.15, // 85% dari panjang layar
+            bottom: MediaQuery.of(context).size.height *
+                0.15, // 85% dari panjang layar
             left: 20,
             right: 20,
             child: Text(

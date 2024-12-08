@@ -23,16 +23,18 @@ class _DetailPageState extends State<DetailPage> {
   late Future<bool> _isFavoriteFuture;
   late FlickManager flickManager;
   late String url;
-  int _selectedTab = 0; 
+  late String ageCatMovie;
+  int _selectedTab = 0;
   late YoutubePlayerController _youtubeController;
 
   @override
   void initState() {
     super.initState();
 
-     // youtube player
-     _youtubeController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.movie['poster_landscap']) ?? '',
+    // youtube player
+    _youtubeController = YoutubePlayerController(
+      initialVideoId:
+          YoutubePlayer.convertUrlToId(widget.movie['poster_landscap']) ?? '',
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -41,6 +43,7 @@ class _DetailPageState extends State<DetailPage> {
 
     // flickplayer
     url = widget.movie['link_streaming'];
+    ageCatMovie = widget.movie['kategori_usia'];
     _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
     flickManager = FlickManager(
         videoPlayerController: VideoPlayerController.networkUrl(
@@ -73,15 +76,14 @@ class _DetailPageState extends State<DetailPage> {
       body: Stack(
         children: [
           YoutubePlayer(
-                controller: _youtubeController,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: Colors.amber,
-                progressColors: const ProgressBarColors(
-                  playedColor: Colors.amber,
-                  handleColor: Colors.amberAccent,
-                ),
-              ),
-
+            controller: _youtubeController,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Colors.amber,
+            progressColors: const ProgressBarColors(
+              playedColor: Colors.amber,
+              handleColor: Colors.amberAccent,
+            ),
+          ),
           ShapePutihDetail(),
           SingleChildScrollView(
             child: Column(
@@ -107,10 +109,13 @@ class _DetailPageState extends State<DetailPage> {
                     const SizedBox(width: 8),
                     ImdbComponent(),
                     const SizedBox(width: 8),
-                    Text((widget.movie['rate_imdb']?.toString() ?? '') + '   | ',
+                    Text(
+                        (widget.movie['rate_imdb']?.toString() ?? '') + '   | ',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    Text((widget.movie['durasi']?.toString() ?? '') + ' menit   |   ',
+                    Text(
+                        (widget.movie['durasi']?.toString() ?? '') +
+                            ' menit   |   ',
                         style: TextStyle(fontSize: 16)),
                     Text((widget.movie['kategori_usia']?.toString() ?? ''),
                         style: TextStyle(fontSize: 16)),
@@ -133,14 +138,17 @@ class _DetailPageState extends State<DetailPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.8, 
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        child: TextButton.icon(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      child: TextButton.icon(
                         onPressed: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => FullscreenVideoPage(url: url), 
+                              builder: (context) => FullscreenVideoPage(
+                                url: url,
+                                ageCatMovie: ageCatMovie,
+                              ),
                             ),
                           );
                           await HistoryServices().addHistory(widget.movie);
@@ -156,7 +164,8 @@ class _DetailPageState extends State<DetailPage> {
                         style: TextButton.styleFrom(
                           backgroundColor: CustomColor.primary,
                           padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width * 0.05, 
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.05,
                             vertical: MediaQuery.of(context).size.height * 0.01,
                           ),
                           shape: RoundedRectangleBorder(
@@ -170,7 +179,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 SizedBox(height: 30),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,  
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -185,14 +194,18 @@ class _DetailPageState extends State<DetailPage> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: _selectedTab == 0 ? Colors.black : Colors.grey,
+                              color: _selectedTab == 0
+                                  ? Colors.black
+                                  : Colors.grey,
                             ),
                           ),
-                          SizedBox(height: 4),  
+                          SizedBox(height: 4),
                           Container(
                             height: 2,
-                            width: 160,  
-                            color: _selectedTab == 0 ? CustomColor.primary : Colors.transparent,
+                            width: 160,
+                            color: _selectedTab == 0
+                                ? CustomColor.primary
+                                : Colors.transparent,
                           ),
                         ],
                       ),
@@ -211,14 +224,18 @@ class _DetailPageState extends State<DetailPage> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: _selectedTab == 1 ? Colors.black : Colors.grey,
+                              color: _selectedTab == 1
+                                  ? Colors.black
+                                  : Colors.grey,
                             ),
                           ),
                           SizedBox(height: 4),
                           Container(
                             height: 2,
-                            width: 100,  
-                            color: _selectedTab == 1 ? CustomColor.primary : Colors.transparent,
+                            width: 100,
+                            color: _selectedTab == 1
+                                ? CustomColor.primary
+                                : Colors.transparent,
                           ),
                         ],
                       ),
@@ -226,21 +243,19 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
                 SizedBox(height: 15),
-                  _selectedTab == 0
-                      ? SizedBox(
-                          height: 150,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              OtherMovieCard(),
-                            ],
-                          ),
-                        )
-                      : Column(
+                _selectedTab == 0
+                    ? SizedBox(
+                        height: 150,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
                           children: [
+                            OtherMovieCard(),
                           ],
                         ),
-
+                      )
+                    : Column(
+                        children: [],
+                      ),
               ],
             ),
           )
@@ -255,8 +270,8 @@ class _DetailPageState extends State<DetailPage> {
       elevation: 0,
       leading: Container(
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3),
-            shape: BoxShape.circle,
+          color: Colors.white.withOpacity(0.3),
+          shape: BoxShape.circle,
         ),
         child: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
