@@ -9,15 +9,16 @@ class ShapePutihDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Container(
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(top: 195),
+      padding: EdgeInsets.all(screenHeight * 0.02),
+      margin: EdgeInsets.only(top: screenHeight * 0.01),
       decoration: const BoxDecoration(
         color: CustomColor.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(9),
-          topRight: Radius.circular(9),
-        ),
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(10),
+        //   topRight: Radius.circular(10),
+        // ),
       ),
     );
   }
