@@ -223,40 +223,9 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: Column(
-          children: [
-            Container(
-              height: 300,
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: FlickVideoPlayer(flickManager: flickManager),
-              ),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  ageCategory = 'Dewasa';
-                  print(ageCategory);
-                },
-                child: const Text('Set Ages Dewasa')),
-            ElevatedButton(
-                onPressed: () {
-                  dbServices.setAges('Anak-anak');
-                  _ageControl();
-                  print(ageCategory);
-                },
-                child: const Text('Set Ages anak-anak')),
-            ElevatedButton(
-                onPressed: () {
-                  _takePicture();
-                },
-                child: const Text('Ambil gambar')),
-            ElevatedButton(
-                onPressed: () {
-                  print(ageCategory);
-                  _ageControl();
-                },
-                child: const Text('Cek umur')),
-          ],
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: FlickVideoPlayer(flickManager: flickManager),
         ),
       ),
     );
