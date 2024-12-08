@@ -135,7 +135,7 @@ class DatabasesServices {
       final snapshot = await query.get();
 
       for (var doc in snapshot.docs) {
-        genreResults.add(doc.data() as Map<String, dynamic>);
+        genreResults.add(doc.data());
       }
     } catch (e) {
       throw Exception('Error filtering by genre: $e');
