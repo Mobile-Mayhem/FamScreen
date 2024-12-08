@@ -23,8 +23,8 @@ class FavoriteItem extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 154,
-                width: 107,
+                height: 120,
+                width: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
@@ -38,10 +38,12 @@ class FavoriteItem extends StatelessWidget {
                 left: 0,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: CustomColor.primary,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8))),
+                    color: CustomColor.primary,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8)
+                    )
+                  ),
                   padding: EdgeInsets.all(6),
                   child: Icon(
                     Icons.favorite,

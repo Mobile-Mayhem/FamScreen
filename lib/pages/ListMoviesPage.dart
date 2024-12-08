@@ -16,9 +16,9 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
   String selectedGenre = 'semua';
 
-  void onGenreSelected(String genre) {
+   void onGenreSelected(String genre) {
     setState(() {
-      selectedGenre = genre;
+      selectedGenre = genre; 
     });
   }
 
@@ -42,60 +42,58 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
               minHeight: 60.0,
               maxHeight: 60.0,
               child: Container(
-                  color: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Rekomendasi',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                color: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Rekomendasi',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: CustomColor.primary, 
+                        borderRadius: BorderRadius.circular(13),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: CustomColor.primary,
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20)),
+                      child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            builder: (BuildContext context) {
+                              return FilterBottomSheet(
+                                selectedGenre: selectedGenre,
+                                onGenreSelected: onGenreSelected,
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          //mainAxisSize: MainAxisSize.min, 
+                          children: [
+                            const Text(
+                              'Filter',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                              builder: (BuildContext context) {
-                                return FilterBottomSheet(
-                                  selectedGenre: selectedGenre,
-                                  onGenreSelected: onGenreSelected,
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            //mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Filter',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Icon(Icons.filter_list, color: Colors.black),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(Icons.filter_list, color: Colors.black), 
+                          ],
                         ),
-                      )
-                    ],
-                  )),
+                      ),
+                    )
+                  ],
+                )
+              ),
             ),
           ),
           SliverList(
