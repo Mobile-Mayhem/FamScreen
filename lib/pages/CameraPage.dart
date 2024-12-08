@@ -61,7 +61,7 @@ class _CameraPageState extends State<CameraPage> {
           ageCategory = 'Anak-anak';
         } else if (prediction == 1) {
           ageCategory = 'Remaja';
-        } else if (prediction == 2) {
+        } else if (prediction == 2 || prediction == 3) {
           ageCategory = 'Dewasa';
         } else {
           ageCategory = 'Tidak dapat mendeteksi umur';
@@ -161,28 +161,41 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     if (!_isCameraInitialized) {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // Menambahkan logika untuk mengatasi stretching dan mirror pada kamera
+    final size = MediaQuery.of(context).size;
+    var scale = size.aspectRatio * controller.value.aspectRatio;
+    if (scale < 1) scale = 1 / scale;
+
+    // Rotasi untuk menghilangkan mirror pada kamera depan
+    final double mirror = controller.description.lensDirection == CameraLensDirection.front ? math.pi : 0;
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
         children: [
-          // Kamera Fullscreen
+          // Kamera Fullscreen dengan pengaturan skala dan rotasi
           SizedBox.expand(
             child: Transform(
               alignment: Alignment.center,
-              transform: Matrix4.rotationY(math.pi),
-              child: CameraPreview(controller),
+              transform: Matrix4.rotationY(mirror),
+              child: Transform.scale(
+                scale: scale,
+                child: Center(
+                  child: CameraPreview(controller),
+                ),
+              ),
             ),
           ),
           Image.asset(
             'assets/camera_frame.png',
-            width: 225,
-            height: 225,
+            width: 300,
+            height: 300,
           ),
           // Menambahkan teks dan button di atas kamera
           Positioned(
