@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
-import 'package:quickalert/quickalert.dart';
 
 import '../services/age_control_services.dart';
 import '../services/databases_services.dart';

@@ -20,7 +20,8 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 
   Future<void> _loadFavorites() async {
-    List<Map<String, dynamic>> movies = await FavMoviesServices().getFavMovies();
+    List<Map<String, dynamic>> movies =
+        await FavMoviesServices().getFavMovies();
     setState(() {
       favoriteMovies = movies;
     });
@@ -63,7 +64,6 @@ class _FavoritePageState extends State<FavoritePage> {
               },
             ),
             const SizedBox(height: 20),
-
             Expanded(
               child: favoriteMovies.isEmpty
                   ? Center(
@@ -82,7 +82,7 @@ class _FavoritePageState extends State<FavoritePage> {
                         var movie = favoriteMovies[index];
                         return FavoriteItem(
                           title: movie['judul'],
-                          image: movie['poster_landscap'] ??
+                          image: movie['poster_potrait'] ??
                               'assets/placeholder.jpg',
                           onRemove: () => _removeFavorite(movie['judul']),
                           onTap: () {
