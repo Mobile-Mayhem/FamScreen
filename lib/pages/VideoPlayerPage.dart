@@ -151,6 +151,8 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
       print('LU OLANG GA CUKUP UMUR.');
       // _showAlert(context);
       _showAlertOverlay(context);
+    } else {
+      return;
     }
   }
 
@@ -206,16 +208,6 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
 
     overlayState.insert(overlayEntry);
   }
-
-  // Future<void> _showAlert(BuildContext context) async {
-  //   QuickAlert.show(
-  //     context: context,
-  //     type: QuickAlertType.error,
-  //     title: 'Konten Tidak Sesuai Usia',
-  //     text:
-  //         'Maaf, video ini tidak tersedia untuk usia Anda. Silakan pilih konten lain yang sesuai dengan batasan usia Anda.',
-  //   );
-  // }
 
   @override
   void dispose() {
