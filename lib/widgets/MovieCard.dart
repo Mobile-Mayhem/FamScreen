@@ -1,17 +1,19 @@
+import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/SkeletonCard.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
 
 class MovieCard extends StatelessWidget {
-  MovieCard({super.key});
+  final String selectedGenre;
+  MovieCard({super.key, required this.selectedGenre});
 
   final _dbService = DatabasesServices();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _dbService.read(),
+      future: _dbService.filterByGenre(selectedGenre),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: SkeletonCard());
@@ -46,18 +48,53 @@ class MovieCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        movie['poster_potrait'],
-                        height: 220,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            movie['poster_potrait'],
+                            height: 220,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Image.asset(
+                                  'assets/imgnotfound.png',
+                                  height: 220,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          top: 5,
+                          left: 5,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: CustomColor.primary,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            child: Text(
+                              movie['kategori_usia'] ?? 'N/A',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      movie['judul'],
+                      movie['judul'] == null || movie['judul'].isEmpty
+                          ? 'Judul tidak ditemukan'
+                          : movie['judul'],
                       style: const TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

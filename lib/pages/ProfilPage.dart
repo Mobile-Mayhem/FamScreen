@@ -2,7 +2,6 @@ import 'package:famscreen/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../utils/Colors.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -65,15 +64,8 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: CircleAvatar(
-                radius: 70,
-                backgroundImage: AssetImage(
-                  'assets/images/venom.jpeg',
-                ),
-              ),
-            ),
-            const SizedBox(height: 45),
+            Center(child: Image.asset('assets/images/profil.png', height: 220)),
+            const SizedBox(height: 35),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -83,8 +75,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Colors.transparent,
               ),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Melissa Peters',
+              child: Text(
+                FirebaseAuth.instance.currentUser?.displayName ?? 'Belum diisi',
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black54),
               ),
@@ -123,29 +115,29 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 45),
-            InkWell(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
-                // );
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: CustomColor.primary,
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Edit Profil',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
+            //     // );
+            //   },
+            //   child: Container(
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(12),
+            //       color: CustomColor.primary,
+            //     ),
+            //     alignment: Alignment.center,
+            //     child: const Text(
+            //       'Edit Profil',
+            //       textAlign: TextAlign.left,
+            //       style: TextStyle(
+            //           color: Colors.black, fontWeight: FontWeight.bold),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20),
             Center(
               child: InkWell(

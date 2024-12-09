@@ -27,11 +27,21 @@ class SearchResultCard extends StatelessWidget {
               height: 220,
               width: double.infinity,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Image.asset(
+                    'assets/imgnotfound.png',
+                    height: 220,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            movie['judul'],
+            movie['judul'] ?? '',
             style: const TextStyle(fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

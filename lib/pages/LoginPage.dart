@@ -6,9 +6,16 @@ import 'RegisterPage.dart';
 import '../utils/Colors.dart';
 import 'package:sign_button/sign_button.dart';
 
-class LoginPage extends StatelessWidget {
+import 'ResetPasswordPage.dart';
+
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   void _showButtonPressDialog(BuildContext context, String provider) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -26,6 +33,7 @@ class LoginPage extends StatelessWidget {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,6 +63,19 @@ class LoginPage extends StatelessWidget {
             EmailForm(emailController: emailController),
             SizedBox(height: 15),
             PasswordForm(passwordController: passwordController),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => ResetPasswordPage()),
+                    );
+                  },
+                  child: const Text('Lupa Password?'),
+                ),
+              ],
+            ),
             const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () async {

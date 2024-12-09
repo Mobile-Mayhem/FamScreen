@@ -1,9 +1,40 @@
-import 'package:famscreen/pages/DetailPage.dart';
-import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:famscreen/services/fav_movies_services.dart';
 
-class FavoritePage extends StatelessWidget {
+import '../widgets/FavItem.dart';
+import 'DetailPage.dart';
+
+class FavoritePage extends StatefulWidget {
+  @override
+  _FavoritePageState createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
+  List<Map<String, dynamic>> favoriteMovies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
+
+  Future<void> _loadFavorites() async {
+    List<Map<String, dynamic>> movies =
+        await FavMoviesServices().getFavMovies();
+    setState(() {
+      favoriteMovies = movies;
+    });
+  }
+
+  Future<void> _removeFavorite(String title) async {
+    await FavMoviesServices().removeFav(title);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$title dihapus dari favorit.')),
+    );
+    _loadFavorites();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,100 +48,58 @@ class FavoritePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari favorit',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-              ),
+            SearchInput(
+              onChanged: (query) {
+                setState(() {
+                  favoriteMovies = favoriteMovies
+                      .where((movie) => movie['judul']
+                          .toString()
+                          .toLowerCase()
+                          .contains(query.toLowerCase()))
+                      .toList();
+                });
+              },
             ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                FilterChip(label: Text('All'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Movies'), onSelected: (_) {}),
-                SizedBox(width: 8),
-                FilterChip(label: Text('Series'), onSelected: (_) {}),
-              ],
-            ),
-            SizedBox(height: 16),
+            const SizedBox(height: 20),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 0.6,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: [
-                  FavoriteItem(
-                      title: 'The Dark Knight',
-                      image: 'assets/dark_knight.jpg'),
-                  FavoriteItem(
-                      title: 'The Lord of ...',
-                      image: 'assets/lord_of_the_rings.jpg'),
-                  FavoriteItem(
-                      title: 'Inception', image: 'assets/inception.jpg'),
-                ],
-              ),
+              child: favoriteMovies.isEmpty
+                  ? Center(
+                      child: Text('Belum ada film favorit.'),
+                    )
+                  : GridView.builder(
+                      padding: EdgeInsets.all(3),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 0.6,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemCount: favoriteMovies.length,
+                      itemBuilder: (context, index) {
+                        var movie = favoriteMovies[index];
+                        return FavoriteItem(
+                          title: movie['judul'],
+                          image: movie['poster_potrait'] ??
+                              'assets/placeholder.jpg',
+                          onRemove: () => _removeFavorite(movie['judul']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(movie: movie),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class FavoriteItem extends StatelessWidget {
-  final String title;
-  final String image;
-
-  const FavoriteItem({required this.title, required this.image});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Container(
-              height: 120,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: AssetImage(image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 5,
-              right: 5,
-              child: Icon(
-                Icons.favorite,
-                color: Colors.amber,
-                size: 20,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
     );
   }
 }

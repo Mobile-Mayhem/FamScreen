@@ -23,15 +23,20 @@ class AuthService {
     required BuildContext context,
     required String email,
     required String password,
+    required String name,
   }) async {
     if (!isValidEmail(email)) return;
 
     try {
       // Call the Firebase signup function
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Update the displayName
+      await userCredential.user?.updateDisplayName(name);
 
       Fluttertoast.showToast(
         msg: 'Registrasi berhasil',
@@ -47,7 +52,7 @@ class AuthService {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const CameraPage(),
+          builder: (context) => CameraPage(),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -81,7 +86,7 @@ class AuthService {
     if (!isValidEmail(email)) return;
 
     try {
-      // Call the Firebase signup function
+      // Call the Firebase sigin function
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -138,6 +143,48 @@ class AuthService {
       );
     } catch (e) {
       print('Error signing out: $e');
+    }
+  }
+
+  // Lupa Password
+  Future<void> resetPassword({
+    required BuildContext context,
+    required String email,
+  }) async {
+    if (!isValidEmail(email)) return;
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      Fluttertoast.showToast(
+        msg: 'Email reset password telah dikirim',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      String message = '';
+      if (e.code == 'user-not-found') {
+        message = 'Email tidak terdaftar';
+      }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error resetting password: $e');
     }
   }
 
