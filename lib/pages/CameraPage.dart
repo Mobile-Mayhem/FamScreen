@@ -44,6 +44,13 @@ class _CameraPageState extends State<CameraPage> {
       return;
     }
 
+    QuickAlert.show(
+    context: context,
+    type: QuickAlertType.loading,
+    title: 'Loading',
+    text: 'Mendeteksi usia Anda',
+  );
+
     final url = Uri.parse('http://128.199.78.57:5000/upload');
 
     try {
@@ -72,8 +79,10 @@ class _CameraPageState extends State<CameraPage> {
         dbServices.setAges(ageCategory);
 
         // Tampilkan hasil prediksi
+        Navigator.of(context).pop();
         await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $ageCategory');
       } else {
+        Navigator.of(context).pop();
         print('Image upload failed with status: ${response.statusCode}');
         await _showAlertDialog(
             'Error', 'Image upload failed with status: ${response.statusCode}');
