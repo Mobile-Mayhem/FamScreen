@@ -57,7 +57,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
       if (cameras.isNotEmpty) {
         controller = CameraController(
           cameras[1],
-          ResolutionPreset.medium,
+          ResolutionPreset.ultraHigh,
         );
 
         await controller.initialize();
