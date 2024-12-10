@@ -45,11 +45,11 @@ class _CameraPageState extends State<CameraPage> {
     }
 
     QuickAlert.show(
-    context: context,
-    type: QuickAlertType.loading,
-    title: 'Loading',
-    text: 'Mendeteksi usia Anda',
-  );
+      context: context,
+      type: QuickAlertType.loading,
+      title: 'Loading',
+      text: 'Mendeteksi usia Anda',
+    );
 
     final url = Uri.parse('http://128.199.78.57:5000/upload');
 

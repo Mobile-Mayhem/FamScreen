@@ -2,6 +2,7 @@ import 'package:famscreen/pages/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../pages/CameraPage.dart';
 
@@ -16,6 +17,41 @@ class AuthService {
       return false;
     }
     return true;
+  }
+
+  // GOOGLE SIGNIN
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      // TODO
+      print('exception->$e');
+    }
+  }
+
+  // Anonymous Sign In
+  Future<void> anonymousSignin(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage(),
+        ),
+      );
+    } catch (e) {
+      print('Error signing in anonymously: $e');
+    }
   }
 
   // Sign Up
