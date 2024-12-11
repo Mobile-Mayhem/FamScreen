@@ -49,6 +49,7 @@ dependencies:
   provider: ^6.1.2
   quickalert: ^1.1.0
   shared_preferences: ^2.3.3
+  shimmer: ^3.0.0
   sign_button: ^2.0.6
   skeletonizer: ^1.4.2
   url_launcher: ^6.3.1
