@@ -3,7 +3,6 @@ import 'package:famscreen/widgets/MovieCard.dart';
 import 'package:flutter/material.dart';
 import '../services/databases_services.dart';
 import '../utils/Colors.dart';
-import 'CameraPage.dart';
 
 class ListMoviesPage extends StatefulWidget {
   const ListMoviesPage({super.key});
@@ -16,9 +15,9 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
   final dbServices = DatabasesServices();
   String selectedGenre = 'semua';
 
-   void onGenreSelected(String genre) {
+  void onGenreSelected(String genre) {
     setState(() {
-      selectedGenre = genre; 
+      selectedGenre = genre;
     });
   }
 
@@ -42,58 +41,60 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
               minHeight: 60.0,
               maxHeight: 60.0,
               child: Container(
-                color: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Rekomendasi',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: CustomColor.primary, 
-                        borderRadius: BorderRadius.circular(13),
+                  color: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Rekomendasi',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      child: InkWell(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                            ),
-                            builder: (BuildContext context) {
-                              return FilterBottomSheet(
-                                selectedGenre: selectedGenre,
-                                onGenreSelected: onGenreSelected,
-                              );
-                            },
-                          );
-                        },
-                        child: Row(
-                          //mainAxisSize: MainAxisSize.min, 
-                          children: [
-                            const Text(
-                              'Filter',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(Icons.filter_list, color: Colors.black), 
-                          ],
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: CustomColor.primary,
+                          borderRadius: BorderRadius.circular(13),
                         ),
-                      ),
-                    )
-                  ],
-                )
-              ),
+                        child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20)),
+                              ),
+                              builder: (BuildContext context) {
+                                return FilterBottomSheet(
+                                  selectedGenre: selectedGenre,
+                                  onGenreSelected: onGenreSelected,
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            //mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Filter',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(Icons.filter_list, color: Colors.black),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
             ),
           ),
           SliverList(
@@ -108,16 +109,6 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => CameraPage()),
-          );
-          // dbServices.getAges();
-        },
-        child: const Icon(Icons.face_unlock_sharp),
-        backgroundColor: CustomColor.primary,
       ),
     );
   }
