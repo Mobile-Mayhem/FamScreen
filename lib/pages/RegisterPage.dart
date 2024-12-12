@@ -97,9 +97,18 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SignInButton.mini(
+                          buttonType: ButtonType.mail,
+                          buttonSize: ButtonSize.medium,
+                          onPressed: () {
+                            print('Login anonim');
+                            AuthService().anonymousSignin(context);
+                          }),
+                      SignInButton.mini(
                         buttonSize: ButtonSize.medium,
                         buttonType: ButtonType.google,
-                        onPressed: () {},
+                        onPressed: () {
+                          AuthService().signInWithGoogle();
+                        },
                       ),
                       SignInButton.mini(
                         buttonType: ButtonType.facebook,

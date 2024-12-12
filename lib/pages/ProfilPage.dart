@@ -92,7 +92,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               alignment: Alignment.centerLeft,
               child: Text(
-                FirebaseAuth.instance.currentUser!.email!.toString(),
+                FirebaseAuth.instance.currentUser?.email?.toString() ??
+                    'login guest',
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black54),
               ),
