@@ -84,12 +84,13 @@ class _CameraPageState extends State<CameraPage> {
       } else {
         Navigator.of(context).pop();
         print('Image upload failed with status: ${response.statusCode}');
-        await _showAlertDialog(
-            'Error', 'Image upload failed with status: ${response.statusCode}');
+        await _showErrorDialog(
+            'Error', 'Koneksi internet error, silahkan coba lagi');
       }
     } catch (e) {
-      Navigator.of(context).pop(); // Tutup dialog loading jika terjadi error
-      await _showAlertDialog('Error', 'Error uploading image: $e');
+      Navigator.of(context).pop();
+      await _showErrorDialog(
+          'Error', 'Tidak dapat upload gambar, silahkan coba lagi');
     }
   }
 
@@ -104,6 +105,15 @@ class _CameraPageState extends State<CameraPage> {
         (route) => false,
       ),
     );
+  }
+
+  Future<void> _showErrorDialog(String title, String content) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: '$title',
+        text: '$content',
+        onConfirmBtnTap: () => Navigator.of(context).pop());
   }
 
   Future<void> _initializeCamera() async {
