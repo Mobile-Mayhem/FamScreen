@@ -1,3 +1,4 @@
+import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
@@ -21,43 +22,82 @@ class OtherMovieCard extends StatelessWidget {
         } else {
           final movies = snapshot.data!;
 
-          return Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: List.generate(
-                movies.length > 3 ? 3 : movies.length, // Menampilkan hingga 3 film
-                (index) {
-                  final movie = movies[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(movie: movie),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 13.0), // Memberikan jarak antar film
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              movie['poster_potrait'],
-                              height: 130,
-                              width: 90,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
+          return Column(
+            children: [
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
+              childAspectRatio: 0.65,
+            ),
+            itemCount: movies.length > 6 ? 6 : movies.length,
+            //itemCount: movies.length < 9 ? movies.length : 9,
+            itemBuilder: (context, index) {
+              final movie = movies[index];
+
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(movie: movie),
                     ),
                   );
                 },
-              ),
-            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            movie['poster_potrait'],
+                            height: 140,
+                            width: 110,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Image.asset(
+                                  'assets/imgnotfound.png',
+                                  height: 110,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          top: 5,
+                          left: 5,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: CustomColor.primary,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            child: Text(
+                              movie['kategori_usia'] ?? 'N/A',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+            ],
           );
         }
       },
