@@ -11,7 +11,6 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../components/ImdbComponent.dart';
 import '../components/MovieGenre.dart';
 import '../services/history_services.dart';
-import '../widgets/ShapePutihDetail.dart';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -26,7 +25,7 @@ class _DetailPageState extends State<DetailPage> {
   late FlickManager flickManager;
   late String url;
   late String ageCatMovie;
-  int _selectedTab = 0; 
+  int _selectedTab = 0;
   late YoutubePlayerController _youtubeController;
   late Future<List<Map<String, dynamic>>> _commentsFuture;
   //List<String> get selectedGenres => List<String>.from(widget.movie['genres'] ?? []);
@@ -39,7 +38,8 @@ class _DetailPageState extends State<DetailPage> {
 
     // youtube player
     _youtubeController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.movie['poster_landscap']) ?? '',
+      initialVideoId:
+          YoutubePlayer.convertUrlToId(widget.movie['poster_landscap']) ?? '',
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -57,7 +57,8 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<List<Map<String, dynamic>>> fetchComments() async {
-    final response = await CommentService().fetchCommentsForMovie(widget.movie['judul']);
+    final response =
+        await CommentService().fetchCommentsForMovie(widget.movie['judul']);
     print(response);
     return response;
   }
@@ -142,29 +143,42 @@ class _DetailPageState extends State<DetailPage> {
                             children: [
                               Row(
                                 children: [
-                                  Text(widget.movie['tahun_rilis']?.toString() ?? '',
+                                  Text(
+                                      widget.movie['tahun_rilis']?.toString() ??
+                                          '',
                                       style: TextStyle(fontSize: 16)),
                                   const SizedBox(width: 8),
                                   ImdbComponent(),
                                   const SizedBox(width: 8),
-                                  Text((widget.movie['rate_imdb']?.toString() ?? '') + '   | ',
+                                  Text(
+                                      (widget.movie['rate_imdb']?.toString() ??
+                                              '') +
+                                          '   | ',
                                       style: const TextStyle(fontSize: 16)),
                                   const SizedBox(width: 8),
-                                  Text((widget.movie['durasi']?.toString() ?? '') + ' menit   |   ',
+                                  Text(
+                                      (widget.movie['durasi']?.toString() ??
+                                              '') +
+                                          ' menit   |   ',
                                       style: TextStyle(fontSize: 16)),
-                                  Text((widget.movie['kategori_usia']?.toString() ?? ''),
+                                  Text(
+                                      (widget.movie['kategori_usia']
+                                              ?.toString() ??
+                                          ''),
                                       style: TextStyle(fontSize: 16)),
                                 ],
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 widget.movie['judul']?.toString() ?? '',
-                                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+                                style: TextStyle(
+                                    fontSize: 26, fontWeight: FontWeight.w900),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 widget.movie['deskripsi']?.toString() ?? '',
-                                style: TextStyle(fontSize: 14, color: Colors.black54),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black54),
                               ),
                               const SizedBox(height: 15),
                               MovieGenre(movie: widget.movie),
@@ -173,42 +187,53 @@ class _DetailPageState extends State<DetailPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.8,
-                                    height: MediaQuery.of(context).size.height * 0.06,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => FullscreenVideoPage(
+                                            builder: (context) =>
+                                                FullscreenVideoPage(
                                               url: url,
                                               ageCatMovie: ageCatMovie,
                                             ),
                                           ),
                                         );
-                                        await HistoryServices().addHistory(widget.movie);
+                                        await HistoryServices()
+                                            .addHistory(widget.movie);
                                       },
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           const Icon(
                                             Icons.play_circle_fill,
                                             color: Colors.black,
                                           ),
-                                          const SizedBox(width: 8), // Space between the icon and text
+                                          const SizedBox(
+                                              width:
+                                                  8), // Space between the icon and text
                                           const Text(
                                             'Lihat Sekarang',
-                                            style: TextStyle(fontSize: 15, color: Colors.black),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black),
                                           ),
                                         ],
                                       ),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: CustomColor.primary,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
                                         ),
                                         minimumSize: const Size(309, 50),
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8.0),
                                         elevation: 0,
                                       ),
                                     ),
@@ -217,7 +242,7 @@ class _DetailPageState extends State<DetailPage> {
                               ),
                               SizedBox(height: 30),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,  
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
@@ -232,14 +257,21 @@ class _DetailPageState extends State<DetailPage> {
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: _selectedTab == 0 ? Colors.black : Colors.grey,
+                                            color: _selectedTab == 0
+                                                ? Colors.black
+                                                : Colors.grey,
                                           ),
                                         ),
-                                        SizedBox(height: 4),  
+                                        SizedBox(height: 4),
                                         Container(
                                           height: 2,
-                                          width: MediaQuery.of(context).size.width * 0.5,
-                                          color: _selectedTab == 0 ? CustomColor.primary : Colors.transparent,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          color: _selectedTab == 0
+                                              ? CustomColor.primary
+                                              : Colors.transparent,
                                         ),
                                       ],
                                     ),
@@ -258,14 +290,21 @@ class _DetailPageState extends State<DetailPage> {
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: _selectedTab == 1 ? Colors.black : Colors.grey,
+                                            color: _selectedTab == 1
+                                                ? Colors.black
+                                                : Colors.grey,
                                           ),
                                         ),
                                         SizedBox(height: 4),
                                         Container(
                                           height: 2,
-                                          width: MediaQuery.of(context).size.width * 0.3,
-                                          color: _selectedTab == 1 ? CustomColor.primary : Colors.transparent,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          color: _selectedTab == 1
+                                              ? CustomColor.primary
+                                              : Colors.transparent,
                                         ),
                                       ],
                                     ),
@@ -273,17 +312,19 @@ class _DetailPageState extends State<DetailPage> {
                                 ],
                               ),
                               _selectedTab == 0
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    OtherMovieCard(), 
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    CommentCard(commentsFuture: _commentsFuture),
-                                  ],
-                                ),
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        OtherMovieCard(),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        CommentCard(
+                                            commentsFuture: _commentsFuture),
+                                      ],
+                                    ),
                             ],
                           ),
                         ),
