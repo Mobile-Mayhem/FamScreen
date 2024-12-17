@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:famscreen/components/NameForm.dart';
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../components/EmailForm.dart';
 import '../components/PasswordForm.dart';
 import 'LoginPage.dart';
@@ -18,6 +20,79 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+ File? _profileImage;
+
+  Future<void> _pickImage() async {
+  final ImagePicker picker = ImagePicker();
+
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 5.5,
+          child: Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                    if (image != null) {
+                      setState(() {
+                        _profileImage = File(image.path);
+                      });
+                    }
+                  },
+                  child: const SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.image,
+                          size: 50,
+                        ),
+                        Text("Galeri"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      setState(() {
+                        _profileImage = File(image.path);
+                      });
+                    }
+                  },
+                  child: const SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          size: 45,
+                        ),
+                        Text("Kamera"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 
   @override
   void dispose() {
@@ -39,7 +114,44 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0),
-                    child: Image.asset('assets/logo.png', height: 120),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Colors.grey[300],
+                              backgroundImage:
+                                  _profileImage != null ? FileImage(_profileImage!) : null,
+                              child: _profileImage == null
+                                  ? Icon(
+                                      Icons.person,
+                                      size: 60,
+                                      color: Colors.grey[600],
+                                    )
+                                  : null,
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: _pickImage,
+                                child: CircleAvatar(
+                                  radius: 18,
+                                  backgroundColor: CustomColor.primary,
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
