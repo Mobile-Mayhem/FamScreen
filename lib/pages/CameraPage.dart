@@ -51,7 +51,8 @@ class _CameraPageState extends State<CameraPage> {
       text: 'Mendeteksi usia Anda',
     );
 
-    final url = Uri.parse('http://128.199.78.57:5000/upload');
+    final url = Uri.parse('https://128.199.78.57:5000/upload');
+    // final url = Uri.parse('https://apif.abdaziz.my.id/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -84,13 +85,23 @@ class _CameraPageState extends State<CameraPage> {
       } else {
         Navigator.of(context).pop();
         print('Image upload failed with status: ${response.statusCode}');
-        await _showAlertDialog(
-            'Error', 'Image upload failed with status: ${response.statusCode}');
+        await _showErrorDialog(
+            'Gagal', 'Wajah Tidak Terdeteksi, silahkan ikuti instruksi');
       }
     } catch (e) {
-      Navigator.of(context).pop(); // Tutup dialog loading jika terjadi error
-      await _showAlertDialog('Error', 'Error uploading image: $e');
+      Navigator.of(context).pop();
+      await _showErrorDialog(
+          'Error', 'Tidak dapat upload gambar, silahkan coba lagi');
     }
+  }
+
+  Future<void> _showWarnDialog(String title, String content) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.warning,
+        title: '$title',
+        text: '$content',
+        onConfirmBtnTap: () => Navigator.of(context).pop());
   }
 
   Future<void> _showAlertDialog(String title, String content) async {
@@ -104,6 +115,15 @@ class _CameraPageState extends State<CameraPage> {
         (route) => false,
       ),
     );
+  }
+
+  Future<void> _showErrorDialog(String title, String content) async {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: '$title',
+        text: '$content',
+        onConfirmBtnTap: () => Navigator.of(context).pop());
   }
 
   Future<void> _initializeCamera() async {

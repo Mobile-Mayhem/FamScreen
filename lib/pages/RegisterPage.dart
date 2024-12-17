@@ -2,10 +2,10 @@ import 'package:famscreen/components/NameForm.dart';
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../components/EmailForm.dart';
+import '../components/OtherMethod.dart';
 import '../components/PasswordForm.dart';
 import 'LoginPage.dart';
 import '../utils/Colors.dart';
-import 'package:sign_button/sign_button.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});
@@ -93,30 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SignInButton.mini(
-                          buttonType: ButtonType.mail,
-                          buttonSize: ButtonSize.medium,
-                          onPressed: () {
-                            print('Login anonim');
-                            AuthService().anonymousSignin(context);
-                          }),
-                      SignInButton.mini(
-                        buttonSize: ButtonSize.medium,
-                        buttonType: ButtonType.google,
-                        onPressed: () {
-                          AuthService().signInWithGoogle();
-                        },
-                      ),
-                      SignInButton.mini(
-                        buttonType: ButtonType.facebook,
-                        buttonSize: ButtonSize.medium,
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
+                  OtherMethod(),
                   SizedBox(
                     height: 20,
                   ),

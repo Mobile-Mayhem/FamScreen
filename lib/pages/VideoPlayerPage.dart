@@ -6,7 +6,6 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
 
-import '../services/age_control_services.dart';
 import '../services/databases_services.dart';
 
 class FullscreenVideoPage extends StatefulWidget {
@@ -27,7 +26,6 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   XFile? _capturedImage;
   String ageCategory = '';
   final dbServices = DatabasesServices();
-  final ageControl = AgeControlServices();
 
   @override
   void initState() {
@@ -102,7 +100,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
       print('Tidak ada gambar yang diambil.');
     }
 
-    final url = Uri.parse('http://128.199.78.57:5000/upload');
+    final url = Uri.parse('https://apif.abdaziz.my.id/upload');
 
     // Kirim gambar ke server
     try {

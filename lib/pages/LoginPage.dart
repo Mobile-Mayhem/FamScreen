@@ -1,10 +1,10 @@
+import 'package:famscreen/components/OtherMethod.dart';
 import 'package:famscreen/components/PasswordForm.dart';
 import 'package:famscreen/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import '../components/EmailForm.dart';
 import 'RegisterPage.dart';
 import '../utils/Colors.dart';
-import 'package:sign_button/sign_button.dart';
 
 import 'ResetPasswordPage.dart';
 
@@ -102,25 +102,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 25,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SignInButton.mini(
-                  buttonSize: ButtonSize.medium,
-                  buttonType: ButtonType.google,
-                  onPressed: () {
-                    _showButtonPressDialog(context, 'Google');
-                  },
-                ),
-                SignInButton.mini(
-                  buttonType: ButtonType.facebook,
-                  buttonSize: ButtonSize.medium,
-                  onPressed: () {
-                    _showButtonPressDialog(context, 'Facebook');
-                  },
-                ),
-              ],
-            ),
+            OtherMethod(),
             SizedBox(
               height: 20,
             ),

@@ -1,54 +1,49 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FavMoviesServices {
-  final String _favKey = 'favorite_movies';
-
-  Future<void> addFav(Map<String, dynamic> movie) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Ambil daftar favorit yang ada
-    List<String> favMovies = prefs.getStringList(_favKey) ?? [];
-
-    // Cek apakah movie sudah ada dalam favorit
-    if (favMovies.any((item) => jsonDecode(item)['judul'] == movie['judul'])) {
-      print('Movie already in favorites');
-      return;
-    }
-
-    // Tambahkan movie ke daftar favorit
-    favMovies.add(jsonEncode(movie));
-    await prefs.setStringList(_favKey, favMovies);
-    print('Added to favorites: ${movie['judul']}');
-  }
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   Future<List<Map<String, dynamic>>> getFavMovies() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      QuerySnapshot favSnapshot =
+          await userCollection.doc(uid).collection('favorites').get();
 
-    // Ambil daftar favorit yang ada
-    List<String> favMovies = prefs.getStringList(_favKey) ?? [];
-    return favMovies
-        .map((item) => jsonDecode(item) as Map<String, dynamic>)
-        .toList();
+      List<Map<String, dynamic>> favMovies = [];
+
+      for (var favDoc in favSnapshot.docs) {
+        String title = favDoc['judul'];
+        QuerySnapshot movieSnapshot = await _firestore
+            .collection('movies')
+            .where('judul', isEqualTo: title)
+            .get();
+
+        if (movieSnapshot.docs.isNotEmpty) {
+          favMovies
+              .add(movieSnapshot.docs.first.data() as Map<String, dynamic>);
+        }
+      }
+
+      return favMovies;
+    } catch (e) {
+      print('Error fetching favorite movies with details: $e');
+      return [];
+    }
   }
 
-  Future<void> removeFav(String title) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Ambil daftar favorit
-    List<String> favMovies = prefs.getStringList(_favKey) ?? [];
-
-    // Filter daftar favorit untuk menghapus movie
-    favMovies.removeWhere((item) => jsonDecode(item)['judul'] == title);
-    await prefs.setStringList(_favKey, favMovies);
-    print('Removed from favorites: $title');
-  }
-
-// Fungsi untuk mengecek apakah film sudah ada di favorit
   Future<bool> isMovieFav(Map<String, dynamic> movie) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> favMovies = prefs.getStringList(_favKey) ?? [];
+    try {
+      QuerySnapshot favSnapshot =
+          await userCollection.doc(uid).collection('favorites').get();
 
-    return favMovies.any((item) => jsonDecode(item)['judul'] == movie['judul']);
+      return favSnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Error checking if movie is favorite: $e');
+      return false;
+    }
   }
 }

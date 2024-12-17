@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/auth_service.dart';
-import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/CommentBottomSheet.dart';
 
 class CommentService {
-  Future<List<Map<String, dynamic>>> fetchCommentsForMovie(String movieId) async {
+  Future<List<Map<String, dynamic>>> fetchCommentsForMovie(
+      String movieId) async {
     // Simulate fetching comments from an API or database.
     await Future.delayed(const Duration(seconds: 2)); // simulate network delay
     return [
       {
         "user": "John",
         "comment": "Nice",
-        "userAvatar": "https://media.suara.com/pictures/970x544/2018/10/19/48248-anjing-diomeli.jpg",
+        "userAvatar":
+            "https://media.suara.com/pictures/970x544/2018/10/19/48248-anjing-diomeli.jpg",
         "timestamp": DateTime.now().subtract(Duration(hours: 1)),
       },
       {
         "user": "Peter",
         "comment": "Good",
-        "userAvatar": "https://media.istockphoto.com/id/1194711054/id/foto/anak-anjing-lucu-melawan-ras-campuran-biru.jpg?s=612x612&w=0&k=20&c=_oYLHLG2JOwAdoOlw1azEZCmG06KL_V0BsNlIq2gwRk=",
+        "userAvatar":
+            "https://media.istockphoto.com/id/1194711054/id/foto/anak-anjing-lucu-melawan-ras-campuran-biru.jpg?s=612x612&w=0&k=20&c=_oYLHLG2JOwAdoOlw1azEZCmG06KL_V0BsNlIq2gwRk=",
         "timestamp": DateTime.now().subtract(Duration(minutes: 30)),
       },
     ];
@@ -115,12 +117,14 @@ class _CommentCardState extends State<CommentCard> {
                       context,
                       focusNode: _focusNode, // Pass the FocusNode
                       onCommentSubmit: (newComment) {
-                        _addComment(newComment); // Use the method to handle comment submission
+                        _addComment(
+                            newComment); // Use the method to handle comment submission
                       },
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(30),
@@ -143,19 +147,24 @@ class _CommentCardState extends State<CommentCard> {
                   return ListTile(
                     leading: comment['userAvatar'] != null
                         ? CircleAvatar(
-                            backgroundImage: NetworkImage(comment['userAvatar']!),
+                            backgroundImage:
+                                NetworkImage(comment['userAvatar']!),
                           )
-                        : const Icon(Icons.account_circle, size: 40), // Default icon
+                        : const Icon(Icons.account_circle,
+                            size: 40), // Default icon
                     title: Row(
                       children: [
                         Text(
                           comment['user'] ?? "Anonim",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(width: 8), // Jarak kecil antara nama dan waktu
+                        const SizedBox(
+                            width: 8), // Jarak kecil antara nama dan waktu
                         Text(
-                          formatTime(comment['timestamp'] ?? DateTime.now()), // Waktu dinamis
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          formatTime(comment['timestamp'] ??
+                              DateTime.now()), // Waktu dinamis
+                          style:
+                              const TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                       ],
                     ),

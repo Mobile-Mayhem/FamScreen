@@ -21,7 +21,7 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> fetchHistory() async {
-    final historyMovies = await HistoryServices().getHistoryMovies();
+    final historyMovies = await HistoryServices().getHistMovies();
     setState(() {
       movies = historyMovies;
     });

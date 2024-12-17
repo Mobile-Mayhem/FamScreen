@@ -110,35 +110,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               alignment: Alignment.centerLeft,
               child: const Text(
-                '*******',
+                '********',
                 textAlign: TextAlign.left,
                 style: TextStyle(color: Colors.black54),
               ),
             ),
             const SizedBox(height: 45),
-            // InkWell(
-            //   onTap: () {
-            //     // Navigator.push(
-            //     //   context,
-            //     //   MaterialPageRoute(builder: (_) => const EditProfilePage()),
-            //     // );
-            //   },
-            //   child: Container(
-            //     padding:
-            //         const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(12),
-            //       color: CustomColor.primary,
-            //     ),
-            //     alignment: Alignment.center,
-            //     child: const Text(
-            //       'Edit Profil',
-            //       textAlign: TextAlign.left,
-            //       style: TextStyle(
-            //           color: Colors.black, fontWeight: FontWeight.bold),
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 20),
             Center(
               child: InkWell(
