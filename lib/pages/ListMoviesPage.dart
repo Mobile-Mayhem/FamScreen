@@ -105,7 +105,7 @@ class _ListMoviesPageState extends State<ListMoviesPage> {
                   child: MovieCard(selectedGenre: selectedGenre),
                 );
               },
-              childCount: 1, // Adjust based on the number of movie cards
+              childCount: 1,
             ),
           ),
         ],

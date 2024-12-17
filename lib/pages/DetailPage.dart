@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famscreen/pages/VideoPlayerPage.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
+import 'package:famscreen/services/sync_services.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/AppBarDetail.dart';
 import 'package:famscreen/widgets/CommentCard.dart';
 import 'package:famscreen/widgets/OtherMovieCard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../components/ImdbComponent.dart';
 import '../components/MovieGenre.dart';
-import '../services/history_services.dart';
 
 class DetailPage extends StatefulWidget {
   final Map<String, dynamic> movie;
@@ -28,6 +30,7 @@ class _DetailPageState extends State<DetailPage> {
   int _selectedTab = 0;
   late YoutubePlayerController _youtubeController;
   late Future<List<Map<String, dynamic>>> _commentsFuture;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   //List<String> get selectedGenres => List<String>.from(widget.movie['genres'] ?? []);
 
   @override
@@ -72,12 +75,12 @@ class _DetailPageState extends State<DetailPage> {
   void _toggleFavorite() async {
     bool isFavorite = await _isFavoriteFuture;
     if (!isFavorite) {
-      await FavMoviesServices().addFav(widget.movie);
+      await SyncServices().addFav(widget.movie);
     } else {
-      await FavMoviesServices().removeFav(widget.movie['judul']);
+      await SyncServices().removeFav(widget.movie['judul']);
     }
     setState(() {
-      _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
+      _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie['judul']);
     });
   }
 
@@ -203,8 +206,9 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                           ),
                                         );
-                                        await HistoryServices()
-                                            .addHistory(widget.movie);
+                                        await SyncServices().addHistory(
+                                            widget.movie,
+                                            Timestamp.fromDate(DateTime.now()));
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -214,9 +218,7 @@ class _DetailPageState extends State<DetailPage> {
                                             Icons.play_circle_fill,
                                             color: Colors.black,
                                           ),
-                                          const SizedBox(
-                                              width:
-                                                  8), // Space between the icon and text
+                                          const SizedBox(width: 8),
                                           const Text(
                                             'Lihat Sekarang',
                                             style: TextStyle(

@@ -1,3 +1,4 @@
+import 'package:famscreen/services/sync_services.dart';
 import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
@@ -28,7 +29,7 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 
   Future<void> _removeFavorite(String title) async {
-    await FavMoviesServices().removeFav(title);
+    await SyncServices().removeFav(title);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$title dihapus dari favorit.')),
     );

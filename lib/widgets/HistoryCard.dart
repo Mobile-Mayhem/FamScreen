@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../pages/DetailPage.dart';
 
@@ -30,17 +29,20 @@ class HistoryCard extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                        imageUrl: movie['poster_potrait'],
-                        width: 70,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => Image.asset(
-                              'assets/imgnotfound.png',
-                              width: 70,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            )),
+                    child: Image.network(
+                      movie['poster_potrait'],
+                      width: 70,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/imgnotfound.png',
+                          width: 70,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(width: 20),
                   Expanded(

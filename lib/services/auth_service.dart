@@ -20,21 +20,38 @@ class AuthService {
   }
 
   // GOOGLE SIGNIN
-  Future<dynamic> signInWithGoogle() async {
+  signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      if (gUser == null) {
+        Fluttertoast.showToast(
+          msg: 'Google sign-in canceled',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        return;
+      }
+
+      final GoogleSignInAuthentication? gAuth = await gUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: gAuth?.accessToken,
+        idToken: gAuth?.idToken,
       );
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CameraPage(),
+        ),
+      );
     } on Exception catch (e) {
-      // TODO
       print('exception->$e');
     }
   }
