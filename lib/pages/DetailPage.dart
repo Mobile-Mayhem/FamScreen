@@ -80,7 +80,7 @@ class _DetailPageState extends State<DetailPage> {
       await SyncServices().removeFav(widget.movie['judul']);
     }
     setState(() {
-      _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie['judul']);
+      _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
     });
   }
 

@@ -24,7 +24,7 @@ class FavoriteItem extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 154,
+                height: 139,
                 width: 107,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -37,17 +37,22 @@ class FavoriteItem extends StatelessWidget {
               Positioned(
                 top: 0,
                 left: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: CustomColor.primary,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          bottomRight: Radius.circular(8))),
-                  padding: EdgeInsets.all(6),
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.white,
-                    size: 20,
+                child: GestureDetector(
+                  onTap: () {
+                    onRemove();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: CustomColor.primary,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8))),
+                    padding: EdgeInsets.all(6),
+                    child: Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                 ),
               ),
