@@ -1,4 +1,3 @@
-import 'package:famscreen/pages/CameraPage.dart';
 import 'package:famscreen/pages/HomePage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:famscreen/utils/Colors.dart';
