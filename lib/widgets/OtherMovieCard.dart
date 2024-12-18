@@ -3,15 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
 import '../pages/DetailPage.dart';
 
-class OtherMovieCard extends StatelessWidget {
-  OtherMovieCard({super.key});
+class OtherMovieCard extends StatefulWidget {
+  const OtherMovieCard({Key? key}) : super(key: key);
 
-  final _dbService = DatabasesServices();
+  @override
+  _OtherMovieCardState createState() => _OtherMovieCardState();
+}
+
+class _OtherMovieCardState extends State<OtherMovieCard> {
+  late Future<List<Map<String, dynamic>>> _moviesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _moviesFuture = DatabasesServices().read();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _dbService.read(),
+      future: _moviesFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center();
@@ -22,9 +33,7 @@ class OtherMovieCard extends StatelessWidget {
         } else {
           final movies = snapshot.data!;
 
-          return Column(
-            children: [
-          GridView.builder(
+          return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -34,7 +43,6 @@ class OtherMovieCard extends StatelessWidget {
               childAspectRatio: 0.65,
             ),
             itemCount: movies.length > 6 ? 6 : movies.length,
-            //itemCount: movies.length < 9 ? movies.length : 9,
             itemBuilder: (context, index) {
               final movie = movies[index];
 
@@ -96,8 +104,6 @@ class OtherMovieCard extends StatelessWidget {
                 ),
               );
             },
-          ),
-            ],
           );
         }
       },
