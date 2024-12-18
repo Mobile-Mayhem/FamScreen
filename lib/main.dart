@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
-            return CameraPage();
-            // return HomePage();
+            // return CameraPage();
+            return HomePage();
           } else {
             return OnBoardingPage();
           }

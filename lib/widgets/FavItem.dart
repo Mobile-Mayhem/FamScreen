@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class FavoriteItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
-                    image: NetworkImage(image),
+                    image: CachedNetworkImageProvider(image),
                     fit: BoxFit.cover,
                   ),
                 ),

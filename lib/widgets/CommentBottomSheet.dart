@@ -1,14 +1,15 @@
 // comment_bottom_sheet.dart
 import 'package:flutter/material.dart';
 import 'package:famscreen/utils/Colors.dart';
-import 'package:famscreen/services/auth_service.dart';
 
 class CommentBottomSheet {
-  static void show(BuildContext context, {
+  static void show(
+    BuildContext context, {
     required Function(String) onCommentSubmit,
     FocusNode? focusNode, // Accept the focusNode parameter
   }) {
-    final TextEditingController _bottomSheetController = TextEditingController();
+    final TextEditingController _bottomSheetController =
+        TextEditingController();
 
     showModalBottomSheet(
       context: context,
@@ -42,7 +43,8 @@ class CommentBottomSheet {
                       focusNode: focusNode, // Assign the focusNode here
                       decoration: InputDecoration(
                         hintText: "Tambahkan komentar...",
-                        hintStyle: TextStyle(fontSize: 14, color: Colors.black45),
+                        hintStyle:
+                            TextStyle(fontSize: 14, color: Colors.black45),
                         filled: true,
                         fillColor: Colors.grey[300],
                         border: OutlineInputBorder(

@@ -1,5 +1,4 @@
 import 'package:famscreen/pages/HomePage.dart';
-import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:flutter/material.dart';
 
 class AppBarDetail extends StatelessWidget {

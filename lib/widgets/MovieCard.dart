@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famscreen/utils/Colors.dart';
+import 'package:famscreen/widgets/ImageSkeletonCard.dart';
 import 'package:famscreen/widgets/SkeletonCard.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/databases_services.dart';
@@ -52,22 +54,19 @@ class MovieCard extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            movie['poster_potrait'],
-                            height: 220,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Center(
-                                child: Image.asset(
-                                  'assets/imgnotfound.png',
-                                  height: 220,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            },
-                          ),
+                          child: CachedNetworkImage(
+                              height: 220,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                              imageUrl: movie['poster_potrait'],
+                              placeholder: (context, url) => MoviePoster(
+                                  imageUrl: movie['poster_potrait']),
+                              errorWidget: (context, url, error) => Image.asset(
+                                    'assets/imgnotfound.png',
+                                    width: 70,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  )),
                         ),
                         Positioned(
                           top: 5,
