@@ -13,6 +13,7 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   List<Map<String, dynamic>> favoriteMovies = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _FavoritePageState extends State<FavoritePage> {
         await FavMoviesServices().getFavMovies();
     setState(() {
       favoriteMovies = movies;
+      isLoading = false;
     });
   }
 
@@ -66,10 +68,14 @@ class _FavoritePageState extends State<FavoritePage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: favoriteMovies.isEmpty
+               child: isLoading
                   ? Center(
-                      child: Text('Belum ada film favorit.'),
+                      child: CircularProgressIndicator(),
                     )
+                  : favoriteMovies.isEmpty
+                      ? Center(
+                          child: Text('Belum ada film favorit.'),
+                        )
                   : GridView.builder(
                       padding: EdgeInsets.all(3),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
