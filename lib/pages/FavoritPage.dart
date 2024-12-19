@@ -2,6 +2,7 @@ import 'package:famscreen/services/user_services.dart';
 import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../widgets/FavItem.dart';
 import 'DetailPage.dart';
@@ -34,8 +35,13 @@ class _FavoritePageState extends State<FavoritePage> {
 
   Future<void> _removeFavorite(String title) async {
     await UserServices().removeFav(title);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$title dihapus dari favorit.')),
+    Fluttertoast.showToast(
+      msg: '$title Dihapus Dari Favorit',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
     _loadFavorites();
   }

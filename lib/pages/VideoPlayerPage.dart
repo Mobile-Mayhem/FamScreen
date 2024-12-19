@@ -22,7 +22,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   late FlickManager flickManager;
   late CameraController controller;
   bool _isCameraInitialized = false;
-  late Timer _timer;
+
   XFile? _capturedImage;
   String ageCategory = '';
   final dbServices = DatabasesServices();
@@ -154,10 +154,6 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
     }
   }
 
-  getAgesCat() {
-    print(widget.ageCatMovie);
-  }
-
   void _showAlertOverlay(BuildContext context) {
     final overlayState = Overlay.of(context);
     late OverlayEntry overlayEntry;
@@ -212,7 +208,6 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
     _isDisposed = true;
     flickManager.dispose();
     controller.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
