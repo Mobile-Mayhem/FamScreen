@@ -13,6 +13,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<Map<String, dynamic>> movies = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -21,12 +22,18 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> fetchHistory() async {
+    setState(() {
+      isLoading = true;
+    });
     final historyMovies = await HistoryServices().getHistMovies();
+
     if (mounted) {
       setState(() {
         movies = historyMovies;
+        isLoading = false;
       });
     }
+
   }
 
   @override
@@ -59,17 +66,21 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: HistoryCard(
-                      movie: movies[index],
+              child: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: HistoryCard(
+                            movie: movies[index],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
