@@ -51,8 +51,8 @@ class _CameraPageState extends State<CameraPage> {
       text: 'Mendeteksi usia Anda',
     );
 
-    final url = Uri.parse('http://128.199.78.57:5000/upload');
-    // final url = Uri.parse('https://apif.abdaziz.my.id/upload');
+    // final url = Uri.parse('http://128.199.78.57:5000/upload');
+    final url = Uri.parse('https://apif.abdaziz.my.id/upload');
 
     try {
       var request = http.MultipartRequest('POST', url);

@@ -100,8 +100,8 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
       print('Tidak ada gambar yang diambil.');
     }
 
-    // final url = Uri.parse('https://apif.abdaziz.my.id/upload');
-    final url = Uri.parse('http://128.199.78.57:5000/upload');
+    final url = Uri.parse('https://apif.abdaziz.my.id/upload');
+    // final url = Uri.parse('http://128.199.78.57:5000/upload');
 
     // Kirim gambar ke server
     try {
