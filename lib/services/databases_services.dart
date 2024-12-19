@@ -101,28 +101,31 @@ class DatabasesServices {
 
   // Fungsi search
   Future<List<Map<String, dynamic>>> performSearch(String query) async {
-    List<Map<String, dynamic>> searchResults = [];
+  List<Map<String, dynamic>> searchResults = [];
 
-    if (query.isEmpty) {
-      return searchResults;
-    }
-
-    try {
-      final snapshot = await db
-          .collection('movies')
-          .where('judul', isGreaterThanOrEqualTo: query)
-          .where('judul', isLessThanOrEqualTo: query + '\uf8ff')
-          .get();
-
-      for (var doc in snapshot.docs) {
-        searchResults.add(doc.data());
-      }
-    } catch (e) {
-      throw Exception('Error searching: $e');
-    }
-
+  if (query.isEmpty) {
     return searchResults;
   }
+
+  try {
+    // Ambil semua data dari Firestore
+    final snapshot = await db.collection('movies').get();
+
+    // Filter hasil berdasarkan awalan (case-insensitive)
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final title = data['judul']?.toString().toLowerCase() ?? '';
+      if (title.startsWith(query.toLowerCase())) {
+        searchResults.add(data);
+      }
+    }
+  } catch (e) {
+    throw Exception('Error searching: $e');
+  }
+
+  return searchResults;
+}
+
 
   Future<List<Map<String, dynamic>>> filterByGenre(String genre) async {
     List<Map<String, dynamic>> genreResults = [];
