@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class SyncServices {
+class UserServices {
   final String uid = FirebaseAuth.instance.currentUser!.uid;
-
-  // SyncServices({required this.uid});
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+
+  Future<void> addProfilImage(String url) async {
+    await userCollection.doc(uid).set({
+      'profilImage': url,
+    });
+  }
 
   // Add history
   Future<void> addHistory(

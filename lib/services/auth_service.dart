@@ -22,14 +22,14 @@ class AuthService {
   // GOOGLE SIGNIN
   signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? gUser = await googleSignIn.signIn();
 
       if (gUser == null) {
         Fluttertoast.showToast(
           msg: 'Google sign-in canceled',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0,
@@ -37,22 +37,40 @@ class AuthService {
         return;
       }
 
-      final GoogleSignInAuthentication? gAuth = await gUser.authentication;
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth?.accessToken,
-        idToken: gAuth?.idToken,
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => CameraPage(),
         ),
       );
-    } on Exception catch (e) {
-      print('exception->$e');
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Sign-in failed: ${e.message}',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      print('Error: $e');
+      Fluttertoast.showToast(
+        msg: 'An unexpected error occurred: $e',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
