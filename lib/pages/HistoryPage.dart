@@ -22,9 +22,11 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future<void> fetchHistory() async {
     final historyMovies = await HistoryServices().getHistMovies();
-    setState(() {
-      movies = historyMovies;
-    });
+    if (mounted) {
+      setState(() {
+        movies = historyMovies;
+      });
+    }
   }
 
   @override
@@ -38,15 +40,6 @@ class _HistoryPageState extends State<HistoryPage> {
           style: TextStyle(
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.black),
-            onPressed: () async {
-              await HistoryServices().clearHistory();
-              fetchHistory();
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

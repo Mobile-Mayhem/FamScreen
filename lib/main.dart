@@ -1,4 +1,4 @@
-import 'package:famscreen/pages/HomePage.dart';
+import 'package:famscreen/pages/CameraPage.dart';
 import 'package:famscreen/pages/OnBoardingPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
-            // return CameraPage();
-            return HomePage();
+            return CameraPage();
+            // return RegisterPage();
           } else {
             return OnBoardingPage();
           }

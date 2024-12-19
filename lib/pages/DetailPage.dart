@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famscreen/pages/VideoPlayerPage.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
-import 'package:famscreen/services/sync_services.dart';
+import 'package:famscreen/services/user_services.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:famscreen/widgets/AppBarDetail.dart';
-import 'package:famscreen/widgets/CommentCard.dart';
+
 import 'package:famscreen/widgets/OtherMovieCard.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -29,15 +28,13 @@ class _DetailPageState extends State<DetailPage> {
   late String ageCatMovie;
   int _selectedTab = 0;
   late YoutubePlayerController _youtubeController;
-  late Future<List<Map<String, dynamic>>> _commentsFuture;
-  final uid = FirebaseAuth.instance.currentUser!.uid;
-  //List<String> get selectedGenres => List<String>.from(widget.movie['genres'] ?? []);
+  // late Future<List<Map<String, dynamic>>> _commentsFuture;
 
   @override
   void initState() {
     super.initState();
 
-    _commentsFuture = fetchComments();
+    // _commentsFuture = fetchComments();
 
     // youtube player
     _youtubeController = YoutubePlayerController(
@@ -59,12 +56,12 @@ class _DetailPageState extends State<DetailPage> {
     ));
   }
 
-  Future<List<Map<String, dynamic>>> fetchComments() async {
-    final response =
-        await CommentService().fetchCommentsForMovie(widget.movie['judul']);
-    print(response);
-    return response;
-  }
+  // Future<List<Map<String, dynamic>>> fetchComments() async {
+  //   final response =
+  //       await CommentService().fetchCommentsForMovie(widget.movie['judul']);
+  //   print(response);
+  //   return response;
+  // }
 
   @override
   void dispose() {
@@ -75,9 +72,9 @@ class _DetailPageState extends State<DetailPage> {
   void _toggleFavorite() async {
     bool isFavorite = await _isFavoriteFuture;
     if (!isFavorite) {
-      await SyncServices().addFav(widget.movie);
+      await UserServices().addFav(widget.movie);
     } else {
-      await SyncServices().removeFav(widget.movie['judul']);
+      await UserServices().removeFav(widget.movie['judul']);
     }
     setState(() {
       _isFavoriteFuture = FavMoviesServices().isMovieFav(widget.movie);
@@ -206,7 +203,7 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                           ),
                                         );
-                                        await SyncServices().addHistory(
+                                        await UserServices().addHistory(
                                             widget.movie,
                                             Timestamp.fromDate(DateTime.now()));
                                       },
@@ -287,16 +284,16 @@ class _DetailPageState extends State<DetailPage> {
                                     },
                                     child: Column(
                                       children: [
-                                        Text(
-                                          'Komentar',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: _selectedTab == 1
-                                                ? Colors.black
-                                                : Colors.grey,
-                                          ),
-                                        ),
+                                        // Text(
+                                        //   'Komentar',
+                                        //   style: TextStyle(
+                                        //     fontSize: 18,
+                                        //     fontWeight: FontWeight.bold,
+                                        //     color: _selectedTab == 1
+                                        //         ? Colors.black
+                                        //         : Colors.grey,
+                                        //   ),
+                                        // ),
                                         SizedBox(height: 4),
                                         Container(
                                           height: 2,
@@ -323,8 +320,8 @@ class _DetailPageState extends State<DetailPage> {
                                     )
                                   : Column(
                                       children: [
-                                        CommentCard(
-                                            commentsFuture: _commentsFuture),
+                                        // CommentCard(
+                                        //     commentsFuture: _commentsFuture),
                                       ],
                                     ),
                             ],

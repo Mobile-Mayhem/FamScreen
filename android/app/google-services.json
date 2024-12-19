@@ -13,7 +13,20 @@
           "package_name": "com.example.mobile_mayhem"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "120163502933-i1h0o0j1r4uf5gulptha45p8j207dk32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mobile_mayhem",
+            "certificate_hash": "50bf39a3c96897db5e789cfddbc14951213a4d7a"
+          }
+        },
+        {
+          "client_id": "120163502933-8ugipeovpufa80b7ik9oob0f2b56mm2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB5ThXyn6yVkbGmN-6-p1IZtxwgCkbSErQ"
@@ -21,26 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:120163502933:android:868a9df18720e756417ddc",
-        "android_client_info": {
-          "package_name": "com.mobile_mayhem.famscreen"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB5ThXyn6yVkbGmN-6-p1IZtxwgCkbSErQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120163502933-8ugipeovpufa80b7ik9oob0f2b56mm2p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120163502933-2b2hd7r4r771uiddso8veu6b20ug3337.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projek"
+              }
+            }
+          ]
         }
       }
     }
