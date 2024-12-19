@@ -26,14 +26,10 @@ class _HistoryPageState extends State<HistoryPage> {
       isLoading = true;
     });
     final historyMovies = await HistoryServices().getHistMovies();
-
-    if (mounted) {
-      setState(() {
-        movies = historyMovies;
-        isLoading = false;
-      });
-    }
-
+    setState(() {
+      movies = historyMovies;
+      isLoading = false;
+    });
   }
 
   @override
