@@ -51,7 +51,7 @@ class _CameraPageState extends State<CameraPage> {
       text: 'Mendeteksi usia Anda',
     );
 
-    final url = Uri.parse('https://128.199.78.57:5000/upload');
+    final url = Uri.parse('http://128.199.78.57:5000/upload');
     // final url = Uri.parse('https://apif.abdaziz.my.id/upload');
 
     try {
@@ -65,7 +65,6 @@ class _CameraPageState extends State<CameraPage> {
         var jsonData = json.decode(responseData.body);
         int prediction = jsonData['prediction'];
 
-        // Periksa nilai prediksi dan tentukan kategori umur
         if (prediction == 0) {
           ageCategory = 'Anak-anak';
         } else if (prediction == 1) {
@@ -76,22 +75,20 @@ class _CameraPageState extends State<CameraPage> {
           ageCategory = 'Tidak dapat mendeteksi umur';
         }
 
-        // Simpan hasil prediksi umur ke dalam database
         dbServices.setAges(ageCategory);
 
-        // Tampilkan hasil prediksi
         Navigator.of(context).pop();
         await _showAlertDialog('Hasil Prediksi', 'Prediksi Umur: $ageCategory');
       } else {
         Navigator.of(context).pop();
         print('Image upload failed with status: ${response.statusCode}');
-        await _showErrorDialog(
+        await _showWarnDialog(
             'Gagal', 'Wajah Tidak Terdeteksi, silahkan ikuti instruksi');
       }
     } catch (e) {
       Navigator.of(context).pop();
       await _showErrorDialog(
-          'Error', 'Tidak dapat upload gambar, silahkan coba lagi');
+          'Gagal', 'Tidak dapat upload gambar, silahkan coba lagi');
     }
   }
 
@@ -178,12 +175,10 @@ class _CameraPageState extends State<CameraPage> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // Menambahkan logika untuk mengatasi stretching dan mirror pada kamera
     final size = MediaQuery.of(context).size;
     var scale = size.aspectRatio * controller.value.aspectRatio;
     if (scale < 1) scale = 1 / scale;
 
-    // Rotasi untuk menghilangkan mirror pada kamera depan
     final double mirror =
         controller.description.lensDirection == CameraLensDirection.front
             ? math.pi
@@ -193,7 +188,6 @@ class _CameraPageState extends State<CameraPage> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          // Kamera Fullscreen dengan pengaturan skala dan rotasi
           SizedBox.expand(
             child: Transform(
               alignment: Alignment.center,
@@ -211,7 +205,6 @@ class _CameraPageState extends State<CameraPage> {
             width: 300,
             height: 300,
           ),
-          // Menambahkan teks dan button di atas kamera
           Positioned(
             top: 40,
             left: 20,
@@ -232,7 +225,6 @@ class _CameraPageState extends State<CameraPage> {
               ],
             ),
           ),
-          // Tombol Ambil Gambar
           Positioned(
             bottom: 20,
             left: 50,
@@ -250,16 +242,14 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
           ),
-          // Menempatkan instruksi di bawah 80% dari panjang layar
           Positioned(
-            bottom: MediaQuery.of(context).size.height *
-                0.15, // 85% dari panjang layar
+            bottom: MediaQuery.of(context).size.height * 0.15,
             left: 20,
             right: 20,
             child: Text(
               'Tetaplah berada di posisi ini dan lihat ke kamera, harap tekan tombol Ambil Gambar apabila anda sudah siap',
               style: TextStyle(
-                color: Colors.white, // Warna teks putih
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

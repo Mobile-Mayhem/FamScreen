@@ -1,4 +1,4 @@
-import 'package:famscreen/services/sync_services.dart';
+import 'package:famscreen/services/user_services.dart';
 import 'package:famscreen/widgets/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:famscreen/services/fav_movies_services.dart';
@@ -24,14 +24,16 @@ class _FavoritePageState extends State<FavoritePage> {
   Future<void> _loadFavorites() async {
     List<Map<String, dynamic>> movies =
         await FavMoviesServices().getFavMovies();
-    setState(() {
-      favoriteMovies = movies;
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        favoriteMovies = movies;
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _removeFavorite(String title) async {
-    await SyncServices().removeFav(title);
+    await UserServices().removeFav(title);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('$title dihapus dari favorit.')),
     );
@@ -68,7 +70,7 @@ class _FavoritePageState extends State<FavoritePage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-               child: isLoading
+              child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
@@ -76,33 +78,35 @@ class _FavoritePageState extends State<FavoritePage> {
                       ? Center(
                           child: Text('Belum ada film favorit.'),
                         )
-                  : GridView.builder(
-                      padding: EdgeInsets.all(3),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 0.6,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 5,
-                      ),
-                      itemCount: favoriteMovies.length,
-                      itemBuilder: (context, index) {
-                        var movie = favoriteMovies[index];
-                        return FavoriteItem(
-                          title: movie['judul'],
-                          image: movie['poster_potrait'] ??
-                              'assets/placeholder.jpg',
-                          onRemove: () => _removeFavorite(movie['judul']),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(movie: movie),
-                              ),
+                      : GridView.builder(
+                          padding: EdgeInsets.all(3),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.6,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 5,
+                          ),
+                          itemCount: favoriteMovies.length,
+                          itemBuilder: (context, index) {
+                            var movie = favoriteMovies[index];
+                            return FavoriteItem(
+                              title: movie['judul'],
+                              image: movie['poster_potrait'] ??
+                                  'assets/placeholder.jpg',
+                              onRemove: () => _removeFavorite(movie['judul']),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailPage(movie: movie),
+                                  ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
+                        ),
             ),
           ],
         ),

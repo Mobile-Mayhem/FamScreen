@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('assets/images/profil.png', height: 220)),
+            Center(child: Image.asset('assets/logo.png', height: 150)),
             const SizedBox(height: 35),
             const Text('Nama', style: TextStyle(fontWeight: FontWeight.bold)),
             Container(

@@ -35,30 +35,18 @@ class FavMoviesServices {
     }
   }
 
-  // Future<bool> isMovieFav(Map<String, dynamic> movie) async {
-  //   try {
-  //     QuerySnapshot favSnapshot =
-  //         await userCollection.doc(uid).collection('favorites').get();
-
-  //     return favSnapshot.docs.isNotEmpty;
-  //   } catch (e) {
-  //     print('Error checking if movie is favorite: $e');
-  //     return false;
-  //   }
-  // }
-
   Future<bool> isMovieFav(Map<String, dynamic> movie) async {
-  try {
-    QuerySnapshot favSnapshot = await userCollection
-        .doc(uid)
-        .collection('favorites')
-        .where('judul', isEqualTo: movie['judul']) 
-        .get();
+    try {
+      QuerySnapshot favSnapshot = await userCollection
+          .doc(uid)
+          .collection('favorites')
+          .where('judul', isEqualTo: movie['judul'])
+          .get();
 
-    return favSnapshot.docs.isNotEmpty;
-  } catch (e) {
-    print('Error checking if movie is favorite: $e');
-    return false;
+      return favSnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Error checking if movie is favorite: $e');
+      return false;
+    }
   }
-}
 }

@@ -26,10 +26,14 @@ class _HistoryPageState extends State<HistoryPage> {
       isLoading = true;
     });
     final historyMovies = await HistoryServices().getHistMovies();
-    setState(() {
-      movies = historyMovies;
-      isLoading = false;
-    });
+
+    if (mounted) {
+      setState(() {
+        movies = historyMovies;
+        isLoading = false;
+      });
+    }
+
   }
 
   @override
@@ -43,15 +47,6 @@ class _HistoryPageState extends State<HistoryPage> {
           style: TextStyle(
               color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.black),
-            onPressed: () async {
-              await HistoryServices().clearHistory();
-              fetchHistory();
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
