@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import '../pages/RegisterPage.dart';
 import '../utils/Colors.dart';
@@ -85,9 +86,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           footer: Center(
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => RegisterPage()),
-                );
+                Get.toNamed('/register');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: CustomColor.primary,

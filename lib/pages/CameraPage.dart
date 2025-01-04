@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:camera/camera.dart';
+import 'package:famscreen/routes/AppRoutes.dart';
 import 'dart:math' as math;
 import 'package:famscreen/services/databases_services.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickalert/quickalert.dart';
 
@@ -107,10 +109,7 @@ class _CameraPageState extends State<CameraPage> {
       type: QuickAlertType.success,
       title: '$title',
       text: '$content',
-      onConfirmBtnTap: () => Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const HomePage()),
-        (route) => false,
-      ),
+      onConfirmBtnTap: () => Get.offAllNamed(AppRoutes.home),
     );
   }
 

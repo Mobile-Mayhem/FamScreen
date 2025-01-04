@@ -8,17 +8,17 @@ import 'package:http/http.dart' as http;
 
 import '../services/databases_services.dart';
 
-class FullscreenVideoPage extends StatefulWidget {
+class VideoPlayerPage extends StatefulWidget {
   final String url;
   final String ageCatMovie;
 
-  FullscreenVideoPage({required this.url, required this.ageCatMovie});
+  VideoPlayerPage({required this.url, required this.ageCatMovie});
 
   @override
-  _FullscreenVideoPageState createState() => _FullscreenVideoPageState();
+  _VideoPlayerPageState createState() => _VideoPlayerPageState();
 }
 
-class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
+class _VideoPlayerPageState extends State<VideoPlayerPage> {
   late FlickManager flickManager;
   late CameraController controller;
   bool _isCameraInitialized = false;
@@ -40,7 +40,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
   bool _isDisposed = false;
 
   void _startAutoCapture() {
-    Future.delayed(Duration(seconds: 40), () async {
+    Future.delayed(Duration(seconds: 20), () async {
       if (_isDisposed) return;
       print("HALOOOOOOOOOOOOOOOOOO");
       // _initializeCamera();
@@ -128,6 +128,7 @@ class _FullscreenVideoPageState extends State<FullscreenVideoPage> {
 
         dbServices.setAges(ageCategory);
         print(ageCategory);
+        print("Gambar dikirim ke server. $ageCategory");
       } else {
         print('Failed to send image to server.');
       }

@@ -1,10 +1,13 @@
 import 'package:famscreen/components/NameForm.dart';
 import 'package:famscreen/components/OtherMethod.dart';
-import 'package:famscreen/services/auth_service.dart';
+import 'package:famscreen/routes/AppRoutes.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../components/EmailForm.dart';
 import '../components/PasswordForm.dart';
-import 'LoginPage.dart';
+
+import '../controllers/AuthController.dart';
 import '../utils/Colors.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,6 +18,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final authController = Get.put(AuthController());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -67,15 +71,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20.0),
                   ElevatedButton(
                     onPressed: () async {
-                      await AuthService().signup(
+                      await authController.signup(
                         name: nameController.text,
                         email: emailController.text,
                         password: passwordController.text,
                         context: context,
                       );
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(builder: (_) => const CameraPage()),
-                      // );
                       print('Daftar');
                     },
                     child: const Text('Daftar'),
@@ -103,9 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Text('Sudah Punya akun?'),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => LoginPage()),
-                          );
+                          Get.toNamed(AppRoutes.login);
                           print('Masuk');
                         },
                         child: const Text('Masuk',

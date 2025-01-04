@@ -1,40 +1,20 @@
 import 'package:famscreen/components/OtherMethod.dart';
 import 'package:famscreen/components/PasswordForm.dart';
-import 'package:famscreen/services/auth_service.dart';
+
+import 'package:famscreen/routes/AppRoutes.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../components/EmailForm.dart';
-import 'RegisterPage.dart';
+import '../controllers/AuthController.dart';
 import '../utils/Colors.dart';
 
-import 'ResetPasswordPage.dart';
-
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  void _showButtonPressDialog(BuildContext context, String provider) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$provider Button Pressed!'),
-        backgroundColor: Colors.black26,
-        duration: const Duration(milliseconds: 400),
-      ),
-    );
-  }
-
+  final authController = Get.put(AuthController());
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +48,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ResetPasswordPage()),
-                    );
+                    Get.toNamed(AppRoutes.resetpw);
                   },
                   child: const Text('Lupa Password?'),
                 ),
@@ -79,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 25.0),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().signin(
+                await authController.signin(
                   email: emailController.text,
                   password: passwordController.text,
                   context: context,
@@ -112,9 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 Text('Belum punya akun?'),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => RegisterPage()),
-                    );
+                    Get.toNamed(AppRoutes.register);
                     print('Daftar');
                   },
                   child: const Text('Daftar',

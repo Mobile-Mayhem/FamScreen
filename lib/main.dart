@@ -1,8 +1,8 @@
-import 'package:famscreen/pages/CameraPage.dart';
-import 'package:famscreen/pages/OnBoardingPage.dart';
-import 'package:famscreen/utils/Colors.dart';
+import 'package:famscreen/routes/AppRoutes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'routes/AppPages.dart';
 import 'utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -10,7 +10,6 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inisialisasi Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,27 +22,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FamScreen',
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: customTheme,
-      home: FutureBuilder(
-        future: FirebaseAuth.instance.authStateChanges().first,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(CustomColor.primary),
-              ),
-            );
-          } else if (snapshot.hasData) {
-            return CameraPage();
-            // return RegisterPage();
-          } else {
-            return OnBoardingPage();
-          }
-        },
-      ),
-      // home: CameraPage(),
+      initialRoute: FirebaseAuth.instance.currentUser != null
+          ? AppRoutes.camera
+          : AppRoutes.onboarding,
+      getPages: AppPages.pages,
     );
   }
 }

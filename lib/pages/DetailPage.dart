@@ -28,7 +28,6 @@ class _DetailPageState extends State<DetailPage> {
   late String ageCatMovie;
   int _selectedTab = 0;
   late YoutubePlayerController _youtubeController;
-  // late Future<List<Map<String, dynamic>>> _commentsFuture;
 
   @override
   void initState() {
@@ -197,7 +196,7 @@ class _DetailPageState extends State<DetailPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                FullscreenVideoPage(
+                                                VideoPlayerPage(
                                               url: url,
                                               ageCatMovie: ageCatMovie,
                                             ),
