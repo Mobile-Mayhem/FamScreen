@@ -1,4 +1,5 @@
 import 'package:famscreen/pages/CameraPage.dart';
+import 'package:famscreen/routes/AppRoutes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,7 +26,7 @@ class AuthController extends GetxController {
   }
 
   // GOOGLE SIGNIN
-  signInWithGoogle() async {
+  signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? gUser = await googleSignIn.signIn();
@@ -78,7 +79,7 @@ class AuthController extends GetxController {
   }
 
   // Anonymous Sign In
-  Future<void> anonymousSignin() async {
+  Future<void> anonymousSignin(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInAnonymously();
       user.value = FirebaseAuth.instance.currentUser;
@@ -122,7 +123,7 @@ class AuthController extends GetxController {
       isLoggedIn.value = true;
 
       await Future.delayed(const Duration(seconds: 1));
-      Get.off(() => CameraPage());
+      Get.offNamed(AppRoutes.camera);
     } on FirebaseAuthException catch (e) {
       String message = '';
       if (e.code == 'weak-password') {
@@ -195,7 +196,7 @@ class AuthController extends GetxController {
   }
 
   // Sign Out
-  Future<void> signout() async {
+  Future<void> signout(BuildContext buildContext) async {
     try {
       await FirebaseAuth.instance.signOut();
       user.value = null;
@@ -210,6 +211,7 @@ class AuthController extends GetxController {
   // Reset Password
   Future<void> resetPassword({
     required String email,
+    required BuildContext context,
   }) async {
     if (!isValidEmail(email)) return;
 
@@ -260,6 +262,11 @@ class AuthController extends GetxController {
   // Get Email
   Future<String?> getEmail() async {
     return FirebaseAuth.instance.currentUser?.email;
+  }
+
+  // Get Current User
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
   }
 }
 

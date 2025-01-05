@@ -11,4 +11,5 @@ class AppRoutes {
   static const String search = '/search';
   static const String profile = '/profile';
   static const String listMov = '/list';
+  static const String detailPage = '/detail-page';
 }

@@ -1,43 +1,45 @@
 import 'package:famscreen/pages/ListMoviesPage.dart';
 import 'package:famscreen/utils/Colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart'; // Add GetX import
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
-import '../controllers/HomePageController.dart';
 import '../services/databases_services.dart';
 import 'FavoritPage.dart';
 import 'SearchPage.dart';
 import 'HistoryPage.dart';
 import 'ProfilPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final dbServices = DatabasesServices();
+
+  int _currentPageIndex = 0;
+
+  final List<Widget> _pages = [
+    ListMoviesPage(),
+    FavoritePage(),
+    SearchPage(),
+    HistoryPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // Create GetX controller to manage current page index
-    final HomePageController controller = Get.put(HomePageController());
-
     return Scaffold(
-      body: Obx(
-        () => IndexedStack(
-          index: controller
-              .currentPageIndex.value, // Use GetX state for page index
-          children: [
-            const ListMoviesPage(),
-            FavoritePage(),
-            SearchPage(),
-            HistoryPage(),
-            const ProfilePage(),
-          ],
-        ),
-      ),
+      body: _pages[_currentPageIndex],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GNav(
           onTabChange: (index) {
-            controller.changePage(index); // Change page using GetX controller
+            setState(() {
+              _currentPageIndex = index;
+            });
           },
           gap: 5,
           rippleColor: CustomColor.primary,

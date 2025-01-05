@@ -1,4 +1,5 @@
 import 'package:famscreen/pages/CameraPage.dart';
+import 'package:famscreen/pages/DetailPage.dart';
 import 'package:famscreen/pages/FavoritPage.dart';
 import 'package:famscreen/pages/HistoryPage.dart';
 import 'package:famscreen/pages/HomePage.dart';
@@ -9,7 +10,7 @@ import 'package:famscreen/pages/ProfilPage.dart';
 import 'package:famscreen/pages/RegisterPage.dart';
 import 'package:famscreen/pages/ResetPasswordPage.dart';
 import 'package:famscreen/pages/SearchPage.dart';
-import 'package:famscreen/pages/VideoPlayerPage.dart';
+import 'package:famscreen/pages/FullVideoPlayerPage.dart';
 import 'package:get/get.dart';
 
 class AppPages {
@@ -56,8 +57,14 @@ class AppPages {
       page: () => ListMoviesPage(),
     ),
     GetPage(
+      name: '/detail-page',
+      page: () => DetailPage(
+        movie: Get.arguments['movie'],
+      ),
+    ),
+    GetPage(
       name: '/video-player',
-      page: () => VideoPlayerPage(
+      page: () => FullVideoPlayerPage(
         url: Get.arguments['url'],
         ageCatMovie: Get.arguments['ageCatMovie'],
       ),

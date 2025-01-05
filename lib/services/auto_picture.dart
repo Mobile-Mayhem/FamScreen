@@ -5,7 +5,7 @@ class AutoPictureService with ChangeNotifier {
   Timer? _timer;
 
   void startAutoPicture(Function takePicture) {
-    _timer?.cancel(); // Pastikan timer sebelumnya dihentikan
+    _timer?.cancel();
     _timer = Timer.periodic(Duration(minutes: 5), (timer) {
       takePicture();
       print('Auto-take-picture running...');

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sign_button/sign_button.dart';
 
-import '../services/auth_service.dart';
+import '../controllers/AuthController.dart';
 
 class OtherMethod extends StatelessWidget {
   const OtherMethod({
@@ -10,6 +11,8 @@ class OtherMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.put(AuthController());
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -30,7 +33,7 @@ class OtherMethod extends StatelessWidget {
           ),
           child: IconButton(
             onPressed: () {
-              AuthService().anonymousSignin(context);
+              authController.anonymousSignin(context);
             },
             icon: Icon(Icons.person, color: Colors.white),
           ),
@@ -39,7 +42,7 @@ class OtherMethod extends StatelessWidget {
           buttonSize: ButtonSize.medium,
           buttonType: ButtonType.google,
           onPressed: () {
-            AuthService().signInWithGoogle(context);
+            authController.signInWithGoogle(context);
           },
         ),
       ],

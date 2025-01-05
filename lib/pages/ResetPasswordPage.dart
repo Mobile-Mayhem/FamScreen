@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/EmailForm.dart';
-import '../services/auth_service.dart';
+import '../controllers/AuthController.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   const ResetPasswordPage({super.key});
@@ -9,6 +10,8 @@ class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
+    final authController = Get.put(AuthController());
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -34,7 +37,7 @@ class ResetPasswordPage extends StatelessWidget {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().resetPassword(
+                await authController.resetPassword(
                     email: emailController.text, context: context);
               },
               child: const Text('Kirim'),
